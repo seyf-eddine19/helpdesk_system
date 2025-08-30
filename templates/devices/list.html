@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Devices" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+  <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap fs-3 fw-bold">
+      <div><i class="bi bi-hdd-network mx-2"></i> {% trans "Devices" %}</div>
+      {% if perms.devices.add_device or user.is_superuser %}
+        <a href="{% url 'device_add' %}" class="btn btn-sm btn-light mt-2 mt-sm-0">
+          <i class="bi bi-plus-circle"></i> {% trans "New Device" %}
+        </a>
+      {% endif %}
+    </div>
+    <div class="card-body p-0">
+      <!-- Responsive table -->
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 text-nowrap">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>{% trans "Device Type" %}</th>
+              <th>{% trans "Serial Number" %}</th>
+              <th>{% trans "Status" %}</th>
+              <th>{% trans "Added At" %}</th>
+              <th>{% trans "Accessories" %}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for device in devices %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ device.device_type }}</td>
+                <td class="fw-bold">{{ device.serial_number }}</td>
+                <td>
+                  {% if device.status == "available" %}
+                    <span class="badge bg-success">{% trans "Available" %}</span>
+                  {% elif device.status == "in_use" %}
+                    <span class="badge bg-warning text-dark">{% trans "In Use" %}</span>
+                  {% elif device.status == "maintenance" %}
+                    <span class="badge bg-danger">{% trans "Under Maintenance" %}</span>
+                  {% elif device.status == "lost" %}
+                    <span class="badge bg-danger">{% trans "Lost" %}</span>
+                  {% endif %}
+                </td>
+                <td>{{ device.added_at|date:"Y-m-d" }}</td>
+                <td><span class="badge bg-light text-dark border">{{ device.count_accessories }}</span>
+                </td>
+                <td class="text-center d-flex gap-1 justify-content-center">
+                  <a href="{% url 'device_detail' device.pk %}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-eye-fill"></i>
+                  </a>
+                  {% if perms.devices.change_device or user.is_superuser %}
+                    <a href="{% url 'device_edit' device.pk %}" class="btn btn-sm btn-custom-warning">
+                      <i class="bi bi-pencil-square"></i>
+                    </a>
+                  {% endif %}
+                  {% if perms.devices.delete_device or user.is_superuser %}
+                    <a href="{% url 'device_delete' device.pk %}" class="btn btn-sm btn-danger">
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  {% endif %}
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">
+                  <i class="bi bi-info-circle"></i> {% trans "No devices found." %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-3">
+    {% if is_paginated %}
+      <nav>
+        <ul class="pagination justify-content-center flex-wrap">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+            </li>
+          {% endif %}
+          {% for num in paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Tickets" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap fs-3 fw-bold">
+          <div><i class="bi bi-ticket-perforated mx-2"></i> {% trans "Tickets" %}</div>
+            {% if perms.tickets.view_ticket or user.is_superuser %}
+            <a href="{% url 'ticket_add' %}" class="btn btn-sm btn-light mt-2 mt-sm-0">
+              <i class="bi bi-plus-circle"></i> {% trans "New Ticket" %}
+            </a>
+          {% endif %}
+        </div>
+        <div class="card-body p-0">
+            <!-- Responsive table -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-nowrap">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>{% trans "Title" %}</th>
+                            <th>{% trans "Request Type" %}</th>
+                            <th>{% trans "Priority" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in tickets %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td class="fw-bold">{{ ticket.title }}</td>
+                                <td>{{ ticket.request_type }}</td>
+                                <td>
+                                  {% if ticket.priority == "NORMAL" %}
+                                      <span class="badge bg-secondary">{% trans "Normal" %}</span>
+                                  {% elif ticket.priority == "URGENT" %}
+                                      <span class="badge bg-danger">{% trans "Urgent" %}</span>
+                                  {% elif ticket.priority == "HIGH" %}
+                                      <span class="badge bg-warning text-dark">{% trans "High" %}</span>
+                                  {% endif %}
+                                </td>
+                                <td>
+                                  {% if ticket.status == "NEW" %}
+                                      <span class="badge bg-primary">{% trans "New" %}</span>
+                                  {% elif ticket.status == "IN_PROGRESS" %}
+                                      <span class="badge bg-info text-dark">{% trans "In Progress" %}</span>
+                                  {% elif ticket.status == "RESOLVED" %}
+                                      <span class="badge bg-success">{% trans "Resolved" %}</span>
+                                  {% elif ticket.status == "REJECTED" %}
+                                      <span class="badge bg-danger">{% trans "Rejected" %}</span>
+                                  {% endif %}
+                                </td>
+
+                                <td class="text-center d-flex gap-1 justify-content-center">
+                                  <a href="{% url 'ticket_detail' ticket.pk %}" class="btn btn-sm btn-primary">
+                                      <i class="bi bi-eye-fill"></i>
+                                  </a>
+                                  {% if perms.tickets.change_ticket or user.is_superuser %}
+                                      <a href="{% url 'ticket_edit' ticket.pk %}" class="btn btn-sm btn-custom-warning">
+                                          <i class="bi bi-pencil-square"></i>
+                                      </a>
+                                  {% endif %}
+                                  {% if perms.tickets.delete_ticket or user.is_superuser %}
+                                      <a href="{% url 'ticket_delete' ticket.pk %}" class="btn btn-sm btn-danger">
+                                          <i class="bi bi-trash"></i>
+                                      </a>
+                                  {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    <i class="bi bi-info-circle"></i> {% trans "No tickets found." %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-3">
+        {% if is_paginated %}
+            <nav>
+                <ul class="pagination justify-content-center flex-wrap">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                        </li>
+                    {% endif %}
+                    {% for num in paginator.page_range %}
+                        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

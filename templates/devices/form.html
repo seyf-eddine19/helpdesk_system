@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+  {% if object %}{% trans "Edit Device" %}{% else %}{% trans "New Device" %}{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+  <div class="card shadow-sm">
+    <div class="card-header {% if object %}bg-warning{% else %}bg-success{% endif %}">
+      {% if object %}
+        <i class="bi bi-pencil-square"></i> {% trans "Edit Device" %}
+      {% else %}
+        <i class="bi bi-plus-circle"></i> {% trans "New Device" %}
+      {% endif %}
+    </div>
+    <div class="card-body">
+      <form method="post" autocomplete="off">
+        {% csrf_token %}
+
+        <!-- Device fields -->
+        <div class="row g-3">
+          {% for field in form %}
+            <div class="col-md-4">
+              <label class="form-label">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}
+                <div class="text-danger small">{{ field.errors|striptags }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <hr class="my-2">
+
+        <!-- Accessories -->
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="fw-bold mb-3 fs-2">{% trans "Accessories" %}</h6>
+          <button type="button" class="btn btn-outline-primary my-2" id="add-accessory">
+            <i class="bi bi-plus-circle"></i> {% trans "Add Accessory" %}
+          </button>
+        </div>
+
+        {{ accessory_formset.management_form }}
+
+
+        <div id="accessories-wrapper">
+          {% for subform in accessory_formset %}
+            <div class="accessory-item border p-3 mb-2 rounded">
+              <div class="row g-3">
+                {% for field in subform.visible_fields %}
+                  {% if not forloop.last %}
+                    <div class="col-md-4">
+                      <label class="form-label">{{ field.label }}</label>
+                      {{ field }}
+                      {% if field.errors %}
+                        <div class="text-danger small">{{ field.errors|striptags }}</div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              {{ subform.id }}
+              <button type="button" class="btn btn-outline-danger remove-accessory mt-2">
+                <i class="bi bi-trash"></i> {% trans "Remove" %}
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+
+    </div>
+    <div class="card-footer d-flex justify-content-end">
+      <button type="submit" class="btn {% if object %}btn-custom-warning{% else %}btn-custom-primary{% endif %} mx-2">
+        {% if object %}
+          <i class="bi bi-save"></i> {% trans "Update" %}
+        {% else %}
+          <i class="bi bi-plus-circle"></i> {% trans "Create" %}
+        {% endif %}
+      </button>
+      <a href="{% url 'device_list' %}" class="btn btn-secondary">
+        <i class="bi bi-x-circle"></i> {% trans "Cancel" %}
+      </a>
+    </div>
+      </form>
+  </div>
+</div>
+
+<script>
+// Template for an empty accessory form
+let emptyFormHtml = `
+  <div class="row g-3">
+    {% for field in accessory_formset.empty_form.visible_fields %}
+      {% if not forloop.last %}
+        <div class="col-md-4">
+          <label class="form-label">{{ field.label }}</label>
+          {{ field }}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {{ accessory_formset.empty_form.id }}
+`;
+
+function addAccessoryForm() {
+  let formIndex = document.querySelectorAll(".accessory-item").length;
+  let newFormHtml = emptyFormHtml.replace(/__prefix__/g, formIndex);
+
+  let wrapper = document.createElement("div");
+  wrapper.classList.add("accessory-item", "border", "p-3", "mb-2", "rounded");
+  wrapper.innerHTML = newFormHtml +
+    `<button type="button" class="btn btn-outline-danger remove-accessory mt-2">
+      <i class="bi bi-trash"></i> {% trans "Remove" %}
+    </button>`;
+
+  document.querySelector("#accessories-wrapper").appendChild(wrapper);
+
+  // Update TOTAL_FORMS count
+  let totalForms = document.querySelector("[name='{{ accessory_formset.prefix }}-TOTAL_FORMS']");
+  totalForms.value = parseInt(totalForms.value) + 1;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Add new form
+  document.getElementById("add-accessory").addEventListener("click", addAccessoryForm);
+
+  // Remove accessory (hide if saved, remove if new)
+  document.getElementById("accessories-wrapper").addEventListener("click", function(e) {
+    if (e.target.closest(".remove-accessory")) {
+      let item = e.target.closest(".accessory-item");
+      let deleteField = item.querySelector("input[type='checkbox'][name$='-DELETE']");
+      if (deleteField) {
+        deleteField.checked = true;
+        item.style.display = "none";
+      } else {
+        item.remove();
+        // decrement TOTAL_FORMS if removing unsaved
+        let totalForms = document.querySelector("[name='{{ accessory_formset.prefix }}-TOTAL_FORMS']");
+        totalForms.value = parseInt(totalForms.value) - 1;
+      }
+    }
+  });
+});
+</script>
+{% endblock %}

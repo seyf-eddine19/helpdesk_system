@@ -1,0 +1,83 @@
+{% load i18n %}
+<header class="topbar d-flex justify-content-between align-items-center px-3">
+  <div class="d-flex align-items-center gap-3">
+    <button class="btn btn-outline-secondary" id="sidebarToggle"><i class="bi bi-list"></i></button>
+  </div>
+
+  <div class="d-flex align-items-center gap-3">
+    <!-- Language Switch -->
+    <div class="dropdown">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bx bx-globe me-1"></i>
+        {% if LANGUAGE_CODE|slice:":2" == 'ar' %}العربية{% else %}English{% endif %}
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="langDropdown">
+        <li>
+          <form action="{% url 'set_language' %}" method="post" class="m-0 p-0">
+            {% csrf_token %}
+            <input type="hidden" name="language" value="en">
+            <button type="submit" class="dropdown-item d-flex justify-content-between">
+              English <span class="fi fi-gb mx-2"></span>
+            </button>
+          </form>
+        </li>
+        <li>
+          <form action="{% url 'set_language' %}" method="post" class="m-0 p-0">
+            {% csrf_token %}
+            <input type="hidden" name="language" value="ar">
+            <button type="submit" class="dropdown-item d-flex justify-content-between">
+              العربية <span class="fi fi-sa mx-2"></span>
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
+
+    <!-- User Menu -->
+    <div class="dropdown">
+      <a class="nav-link dropdown-toggle text-dark d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+        <i class="bi bi-person-circle fs-5 mx-2"></i>
+        {% if request.user.is_authenticated %}
+          <span>{{ request.user.employee_profile.full_name|default:request.user.username }}</span>
+        {% endif %}
+      </a>
+
+      <ul class="dropdown-menu dropdown-menu-end px-2">
+        {% if request.user.is_authenticated %}
+          <li class="dropdown-header text-center">
+            <strong>@{{ request.user.employee_profile.username|default:request.user.username }}</strong><br>
+            <small class="text-muted">
+              {{ request.user.employee_profile.department|default:_("No department") }}
+            </small>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+
+          <li>
+            <a class="dropdown-item d-flex" href="{% url 'update_profile' %}">
+              <i class="bi bi-person-circle mx-2"></i>{% trans "My Profile" %}
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item d-flex" href="{% url 'password_change' %}">
+              <i class="bi bi-key mx-2"></i>{% trans "Change Password" %}
+            </a>
+          </li>
+          <li>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="dropdown-item text-danger d-flex justify-content-between">
+                {% trans "Logout" %} <i class="bi bi-box-arrow-right ms-2"></i>
+              </button>
+            </form>
+          </li>
+        {% else %}
+          <li>
+            <a class="dropdown-item d-flex justify-content-between" href="{% url 'login' %}">
+              <i class="bi bi-box-arrow-in-right mx-2"></i>{% trans "Login" %}
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</header>

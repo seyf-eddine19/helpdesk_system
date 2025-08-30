@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="alert alert-danger">
+  ⚠️ Server Error (500). Please try again later.
+</div>
+<a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% if object %}{% trans "Edit inventy" %}{% else %}{% trans "New inventy" %}{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <div class="card shadow-sm">
+        <div class="card-header {% if object %}bg-warning{% else %}bg-success{% endif %} text-white">
+            {% if object %}
+                <i class="bi bi-pencil-square"></i> {% trans "Edit inventy" %}
+            {% else %}
+                <i class="bi bi-plus-circle"></i> {% trans "New inventy" %}
+            {% endif %}
+        </div>
+
+        <form method="post" novalidate>
+            <div class="card-body">
+                {% csrf_token %}
+                {{ form.as_p }}
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer d-flex justify-content-end">
+                <button type="submit" class="btn {% if object %}btn-custom-warning{% else %}btn-custom-primary{% endif %} mx-2">
+                    {% if object %}
+                        <i class="bi bi-save"></i> {% trans "Update" %}
+                    {% else %}
+                        <i class="bi bi-plus-circle"></i> {% trans "Create" %}
+                    {% endif %}
+                </button>
+                <a href="javascript:history.back()" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> {% trans "Cancel" %}
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

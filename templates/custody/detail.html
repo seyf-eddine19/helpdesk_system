@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ ticket.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Custody Details</h2>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">{{ custody.holder_name }}</h5>
+      <p><strong>Status:</strong> {{ custody.status }}</p>
+      <p><strong>Date Received:</strong> {{ custody.date_received }}</p>
+      <p><strong>Date Returned:</strong> {{ custody.date_returned|default:"Not returned yet" }}</p>
+    </div>
+  </div>
+
+  <h4>Devices in Custody</h4>
+  <div class="list-group">
+    {% for dc in device_custodies %}
+      <div class="list-group-item">
+        <h5>{{ dc.device.device_type }} - {{ dc.device.serial_number }}</h5>
+        <p>Status: {{ dc.device.status }}</p>
+
+        {% if dc.device.accessories.all %}
+          <ul>
+            {% for accessory in dc.device.accessories.all %}
+              <li>{{ accessory.name }}</li>
+            {% empty %}
+              <li>No accessories</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>No devices in this custody.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

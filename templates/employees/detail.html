@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ full_name }}{% endblock %}
+
+{% block content %}
+<div class="container my-3">
+  <div class="card shadow">
+
+    <!-- Header -->
+    <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-person-badge-fill me-2"></i> {% trans "Employee Details" %}
+      </h4>
+      <span class="badge bg-light text-dark px-3 py-2 fs-6">
+        @{{ employee.username }}
+      </span>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-4">
+      <div class="row g-4">
+
+        <!-- Full Name -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-person-lines-fill me-2"></i> {% trans "Full Name (Arabic)" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ employee.employee_profile.full_name_ar }}</p>
+        </div>
+
+        <!-- Full Name -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-person-lines-fill me-2"></i> {% trans "Full Name (English)" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ employee.employee_profile.full_name_en }}</p>
+        </div>
+
+        <!-- Department -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-building me-2"></i> {% trans "Department" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ employee.employee_profile.department|default:"—" }}</p>
+        </div>
+
+        <!-- Phone -->
+        <div class="col-md-6">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-telephone me-2"></i> {% trans "Phone Number" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ employee.employee_profile.phone_number|default:"—" }}</p>
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-envelope me-2"></i> {% trans "Email" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ employee.email }}</p>
+        </div>
+
+        <!-- User Type -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-person-bounding-box me-2"></i> {% trans "User Type" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {% for group in employee.groups.all %}
+            <span class="badge bg-secondary">{{ group.name }}</span>
+            {% empty %}
+            <span class="text-muted">No Type</span>
+            {% endfor %}
+          </p>
+        </div>
+
+        <!-- Active -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-check-circle me-2"></i> {% trans "Active" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {% if employee.is_active %}
+              <i class="fas fa-check-circle text-success"></i>
+            {% else %}
+              <i class="fas fa-times-circle text-danger"></i>
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- Staff -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-person-workspace me-2"></i> {% trans "Staff" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {% if employee.is_staff %}
+              <i class="fas fa-check-circle text-success"></i>
+            {% else %}
+              <i class="fas fa-times-circle text-danger"></i>
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- Registered -->
+        <div class="col-12">
+          <p class="mb-0 text-muted text-end">
+                <i class="bi bi-calendar2-check me-2"></i> {% trans "Registered At" %}: {{ employee.date_joined|date:"Y-m-d H:i" }}
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer d-flex justify-content-between">
+      <a href="{% url 'employee_list' %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle"></i> {% trans "Back" %}
+      </a>
+      <div>
+        {% if perms.employees.change_employee or user.is_superuser %}
+          <a href="{% url 'employee_edit' employee.pk %}" class="btn btn-custom-warning">
+            <i class="bi bi-pencil"></i> {% trans "Edit" %}
+          </a>
+        {% endif %}
+        {% if perms.employees.delete_employee or user.is_superuser %}
+          <a href="{% url 'employee_delete' employee.pk %}" class="btn btn-danger mx-2">
+            <i class="bi bi-trash"></i> {% trans "Delete" %}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

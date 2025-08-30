@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environment
+venv/
+env/
+
+# Django & database
+*.sqlite3
+db.sqlite3
+*.log
+
+# media files
+/media/
+
+# Migrations (only if you don’t want to track them at first)
+*/migrations/__pycache__/
+/migrations/*.py
+
+# IDEs & OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

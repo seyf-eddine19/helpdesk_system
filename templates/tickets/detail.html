@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ ticket.title }}{% endblock %}
+
+{% block content %}
+<div class="container my-3">
+  <div class="card shadow">
+    <!-- Header -->
+    <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-ticket-perforated-fill me-2"></i> {% trans "Ticket Details" %}
+      </h4>
+      <span class="badge bg-light text-dark px-3 py-2 fs-6">
+        #{{ ticket.id }}
+      </span>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-4">
+      <div class="row g-4">
+        
+        <!-- Title -->
+        <div class="col-12">
+          <h6 class="text-secondary mb-1">
+            <i class="bi bi-chat-dots me-2"></i> {% trans "Title" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ ticket.title }}</p>
+        </div>
+
+        <!-- Request Type -->
+        <div class="col-md-6">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-layers me-2"></i> {% trans "Request Type" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            <span class="badge bg-secondary">{{ ticket.request_type }}</span>
+          </p>
+        </div>
+
+        <!-- Status -->
+        <div class="col-md-3">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-flag me-2"></i> {% trans "Status" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {% if ticket.status == "NEW" %}
+              <span class="badge bg-secondary">{{ ticket.get_status_display }}</span>
+            {% elif ticket.status == "IN_PROGRESS" %}
+              <span class="badge bg-warning text-dark">{{ ticket.get_status_display }}</span>
+            {% elif ticket.status == "RESOLVED" %}
+              <span class="badge bg-success">{{ ticket.get_status_display }}</span>
+            {% elif ticket.status == "REJECTED" %}
+              <span class="badge bg-danger">{{ ticket.get_status_display }}</span>
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- Priority -->
+        <div class="col-md-3">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-exclamation-triangle me-2"></i> {% trans "Priority" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {% if ticket.priority == "NORMAL" %}
+              <span class="badge bg-info">{{ ticket.get_priority_display }}</span>
+            {% elif ticket.priority == "URGENT" %}
+              <span class="badge bg-danger">{{ ticket.get_priority_display }}</span>
+            {% elif ticket.priority == "HIGH" %}
+              <span class="badge bg-warning text-dark">{{ ticket.get_priority_display }}</span>
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- Details -->
+        <div class="col-lg-6">
+          <div class="p-3 rounded-3 border border-secondary bg-light">
+            <h6 class="text-secondary mb-2">
+              <i class="bi bi-card-text me-2"></i> {% trans "Details" %}
+            </h6>
+            <p class="mb-0">{{ ticket.details|linebreaks }}</p>
+          </div>
+        </div>
+
+        <!-- Technician Notes -->
+        <div class="col-lg-6">
+          <div class="p-3 rounded-3 border border-secondary bg-light">
+            <h6 class="text-secondary mb-2">
+              <i class="bi bi-pencil-square me-2"></i> {% trans "Technician Notes" %}
+            </h6>
+            {% if ticket.technician_notes %}
+              <p class="text-muted mb-0">{{ ticket.technician_notes|linebreaksbr }}</p>
+            {% else %}
+              <p class="text-muted fst-italic">{% trans "No notes added yet." %}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Employee -->
+        <div class="col-md-6">
+          <h6 class="text-secondary mb-1">
+            <i class="bi bi-person me-2"></i> {% trans "Employee" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ ticket.employee.employee_profile.full_name }}</p>
+        </div>
+
+        <!-- Technician -->
+        <div class="col-md-6">
+          <h6 class="text-success mb-1">
+            <i class="bi bi-person-check me-2"></i> {% trans "Technician" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ ticket.technician.employee_profile.full_name|default:"—" }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Created Date & Last updated ago -->
+    <div class="d-flex justify-content-between px-4 pb-2">
+      <p class="mb-0 text-muted">
+        <i class="bi bi-calendar me-2"></i> {% trans "Created At" %}: {{ ticket.created_at|date:"Y-m-d H:i" }}
+      </p>
+      <p class="mb-0 text-muted text-end">
+        <i class="bi bi-calendar2-check me-2"></i> {% trans "Last updated" %}: {{ ticket.updated_at|timesince }} {% trans "ago" %}
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer d-flex justify-content-between">
+      <a href="{% url 'ticket_list' %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle"></i> {% trans "Back" %}
+      </a>
+      <div>
+        {% if perms.tickets.change_ticket or user.is_superuser %}
+          <a href="{% url 'ticket_edit' ticket.pk %}" class="btn btn-custom-warning">
+            <i class="bi bi-pencil"></i> {% trans "Edit" %}
+          </a>
+        {% endif %}
+        {% if perms.tickets.delete_ticket or user.is_superuser %}
+          <a href="{% url 'ticket_delete' ticket.pk %}" class="btn btn-danger mx-2">
+            <i class="bi bi-trash"></i> {% trans "Delete" %}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

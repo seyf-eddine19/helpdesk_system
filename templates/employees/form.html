@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% if object %}{% trans "Edit Employee" %}{% else %}{% trans "New Employee" %}{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <div class="card shadow-sm">
+        <div class="card-header {% if object %}bg-warning{% else %}bg-success{% endif %} text-white">
+            {% if object %}
+                <i class="bi bi-pencil-square"></i> {% trans "Edit Employee" %}
+            {% else %}
+                <i class="bi bi-plus-circle"></i> {% trans "New Employee" %}
+            {% endif %}
+        </div>
+
+        <form method="post" novalidate>
+            <div class="card-body">
+                {% csrf_token %}
+
+                <!-- Non-field errors -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="row g-3">
+                    <!-- Username -->
+                    <div class="col-md-4">
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
+                        {% for error in form.username.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Full Name -->
+                    <div class="col-md-4">
+                        {{ form.full_name_ar.label_tag }}
+                        {{ form.full_name_ar }}
+                        {% for error in form.full_name_ar.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.full_name_en.label_tag }}
+                        {{ form.full_name_en }}
+                        {% for error in form.full_name_en.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    
+                    {% if form.password1 %}
+                    <!-- Password1 -->
+                    <div class="col-md-6">
+                        {{ form.password1.label_tag }}
+                        {{ form.password1 }}
+                        {% for error in form.password1.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Password2 -->
+                    <div class="col-md-6">
+                        {{ form.password2.label_tag }}
+                        {{ form.password2 }}
+                        {% for error in form.password2.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Department -->
+                    <div class="col-md-6">
+                        {{ form.department.label_tag }}
+                        {{ form.department }}
+                        {% for error in form.department.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="col-md-6">
+                        {{ form.phone_number.label_tag }}
+                        {{ form.phone_number }}
+                        {% for error in form.phone_number.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-9">
+                        {{ form.email.label_tag }}
+                        {{ form.email }}
+                        {% for error in form.email.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- User Type -->
+                    <div class="col-md-6">
+                        {{ form.groups.label_tag }}
+                        {{ form.groups }}
+                        {% for error in form.groups.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Is Active -->
+                    <div class="col-md-3">
+                        {{ form.is_active.label_tag }}
+                        {{ form.is_active }}
+                        {% for error in form.is_active.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Is Superuser -->
+                    <div class="col-md-3">
+                        {{ form.is_superuser.label_tag }}
+                        {{ form.is_superuser }}
+                        {% for error in form.is_superuser.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer d-flex justify-content-end">
+                <button type="submit" class="btn {% if object %}btn-custom-warning{% else %}btn-custom-primary{% endif %} mx-2">
+                    {% if object %}
+                        <i class="bi bi-save"></i> {% trans "Update" %}
+                    {% else %}
+                        <i class="bi bi-plus-circle"></i> {% trans "Create" %}
+                    {% endif %}
+                </button>
+                <a href="{% url 'employee_list' %}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> {% trans "Cancel" %}
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

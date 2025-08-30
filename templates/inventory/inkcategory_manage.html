@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Ink Categories" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+  <!-- Add / Edit Form -->
+  {% if perms.inventories.add_inkcategory or user.is_superuser %}
+  <div class="card shadow-sm mb-3">
+    <div class="card-header {% if current_edit %}bg-warning{% else %}bg-success{% endif %} text-white">
+      {% if current_edit %}
+        <i class="bi bi-pencil-square"></i> {% trans "Edit Ink Category" %}
+      {% else %}
+        <i class="bi bi-plus-circle"></i> {% trans "New Ink Category" %}
+      {% endif %}
+    </div>
+
+    <form method="post" novalidate>
+      <div class="card-body">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-4">
+            <input type="text" name="name_en" class="form-control"
+                   placeholder="{% trans 'Category (English)' %}"
+                   value="{{ current_edit.name_en|default:'' }}" required>
+          </div>
+          <div class="col-md-4">
+            <input type="text" name="name_ar" class="form-control"
+                   placeholder="{% trans 'Category (Arabic)' %}"
+                   value="{{ current_edit.name_ar|default:'' }}" required>
+          </div>
+          <div class="col-md-4 d-flex justify-content-end align-items-center">
+            {% if current_edit %}
+              <a href="." class="btn btn-secondary">
+                <i class="bi bi-x-circle"></i> {% trans "Cancel" %}
+              </a>
+              <button type="submit" class="btn btn-custom-warning mx-2">
+                <i class="bi bi-save"></i> {% trans "Edit" %}
+              </button>
+            {% else %}
+              <button type="submit" class="btn btn-custom-primary mx-2">
+                <i class="bi bi-plus-circle"></i> {% trans "Add" %}
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  {% endif %}
+
+  <!-- Categories Table -->
+  <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap fs-3 fw-bold">
+      <div><i class="bi bi-droplet-half mx-2"></i> {% trans "Ink Categories" %}</div>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 text-nowrap">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>{% trans "Category Name (Arabic)" %}</th>
+              <th>{% trans "Category Name (English)" %}</th>
+              <th class="text-center"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for category in categories %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ category.name_ar }}</td>
+                <td>{{ category.name_en }}</td>
+                <td class="text-center d-flex gap-1 justify-content-center">
+                  {% if perms.inventories.change_inkcategory or user.is_superuser %}
+                    <a href="?edit={{ category.id }}" class="btn btn-sm btn-custom-warning">
+                      <i class="bi bi-pencil-square"></i>
+                    </a>
+                  {% endif %}
+                  {% if perms.inventories.delete_inkcategory or user.is_superuser %}
+                    <a href="{% url 'supplycategory_delete' category.pk %}" class="btn btn-sm btn-danger">
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  {% endif %}
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="3" class="text-center text-muted py-4">
+                  <i class="bi bi-info-circle"></i> {% trans "No ink categories found." %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  {% if is_paginated %}
+  <nav class="mt-3">
+    <ul class="pagination justify-content-center flex-wrap">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+        </li>
+      {% endif %}
+      {% for num in paginator.page_range %}
+        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+</div>
+{% endblock %}

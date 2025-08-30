@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+  {% if object %}{% trans "Edit Custody" %}{% else %}{% trans "New Custody" %}{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+
+  <div class="card shadow-sm">
+    <div class="card-header {% if object %}bg-warning{% else %}bg-success{% endif %}">
+      {% if object %}
+        <i class="bi bi-pencil-square"></i> {% trans "Edit Custody" %}
+      {% else %}
+        <i class="bi bi-plus-circle"></i> {% trans "New Custody" %}
+      {% endif %}
+    </div>
+
+    <form method="post" autocomplete="off" novalidate>
+      <div class="card-body">
+        {% csrf_token %}
+
+        <!-- Custody fields -->
+        <div class="row g-3">
+          {% for field in form %}
+            <div class="col-md-{% if not forloop.last %}4{% else %}12{% endif %}">
+              <label class="form-label">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}
+                <div class="text-danger small">{{ field.errors|striptags }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <hr class="my-2">
+
+        <!-- Devices -->
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="fw-bold mb-3 fs-2">{% trans "Devices" %}</h6>
+          <button type="button" class="btn btn-outline-primary my-2" id="add-device">
+            <i class="bi bi-plus-circle"></i> {% trans "Add Device" %}
+          </button>
+        </div>
+
+        {{ devicecustody_formset.management_form }}
+        <div class="row p-2" id="devices-container">
+          {% for subform in devicecustody_formset %}
+            <div class="col-md-4 p-1">
+              <div class="device-item border p-2 mb-2 rounded">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label class="form-label">{{ subform.device.label }}</label>
+                  <button type="button" class="btn btn-sm btn-outline-danger remove-device p-1 mx-2">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+                {{ subform.device }}
+                {% if subform.device.errors %}
+                  <div class="text-danger small">{{ subform.device.errors|striptags }}</div>
+                {% endif %}
+
+                <label class="form-label">{{ subform.accessories.label }}</label>
+                <div class="checkbox-list">
+                  {{ subform.accessories }}
+                </div>
+                {% if subform.accessories.errors %}
+                  <div class="text-danger small">{{ subform.accessories.errors|striptags }}</div>
+                {% endif %}
+
+                {{ subform.id }}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Hidden empty form template -->
+        <div id="empty-form" style="display:none;">
+          <div class="device-item border p-2 mb-2 rounded">
+            <div class="d-flex justify-content-between align-items-center">
+              <label class="form-label">{{ devicecustody_formset.empty_form.device.label }}</label>
+              <button type="button" class="btn btn-sm btn-outline-danger remove-device p-1 mx-2">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+            {{ devicecustody_formset.empty_form.device }}
+            <label class="form-label">{{ devicecustody_formset.empty_form.accessories.label }}</label>
+            <div class="checkbox-list">
+              {{ devicecustody_formset.empty_form.accessories }}
+            </div>
+            {{ devicecustody_formset.empty_form.id }}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer buttons -->
+      <div class="card-footer d-flex justify-content-end mt-3">
+        <button type="submit" class="btn {% if object %}btn-custom-warning{% else %}btn-custom-primary{% endif %} mx-2">
+          {% if object %}
+            <i class="bi bi-save"></i> {% trans "Update" %}
+          {% else %}
+            <i class="bi bi-plus-circle"></i> {% trans "Create" %}
+          {% endif %}
+        </button>
+        <a href="{% url 'custody_list' %}" class="btn btn-secondary">
+          <i class="bi bi-x-circle"></i> {% trans "Cancel" %}
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- JavaScript for dynamic formset & accessory filtering -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const container = document.getElementById("devices-container");
+  const addBtn = document.getElementById("add-device");
+  const totalForms = document.querySelector("[name='{{ devicecustody_formset.prefix }}-TOTAL_FORMS']");
+  const emptyFormDiv = document.getElementById("empty-form");
+
+  if (!container || !addBtn || !totalForms || !emptyFormDiv) return;
+
+  // Add new device form
+  addBtn.addEventListener("click", function () {
+    const formIndex = parseInt(totalForms.value, 10);
+    const newFormHtml = emptyFormDiv.innerHTML.replace(/__prefix__/g, formIndex);
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("col-md-4", "p-1");
+    wrapper.innerHTML = newFormHtml;
+
+    container.appendChild(wrapper);
+    totalForms.value = formIndex + 1;
+  });
+
+  // Remove device form
+  container.addEventListener("click", function (e) {
+    if (e.target.closest(".remove-device")) {
+      const item = e.target.closest(".device-item");
+      const deleteField = item.querySelector("input[type='checkbox'][name$='-DELETE']");
+      if (deleteField) {
+        deleteField.checked = true;
+        item.style.display = "none";
+      } else {
+        item.remove();
+        totalForms.value = parseInt(totalForms.value, 10) - 1;
+      }
+    }
+  });
+
+  // Accessory filtering
+  function setupAccessoriesFilter(wrapper) {
+    const deviceField = wrapper.querySelector("select[id$='-device']");
+    const accessoriesContainer = wrapper.querySelector(".checkbox-list");
+
+    if (!deviceField || !accessoriesContainer) return;
+
+    // Initial state
+    accessoriesContainer.querySelectorAll("input").forEach(cb => {
+      if (!deviceField.value || cb.dataset.device !== deviceField.value) {
+        cb.disabled = true;
+        cb.parentElement.style.display = "none";
+      }
+    });
+
+    deviceField.addEventListener("change", function () {
+      const selectedDevice = this.value;
+
+      accessoriesContainer.querySelectorAll("input").forEach(cb => {
+        cb.disabled = true;
+        cb.parentElement.style.display = "none";
+
+        if (cb.dataset.device === selectedDevice) {
+          cb.disabled = false;
+          cb.parentElement.style.display = "block";
+        }
+      });
+    });
+  }
+
+  // Initialize existing
+  container.querySelectorAll(".device-item").forEach(setupAccessoriesFilter);
+
+  // Watch for dynamically added forms
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+      mutation.addedNodes.forEach(node => {
+        if (node.classList && node.classList.contains("device-item")) {
+          setupAccessoriesFilter(node);
+        }
+      });
+    });
+  });
+  observer.observe(container, { childList: true });
+});
+</script>
+{% endblock %}

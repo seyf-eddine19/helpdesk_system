@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Ink Inventory" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+  <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap fs-3 fw-bold">
+      <div><i class="bi bi-droplet-half mx-2"></i> {% trans "Ink Inventory" %}</div>
+      {% if perms.inventories.add_inkinventory or user.is_superuser %}
+        <a href="{% url 'inkinvent_add' %}" class="btn btn-sm btn-light mt-2 mt-sm-0">
+          <i class="bi bi-plus-circle"></i> {% trans "New Ink" %}
+        </a>
+      {% endif %}
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 text-nowrap">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>{% trans "Name (Arabic)" %}</th>
+              <th>{% trans "Name (English)" %}</th>
+              <th>{% trans "Category" %}</th>
+              <th>{% trans "Quantity" %}</th>
+              <th class="text-center"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ink in inks %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ ink.name_ar }}</td>
+                <td>{{ ink.name_en }}</td>
+                <td>{{ ink.category|default:"—" }}</td>
+                <td>{{ ink.quantity|default:"0" }}</td>
+                <td class="text-center d-flex gap-1 justify-content-center">
+                  {% if perms.inventories.change_inkinventory or user.is_superuser %}
+                    <a href="{% url 'inkinvent_edit' ink.pk %}" class="btn btn-sm btn-custom-warning">
+                      <i class="bi bi-pencil-square"></i>
+                    </a>
+                  {% endif %}
+                  {% if perms.inventories.delete_inkinventory or user.is_superuser %}
+                    <a href="{% url 'inkinvent_delete' ink.pk %}" class="btn btn-sm btn-danger">
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  {% endif %}
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">
+                  <i class="bi bi-info-circle"></i> {% trans "No office supplies found." %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  {% if is_paginated %}
+    <nav class="mt-3">
+      <ul class="pagination justify-content-center flex-wrap">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+          </li>
+        {% endif %}
+        {% for num in paginator.page_range %}
+          <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+          </li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% endif %}
+</div>
+{% endblock %}

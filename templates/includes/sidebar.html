@@ -1,0 +1,80 @@
+{% load static i18n %}
+
+<div class="overlay" id="sidebarOverlay"></div>
+<aside class="sidebar" id="sidebar">
+  <!-- Logo -->
+  <div class="sidebar-header text-center bg-dark px-1 py-2">
+    <a href="{% url 'dashboard' %}">
+      <img src="{% static 'img/logo-white.png' %}" alt="Logo" class="img-fluid">
+    </a>
+  </div>
+  <nav class="sidebar-nav">
+    <!-- Dashboard -->
+    <a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+      <i class="bi bi-speedometer2"></i> <span>{% trans "Dashboard" %}</span>
+    </a>
+    <!-- Employees -->
+    {% if perms.employees.view_employee %}
+      <a href="{% url 'employee_list' %}" class="{% if 'employee' in request.resolver_match.url_name %}active{% endif %}">
+        <i class="bi bi-people-fill"></i> <span>{% trans "Employees" %}</span>
+      </a>
+    {% endif %}
+
+    <!-- Request Types -->
+    {% if perms.tickets.view_requesttype %}
+      <a href="{% url 'requesttype_manage' %}" class="{% if request.resolver_match.url_name == 'requesttype_manage' %}active{% endif %}">
+        <i class="bi bi-ui-radios"></i> <span>{% trans "Request Types" %}</span>
+      </a>
+    {% endif %}
+
+    <!-- Tickets -->
+    {% if perms.tickets.view_ticket %}
+      <a href="{% url 'ticket_list' %}" class="{% if 'tickets' in request.resolver_match.url_name %}active{% endif %}">
+        <i class="bi bi-ticket-detailed"></i> <span>{% trans "Tickets" %}</span>
+      </a>
+    {% endif %}
+
+    <!-- Devices -->
+    {% if perms.devices.view_device %}
+      <a href="{% url 'device_list' %}" class="{% if 'devices' in request.path %}active{% endif %}">
+        <i class="bi bi-phone"></i> <span>{% trans "Devices" %}</span>
+      </a>
+    {% endif %}
+    {% if perms.devices.view_devicetype %}
+      <a href="{% url 'devicestype_manage' %}" class="{% if request.resolver_match.url_name == 'devicestype_manage' %}active{% endif %}">
+        <i class="bi bi-diagram-3"></i> <span>{% trans "Device Types" %}</span>
+      </a>
+    {% endif %}
+
+    <!-- Custody -->
+    {% if perms.devices.view_custody %}
+      <a href="{% url 'custody_list' %}" class="{% if 'custody' in request.resolver_match.url_name %}active{% endif %}">
+        <i class="bi bi-box"></i> <span>{% trans "Custody" %}</span>
+      </a>
+    {% endif %}
+
+    <!-- Inks -->
+    {% if perms.inventories.view_inkinventory %}
+      <a href="{% url 'inkinvent_list' %}" class="{% if 'inks' in request.path %}active{% endif %}">
+        <i class="bi bi-droplet"></i> <span>{% trans "Inks" %}</span>
+      </a>
+    {% endif %}
+    {% if perms.inventories.view_inkcategory %}
+      <a href="{% url 'inkcategory_manage' %}" class="{% if request.resolver_match.url_name == 'inkcategory_manage' %}active{% endif %}">
+        <i class="bi bi-tags"></i> <span>{% trans "Ink Categories" %}</span>
+      </a>
+    {% endif %}
+
+    <!-- Supplies -->
+    {% if perms.inventories.view_officesupply %}
+      <a href="{% url 'supply_list' %}" class="{% if 'supplies' in request.path %}active{% endif %}">
+        <i class="bi bi-basket"></i> <span>{% trans "Office Supplies" %}</span>
+      </a>
+    {% endif %}
+    {% if perms.inventories.view_officesupplycategory %}
+      <a href="{% url 'supplycategory_manage' %}" class="{% if request.resolver_match.url_name == 'supplycategory_manage' %}active{% endif %}">
+        <i class="bi bi-collection"></i> <span>{% trans "Supply Categories" %}</span>
+      </a>
+    {% endif %}
+  </nav>
+</aside>
