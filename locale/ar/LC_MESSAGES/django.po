@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-30 15:05+0100\n"
+"POT-Creation-Date: 2025-08-30 16:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-#: .\devices\models.py:7 .\templates\tickets\list.html:48 .\tickets\models.py:7
 
 #: .\devices\models.py:7 .\templates\tickets\list.html:48 .\tickets\models.py:7
 msgid "New"
@@ -261,7 +260,7 @@ msgid "Type"
 msgstr "النوع"
 
 #: .\employees\forms.py:34 .\employees\forms.py:85 .\employees\forms.py:143
-#: .\templates\employees\list.html:23
+#: .\templates\accounts\login.html:56 .\templates\employees\list.html:23
 msgid "Username"
 msgstr "اسم المستخدم"
 
@@ -439,6 +438,51 @@ msgstr "ليس لديك صلاحية لإضافة فئة المستلزمات"
 #: .\inventories\views.py:113
 msgid "Supply category added successfully"
 msgstr "تمت إضافة فئة المستلزمات بنجاح"
+
+#: .\templates\accounts\login.html:7 .\templates\accounts\login.html:76
+#: .\templates\includes\header.html:76
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+#: .\templates\accounts\login.html:34
+msgid "Logo"
+msgstr "الشعار"
+
+#: .\templates\accounts\login.html:39
+msgid "Sign In"
+msgstr "تسجيل الدخول"
+
+#: .\templates\accounts\login.html:41
+msgid "Welcome back! Please login to your account."
+msgstr "مرحبًا بعودتك! الرجاء تسجيل الدخول إلى حسابك."
+
+#: .\templates\accounts\login.html:58
+msgid "Enter your username"
+msgstr "أدخل اسم المستخدم"
+
+#: .\templates\accounts\login.html:62
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: .\templates\accounts\login.html:64
+msgid "Enter your password"
+msgstr "أدخل كلمة المرور"
+
+#: .\templates\accounts\login.html:70
+msgid "Remember me"
+msgstr "تذكرني"
+
+#: .\templates\accounts\login.html:72
+msgid "Forgot password?"
+msgstr "هل نسيت كلمة المرور؟"
+
+#: .\templates\accounts\login.html:82
+msgid "Don’t have an account?"
+msgstr "ليس لديك حساب؟"
+
+#: .\templates\accounts\login.html:83
+msgid "Sign Up"
+msgstr "إنشاء حساب"
 
 #: .\templates\base.html:7
 msgid "HelpDesk Dashboard"
@@ -664,10 +708,6 @@ msgstr "تغيير كلمة المرور"
 msgid "Logout"
 msgstr "تسجيل الخروج"
 
-#: .\templates\includes\header.html:76
-msgid "Login"
-msgstr "تسجيل الدخول"
-
 #: .\templates\includes\sidebar.html:14
 msgid "Dashboard"
 msgstr "لوحة التحكم"
@@ -754,6 +794,7 @@ msgstr "لم يتم العثور على مستلزمات مكتبية."
 #: .\templates\inventory\supply_list.html:13
 msgid "New Supply"
 msgstr "مستلزم جديد"
+
 #: .\templates\inventory\supplycategory_manage.html:13
 msgid "Edit Category"
 msgstr "تعديل الفئة"
