@@ -99,10 +99,8 @@ msgid "Condition"
 msgstr "الحالة"
 
 #: .\devices\models.py:42
-#, fuzzy
-#| msgid "Custody Date"
 msgid "Custody Status"
-msgstr "تاريخ الاستلام"
+msgstr "حالة الاستلام"
 
 #: .\devices\models.py:43 .\devices\models.py:64 .\devices\models.py:81
 #: .\devices\models.py:109 .\templates\custody\detail.html:65
@@ -344,10 +342,8 @@ msgstr "المسمى الوظيفي"
 
 #: .\employees\forms.py:47 .\employees\forms.py:145 .\employees\models.py:37
 #: .\templates\employees\detail.html:82
-#, fuzzy
-#| msgid "Phone Number"
 msgid "Job Number"
-msgstr "رقم الهاتف"
+msgstr "الرقم الوظيفي"
 
 #: .\employees\forms.py:48 .\employees\forms.py:146 .\employees\models.py:38
 #: .\templates\employees\detail.html:90 .\templates\employees\list.html:26
@@ -609,8 +605,6 @@ msgstr "إنشاء حساب"
 #: .\templates\accounts\password_change.html:4
 #: .\templates\accounts\password_change.html:10
 #: .\templates\accounts\password_change.html:22
-#, fuzzy
-#| msgid "Change Password"
 msgid "Change password"
 msgstr "تغيير كلمة المرور"
 
@@ -895,8 +889,6 @@ msgid "Rejected"
 msgstr "مرفوض"
 
 #: .\templates\dashboard.html:49
-#, fuzzy
-#| msgid "Under Maintenance"
 msgid "Maintenance"
 msgstr "قيد الصيانة"
 
@@ -906,86 +898,58 @@ msgid "Active"
 msgstr "نشط"
 
 #: .\templates\dashboard.html:92
-#, fuzzy
-#| msgid "Active"
 msgid "Inactive"
-msgstr "نشط"
+msgstr "غير نشط"
 
 #: .\templates\dashboard.html:93
-#, fuzzy
-#| msgid "Department"
 msgid "Departments"
-msgstr "القسم"
+msgstr "الاقسام"
 
 #: .\templates\dashboard.html:94
-#, fuzzy
-#| msgid "Job Title"
 msgid "Job Titles"
-msgstr "المسمى الوظيفي"
+msgstr "المسميات الوظيفية"
 
 #: .\templates\dashboard.html:112
-#, fuzzy
-#| msgid "Status"
 msgid "By status"
 msgstr "الحالة"
 
 #: .\templates\dashboard.html:123
-#, fuzzy
-#| msgid "Delete Ticket"
 msgid "Recent Tickets"
-msgstr "حذف التذكرة"
+msgstr "آخر التذاكر"
 
 #: .\templates\dashboard.html:131
-#, fuzzy
-#| msgid "No tickets found."
 msgid "No tickets yet."
 msgstr "لم يتم العثور على تذاكر."
 
 #: .\templates\dashboard.html:141
-#, fuzzy
-#| msgid "Device Custodies"
 msgid "Recent Custodies"
-msgstr "عهد الأجهزة"
+msgstr "آخر عهد الأجهزة"
 
 #: .\templates\dashboard.html:153
-#, fuzzy
-#| msgid "No custodies found."
 msgid "No custodies yet."
 msgstr "لا توجد عُهد."
 
 #: .\templates\devices\detail.html:4 .\templates\devices\detail.html:12
-#, fuzzy
-#| msgid "Ticket Details"
 msgid "Device Details"
-msgstr "تفاصيل التذكرة"
+msgstr "تفاصيل الجهاز"
 
 #: .\templates\devices\detail.html:26
-#, fuzzy
-#| msgid "Device Type"
 msgid "Device Name"
-msgstr "نوع الجهاز"
+msgstr "اسم الجهاز"
 
 #: .\templates\devices\detail.html:118
-#, fuzzy
-#| msgid "No accessories for this device."
 msgid "No accessories registered for this device."
 msgstr "لا توجد ملحقات لهذا الجهاز."
 
 #: .\templates\devices\detail.html:125
-#, fuzzy
-#| msgid "Custody Date"
 msgid "Custody History"
-msgstr "تاريخ الاستلام"
+msgstr "سجل الاستلام"
 
 #: .\templates\devices\detail.html:141
-#, fuzzy
-#| msgid "Not Returned"
 msgid "Not returned yet"
 msgstr "لم يتم الإرجاع"
 
 #: .\templates\devices\detail.html:151
-#, fuzzy
-#| msgid "There was an error creating the custody."
 msgid "This device has never been assigned to custody."
 msgstr "حدث خطأ أثناء إنشاء العهدة."
 
@@ -1080,30 +1044,22 @@ msgid "Save Changes"
 msgstr "حفظ التغييرات"
 
 #: .\templates\errors\403.html:11
-#, fuzzy
-#| msgid "You do not have permission to add a device type"
 msgid "You don’t have permission to access this page."
-msgstr "ليس لديك صلاحية لإضافة نوع جهاز"
+msgstr "ليس لديك صلاحية للوصول لهذه الصفحة"
 
 #: .\templates\errors\403.html:14
-#, fuzzy
-#| msgid "Back to Login"
 msgid "Go to Login"
-msgstr "الرجوع إلى تسجيل الدخول"
+msgstr "الذهاب إلى صفحة تسجيل الدخول"
 
 #: .\templates\errors\404.html:11
 msgid "Oops! The page you are looking for could not be found."
 msgstr "عذراً! الصفحة التي تبحث عنها غير موجودة."
 
 #: .\templates\errors\404.html:14
-#, fuzzy
-#| msgid "Back to Login"
 msgid "Back to Home"
-msgstr "الرجوع إلى تسجيل الدخول"
+msgstr "الرجوع إلى الصفحة الرئيسية"
 
 #: .\templates\errors\500.html:11
-#, fuzzy
-#| msgid "A database error occurred. Please try again later."
 msgid "Sorry! Something went wrong on our end. Please try again later."
 msgstr "حدث خطأ في قاعدة البيانات. يرجى المحاولة لاحقًا."
 
