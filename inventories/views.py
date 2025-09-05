@@ -5,10 +5,12 @@ from django.contrib import messages
 from django.utils.translation import gettext as _
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import InkCategory, InkInventory, OfficeSupplyCategory, OfficeSupply
-from .forms import InkCategoryForm, InkInventoryForm, OfficeSupplyCategoryForm, OfficeSupplyForm
+from .forms import InkInventoryForm, OfficeSupplyForm
 
 from employees.mixins import PermissionMixin
 
+from django.db import IntegrityError, DatabaseError
+from django.db.models import Q
 
 # -------------------------------
 # Ink Category Manager
@@ -26,33 +28,64 @@ def inkcategory_manage(request):
             return redirect("inkcategory_manage")
 
         obj = get_object_or_404(InkCategory, pk=delete_id)
-        obj.delete()
-        messages.success(request, _("Ink category deleted successfully"))
+        try:
+            obj.delete()
+            messages.success(request, _("Ink category deleted successfully"))
+        except Exception:
+            messages.error(request, _("An unexpected error occurred while deleting"))
         return redirect("inkcategory_manage")
 
     # --- Add / Edit ---
     if request.method == "POST":
-        name_ar = request.POST.get("name_ar")
-        name_en = request.POST.get("name_en")
+        name_ar = request.POST.get("name_ar", "").strip()
+        name_en = request.POST.get("name_en", "").strip()
+        if not name_en or not name_ar:
+            messages.error(request, _("Both English and Arabic names are required."))
+            return redirect("supplycategory_manage")
 
-        if edit_id:  # Edit
-            if not request.user.has_perm("inventories.change_inkcategory") and not request.user.is_superuser:
-                messages.error(request, _("You do not have permission to edit an ink category"))
-                return redirect("inkcategory_manage")
+        try:
+            if edit_id:  # Edit
+                if not request.user.has_perm("inventories.change_inkcategory") and not request.user.is_superuser:
+                    messages.error(request, _("You do not have permission to edit an ink category"))
+                    return redirect("inkcategory_manage")
 
-            obj = get_object_or_404(InkCategory, pk=edit_id)
-            obj.name_ar = name_ar
-            obj.name_en = name_en
-            obj.save()
-            messages.success(request, _("Ink category updated successfully"))
+                obj = get_object_or_404(InkCategory, pk=edit_id)
 
-        else:  # Add
-            if not request.user.has_perm("inventories.add_inkcategory") and not request.user.is_superuser:
-                messages.error(request, _("You do not have permission to add an ink category"))
-                return redirect("inkcategory_manage")
+                # Duplicate checks
+                if InkCategory.objects.exclude(pk=obj.pk).filter(name_en=name_en).exists():
+                    messages.error(request, _("An ink category with this English name already exists"))
+                    return redirect("inkcategory_manage")
+                if InkCategory.objects.exclude(pk=obj.pk).filter(name_ar=name_ar).exists():
+                    messages.error(request, _("An ink category with this Arabic name already exists"))
+                    return redirect("inkcategory_manage")
 
-            InkCategory.objects.create(name_ar=name_ar, name_en=name_en)
-            messages.success(request, _("Ink category added successfully"))
+                obj.name_ar = name_ar
+                obj.name_en = name_en
+                obj.save()
+                messages.success(request, _("Ink category updated successfully"))
+
+            else:  # Add
+                if not request.user.has_perm("inventories.add_inkcategory") and not request.user.is_superuser:
+                    messages.error(request, _("You do not have permission to add an ink category"))
+                    return redirect("inkcategory_manage")
+
+                # Duplicate checks
+                if InkCategory.objects.filter(name_en=name_en).exists():
+                    messages.error(request, _("An ink category with this English name already exists"))
+                    return redirect("inkcategory_manage")
+                if InkCategory.objects.filter(name_ar=name_ar).exists():
+                    messages.error(request, _("An ink category with this Arabic name already exists"))
+                    return redirect("inkcategory_manage")
+
+                InkCategory.objects.create(name_ar=name_ar, name_en=name_en)
+                messages.success(request, _("Ink category added successfully"))
+
+        except IntegrityError:
+            messages.error(request, _("A database integrity error occurred. Please check your data."))
+        except DatabaseError:
+            messages.error(request, _("A database error occurred. Please try again later."))
+        except Exception:
+            messages.error(request, _("An unexpected error occurred. Please try again."))
 
         return redirect("inkcategory_manage")
 
@@ -84,33 +117,65 @@ def supplycategory_manage(request):
             return redirect("supplycategory_manage")
 
         obj = get_object_or_404(OfficeSupplyCategory, pk=delete_id)
-        obj.delete()
-        messages.success(request, _("Supply category deleted successfully"))
+        try:
+            obj.delete()
+            messages.success(request, _("Supply category deleted successfully"))
+        except Exception:
+            messages.error(request, _("An unexpected error occurred while deleting"))
         return redirect("supplycategory_manage")
 
     # --- Add / Edit ---
     if request.method == "POST":
-        name_ar = request.POST.get("name_ar")
-        name_en = request.POST.get("name_en")
+        name_ar = request.POST.get("name_ar", "").strip()
+        name_en = request.POST.get("name_en", "").strip()
 
-        if edit_id:  # Edit
-            if not request.user.has_perm("inventories.change_officesupplycategory") and not request.user.is_superuser:
-                messages.error(request, _("You do not have permission to edit a supply category"))
-                return redirect("supplycategory_manage")
+        if not name_en or not name_ar:
+            messages.error(request, _("Both English and Arabic names are required."))
+            return redirect("supplycategory_manage")
 
-            obj = get_object_or_404(OfficeSupplyCategory, pk=edit_id)
-            obj.name_ar = name_ar
-            obj.name_en = name_en
-            obj.save()
-            messages.success(request, _("Supply category updated successfully"))
+        try:
+            if edit_id:  # Edit
+                if not request.user.has_perm("inventories.change_officesupplycategory") and not request.user.is_superuser:
+                    messages.error(request, _("You do not have permission to edit a supply category"))
+                    return redirect("supplycategory_manage")
 
-        else:  # Add
-            if not request.user.has_perm("inventories.add_officesupplycategory") and not request.user.is_superuser:
-                messages.error(request, _("You do not have permission to add a supply category"))
-                return redirect("supplycategory_manage")
+                obj = get_object_or_404(OfficeSupplyCategory, pk=edit_id)
 
-            OfficeSupplyCategory.objects.create(name_ar=name_ar, name_en=name_en)
-            messages.success(request, _("Supply category added successfully"))
+                # Duplicate checks
+                if OfficeSupplyCategory.objects.exclude(pk=obj.pk).filter(name_en=name_en).exists():
+                    messages.error(request, _("A supply category with this English name already exists"))
+                    return redirect("supplycategory_manage")
+                if OfficeSupplyCategory.objects.exclude(pk=obj.pk).filter(name_ar=name_ar).exists():
+                    messages.error(request, _("A supply category with this Arabic name already exists"))
+                    return redirect("supplycategory_manage")
+
+                obj.name_ar = name_ar
+                obj.name_en = name_en
+                obj.save()
+                messages.success(request, _("Supply category updated successfully"))
+
+            else:  # Add
+                if not request.user.has_perm("inventories.add_officesupplycategory") and not request.user.is_superuser:
+                    messages.error(request, _("You do not have permission to add a supply category"))
+                    return redirect("supplycategory_manage")
+
+                # Duplicate checks
+                if OfficeSupplyCategory.objects.filter(name_en=name_en).exists():
+                    messages.error(request, _("A supply category with this English name already exists"))
+                    return redirect("supplycategory_manage")
+                if OfficeSupplyCategory.objects.filter(name_ar=name_ar).exists():
+                    messages.error(request, _("A supply category with this Arabic name already exists"))
+                    return redirect("supplycategory_manage")
+
+                OfficeSupplyCategory.objects.create(name_ar=name_ar, name_en=name_en)
+                messages.success(request, _("Supply category added successfully"))
+
+        except IntegrityError:
+            messages.error(request, _("A database integrity error occurred. Please check your data."))
+        except DatabaseError:
+            messages.error(request, _("A database error occurred. Please try again later."))
+        except Exception:
+            messages.error(request, _("An unexpected error occurred. Please try again."))
 
         return redirect("supplycategory_manage")
 
@@ -125,6 +190,7 @@ def supplycategory_manage(request):
         "current_edit": current_edit,
     })
 
+
 # --- Inks ---
 class InkCategoryDeleteView(PermissionMixin, DeleteView):
     model = InkCategory
@@ -137,7 +203,29 @@ class InkInventoryListView(PermissionMixin, ListView):
     model = InkInventory
     template_name = "inventory/inkinvent_list.html"
     context_object_name = "inks"
-    permission_required = "inventories.view_inkinventory" 
+    permission_required = "inventories.view_inkinventory"
+
+    def get_queryset(self):
+        queryset = super().get_queryset().select_related("category").order_by("-updated_at")
+        category_id = self.request.GET.get("category", "").strip()
+
+        search_query = self.request.GET.get("q", "").strip()
+        if search_query:
+            queryset = queryset.filter(
+                Q(name_en__icontains=search_query) |
+                Q(name_ar__icontains=search_query)
+            )
+        if category_id.isdigit():
+            queryset = queryset.filter(category_id=category_id)
+
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categories"] = InkCategory.objects.all()
+        context["search_query"] = self.request.GET.get("q", "").strip()
+        context["selected_category"] = self.request.GET.get("category", "").strip()
+        return context
 
 
 class InkInventoryCreateView(PermissionMixin, CreateView):
@@ -176,6 +264,28 @@ class OfficeSupplyListView(PermissionMixin, ListView):
     template_name = "inventory/supply_list.html"
     context_object_name = "supplies"
     permission_required = "inventories.view_officesupply"
+
+    def get_queryset(self):
+        queryset = super().get_queryset().select_related("category").order_by("-updated_at")
+        category_id = self.request.GET.get("category", "").strip()
+
+        search_query = self.request.GET.get("q", "").strip()
+        if search_query:
+            queryset = queryset.filter(
+                Q(name_en__icontains=search_query) |
+                Q(name_ar__icontains=search_query)
+            )
+        if category_id.isdigit():
+            queryset = queryset.filter(category_id=category_id)
+
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categories"] = OfficeSupplyCategory.objects.all()
+        context["search_query"] = self.request.GET.get("q", "").strip()
+        context["selected_category"] = self.request.GET.get("category", "").strip()
+        return context
 
 
 class OfficeSupplyCreateView(PermissionMixin, CreateView):

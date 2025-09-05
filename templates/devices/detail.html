@@ -1,116 +1,178 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{{ device.device_type }} - {{ device.serial_number }}{% endblock %}
+{% block title %}{% trans "Device Details" %}{% endblock %}
 
 {% block content %}
-<div class="container py-3">
-  <!-- Header -->
-  <h2 class="text-center fw-bold mb-3">
-    <span class="d-inline-flex align-items-center px-4 py-2 rounded-pill shadow-sm bg-light border border-primary">
-      <i class="bi bi-hdd me-2 text-primary fs-3"></i>
-      <span class="text-gradient">{{ device.device_type }} - {{ device.serial_number }}</span>
-    </span>
-  </h2>
-
-  <!-- Device Info -->
-  <div class="card shadow-sm mb-4">
-    <div class="card-header fw-bold">{% trans "Device Information" %}</div>
-    <div class="card-body">
-      <p><strong>{% trans "Type" %}:</strong> {{ device.device_type }}</p>
-      <p><strong>{% trans "Serial Number" %}:</strong> {{ device.serial_number }}</p>
-      <p><strong>{% trans "Status" %}:</strong>
-        {% if device.status == "متاح" %}
-          <span class="badge bg-success">{% trans "Available" %}</span>
-        {% elif device.status == "مستخدم" %}
-          <span class="badge bg-warning text-dark">{% trans "In Use" %}</span>
-        {% elif device.status == "تحت الصيانة" %}
-          <span class="badge bg-danger">{% trans "Under Maintenance" %}</span>
-        {% endif %}
-      </p>
-      <p><strong>{% trans "Added At" %}:</strong> {{ device.added_at|date:"Y-m-d H:i" }}</p>
+<div class="container my-3">
+  <div class="card shadow">
+    <!-- Header -->
+    <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-laptop me-2"></i> {% trans "Device Details" %}
+      </h4>
+      <span class="badge bg-light text-dark px-3 py-2 fs-6">
+        #{{ device.id }}
+      </span>
     </div>
-  </div>
 
-  <!-- Accessories -->
-  <div class="card shadow-sm mb-4">
-    <div class="card-header fw-bold">{% trans "Accessories" %}</div>
-    <div class="card-body">
-      {% if device.accessories.all %}
-        {% for acc in device.accessories.all %}
-          <div class="mb-2">
-            <span class="badge bg-light text-dark border">{{ acc.name }}</span>
-            <small class="text-muted">({{ acc.model|default:"-" }}, {{ acc.get_condition_display }}, {{ acc.quantity }})</small>
+    <!-- Body -->
+    <div class="card-body p-4">
+      <div class="row g-4">
+        
+        <!-- Device Name -->
+        <div class="col-md-6">
+          <h6 class="text-secondary mb-1">
+            <i class="bi bi-laptop-fill me-2"></i> {% trans "Device Name" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {{ device.name_en }} / {{ device.name_ar }}
+          </p>
+        </div>
+
+        <!-- Serial Number -->
+        <div class="col-md-6">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-upc-scan me-2"></i> {% trans "Serial Number" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ device.serial_number }}</p>
+        </div>
+
+        <!-- Brand -->
+        <div class="col-md-6">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-cpu me-2"></i> {% trans "Brand" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ device.brand }}</p>
+        </div>
+
+        <!-- Device Type -->
+        <div class="col-md-6">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-hdd me-2"></i> {% trans "Device Type" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {{ device.device_type.name_en }} / {{ device.device_type.name_ar }}
+          </p>
+        </div>
+
+        <!-- Status -->
+        <div class="col-md-6">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-flag me-2"></i> {% trans "Status" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {% if device.status == "available" %}
+              <span class="badge bg-success">{{ device.get_status_display }}</span>
+            {% elif device.status == "in_use" %}
+              <span class="badge bg-warning text-dark">{{ device.get_status_display }}</span>
+            {% elif device.status == "maintenance" %}
+              <span class="badge bg-info">{{ device.get_status_display }}</span>
+            {% elif device.status == "lost" %}
+              <span class="badge bg-danger">{{ device.get_status_display }}</span>
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- Added At -->
+        <div class="col-md-6">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-calendar-plus me-2"></i> {% trans "Added At" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ device.added_at|date:"Y-m-d H:i" }}</p>
+        </div>
+
+        <!-- Notes -->
+        <div class="col-12">
+          <div class="p-3 rounded-3 border border-secondary bg-light">
+            <h6 class="text-secondary mb-2">
+              <i class="bi bi-card-text me-2"></i> {% trans "Notes" %}
+            </h6>
+            {% if device.notes %}
+              <p class="mb-0">{{ device.notes|linebreaks }}</p>
+            {% else %}
+              <p class="text-muted fst-italic">{% trans "No notes provided." %}</p>
+            {% endif %}
           </div>
-        {% endfor %}
-      {% else %}
-        <span class="text-muted">{% trans "No accessories for this device." %}</span>
-      {% endif %}
-    </div>
-  </div>
+        </div>
 
-  <!-- Custodies -->
-  <div class="card shadow-sm">
-    <div class="card-header fw-bold">{% trans "Custody Records" %}</div>
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-light">
-            <tr>
-              <th>#</th>
-              <th>{% trans "Employee" %}</th>
-              <th>{% trans "Custody Date" %}</th>
-              <th>{% trans "Return Date" %}</th>
-              <th>{% trans "Accessories" %}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% with custodies=device.devicecustody_set.all %}
-              {% if custodies %}
-                {% for dc in custodies %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ dc.custody.employee }}</td>
-                    <td>{{ dc.custody_date|date:"Y-m-d" }}</td>
-                    <td>
-                      {% if dc.return_date %}
-                        {{ dc.return_date|date:"Y-m-d" }}
-                      {% else %}
-                        <span class="badge bg-warning text-dark">{% trans "Not Returned" %}</span>
-                      {% endif %}
-                    </td>
-                    <td>
-                      {% if dc.accessorycustody_set.all %}
-                        {% for ac in dc.accessorycustody_set.all %}
-                          <span class="badge bg-light text-dark border">{{ ac.accessory.name }} (x{{ ac.quantity }})</span>
-                        {% empty %}
-                          <span class="text-muted">{% trans "No accessories" %}</span>
-                        {% endfor %}
-                      {% else %}
-                        <span class="text-muted">{% trans "No accessories" %}</span>
-                      {% endif %}
-                    </td>
-                  </tr>
-                {% endfor %}
-              {% else %}
-                <tr>
-                  <td colspan="5" class="text-center text-muted py-4">
-                    <i class="bi bi-info-circle"></i> {% trans "No custody records for this device." %}
-                  </td>
-                </tr>
-              {% endif %}
-            {% endwith %}
-          </tbody>
-        </table>
+        <!-- Accessories -->
+        <div class="col-12">
+          <h5 class="mt-4">
+            <i class="bi bi-plug me-2"></i> {% trans "Accessories" %}
+            <span class="badge bg-secondary">{{ device.accessories.count }}</span>
+          </h5>
+
+          {% if device.accessories.all %}
+            <ul class="list-group mt-2">
+              {% for acc in device.accessories.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{ acc.name_en }} / {{ acc.name_ar }}
+                  <span class="badge bg-light text-dark">
+                    {{ acc.get_status_display }} - {{ acc.get_condition_display }}
+                  </span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted fst-italic mt-2">{% trans "No accessories registered for this device." %}</p>
+          {% endif %}
+        </div>
+
+        <!-- Custody History -->
+        <div class="col-12">
+          <h5 class="mt-4">
+            <i class="bi bi-clock-history me-2"></i> {% trans "Custody History" %}
+          </h5>
+
+          {% if device.custodies.all %}
+            <div class="list-group mt-2">
+              {% for dc in device.custodies.all %}
+                <div class="list-group-item">
+                  <p class="mb-1 fw-semibold">
+                    <i class="bi bi-person me-2"></i> {{ dc.custody.employee.employee_profile.full_name }}
+                  </p>
+                  <small class="text-muted">
+                    <i class="bi bi-calendar me-1"></i> {{ dc.custody.custody_date }}
+                    → 
+                    {% if dc.custody.return_date %}
+                      {{ dc.custody.return_date }}
+                    {% else %}
+                      {% trans "Not returned yet" %}
+                    {% endif %}
+                  </small>
+                  {% if dc.notes %}
+                    <p class="mt-2 text-muted"><i class="bi bi-sticky me-2"></i>{{ dc.notes }}</p>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-muted fst-italic mt-2">{% trans "This device has never been assigned to custody." %}</p>
+          {% endif %}
+        </div>
+
       </div>
     </div>
-  </div>
 
-  <!-- Back button -->
-  <div class="mt-3 text-center">
-    <a href="{% url 'device_list' %}" class="btn btn-secondary">
-      <i class="bi bi-arrow-left"></i> {% trans "Back to Devices" %}
-    </a>
+    <!-- Footer -->
+    <div class="card-footer d-flex justify-content-between">
+      <a href="{% url 'device_list' %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle"></i> {% trans "Back" %}
+      </a>
+      <div>
+        {% if perms.devices.change_device or user.is_superuser %}
+          <a href="{% url 'device_edit' device.pk %}" class="btn btn-custom-warning">
+            <i class="bi bi-pencil"></i> {% trans "Edit" %}
+          </a>
+        {% endif %}
+        {% if perms.devices.delete_device or user.is_superuser %}
+          <a href="{% url 'device_delete' device.pk %}" class="btn btn-danger mx-2">
+            <i class="bi bi-trash"></i> {% trans "Delete" %}
+          </a>
+        {% endif %}
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

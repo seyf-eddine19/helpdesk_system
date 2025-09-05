@@ -5,6 +5,95 @@
 
 {% block content %}
 <div class="container-fluid py-3">
+  <!-- Filters Section -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-header fs-5 fw-semibold d-flex align-items-center">
+      <i class="bi bi-funnel mx-2"></i> {% trans "Filters" %}
+    </div>
+    <div class="card-body">
+      <form method="get" class="row gx-3 gy-2 align-items-center">
+        <!-- Search -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold text-muted">
+            <i class="bi bi-search mx-2"></i>{% trans "Search" %}:
+          </label>
+          <div class="input-group input-group-sm">
+            <input type="text" name="q" class="form-control my-0"
+                  placeholder="{% trans 'Search devices...' %}"
+                  value="{{ search_query }}">
+            <button class="btn btn-primary my-0" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Device Type Filter -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold text-muted">
+            <i class="bi bi-list-check mx-2"></i>{% trans "Device Type" %}:
+          </label>
+          <select name="device_type" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">{% trans "All" %}</option>
+            {% for rt in device_types %}
+              <option value="{{ rt.id }}" {% if selected_type == rt.id|stringformat:"s" %}selected{% endif %}>
+                {{ rt }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <!-- Preserve current filters -->
+        {% if selected_status %}
+          <input type="hidden" name="status" value="{{ selected_status }}">
+        {% endif %}
+      </form>
+
+      <!-- Status Filter -->
+      <div class="row">
+        <div class="col-md-12">
+          <label class="form-label fw-semibold text-muted">
+            <i class="bi bi-info-circle mx-2"></i>{% trans "Status" %}:
+          </label>
+          <div class="d-flex flex-wrap gap-2">
+            <!-- All -->
+            <a href="?{% if selected_type %}device_type={{ selected_type }}&{% endif %}{% if search_query %}q={{ search_query }}{% endif %}"
+              class="btn btn-sm {% if not selected_status %}btn-dark{% else %}btn-outline-dark{% endif %}">
+              {% trans "All" %}
+            </a>
+
+            <!-- AVAILABLE -->
+            <a href="?status=available{% if selected_type %}&device_type={{ selected_type }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}"
+              class="btn btn-sm {% if selected_status == 'available' %}btn-success{% else %}btn-outline-success{% endif %}">
+              {% trans "Available" %}
+            </a>
+
+            <!-- IN_USE -->
+            <a href="?status=in_use{% if selected_type %}&device_type={{ selected_type }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}"
+              class="btn btn-sm {% if selected_status == 'in_use' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+              {% trans "In Use" %}
+            </a>
+
+            <!-- MAINTENANCE -->
+            <a href="?status=maintenance{% if selected_type %}&device_type={{ selected_type }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}"
+              class="btn btn-sm {% if selected_status == 'maintenance' %}btn-warning text-dark{% else %}btn-outline-warning{% endif %}">
+              {% trans "Under Maintenance" %}
+            </a>
+
+            <!-- LOST -->
+            <a href="?status=lost{% if selected_type %}&device_type={{ selected_type }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}"
+              class="btn btn-sm {% if selected_status == 'lost' %}btn-danger{% else %}btn-outline-danger{% endif %}">
+              {% trans "Lost" %}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-end">
+      <a href="{% url 'device_list' %}" class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-arrow-counterclockwise"></i> {% trans "Reset Filters" %}
+      </a>
+    </div>
+  </div>
+
+
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center flex-wrap fs-3 fw-bold">
       <div><i class="bi bi-hdd-network mx-2"></i> {% trans "Devices" %}</div>

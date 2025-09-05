@@ -5,18 +5,14 @@ from .models import (
 )
 
 
-# -----------------------------
 # Device Type
-# -----------------------------
 @admin.register(DeviceType)
 class DeviceTypeAdmin(admin.ModelAdmin):
     list_display = ("name_en", "name_ar")
     search_fields = ("name_en", "name_ar")
 
 
-# -----------------------------
 # Device Accessory
-# -----------------------------
 @admin.register(DeviceAccessory)
 class DeviceAccessoryAdmin(admin.ModelAdmin):
     list_display = ("name_en", "name_ar", "model", "condition")
@@ -24,9 +20,7 @@ class DeviceAccessoryAdmin(admin.ModelAdmin):
     search_fields = ("name_en", "name_ar", "model")
 
 
-# -----------------------------
 # Device
-# -----------------------------
 @admin.register(Device)
 class DeviceAdmin(admin.ModelAdmin):
     list_display = ("serial_number", "status", "added_at")
@@ -36,17 +30,13 @@ class DeviceAdmin(admin.ModelAdmin):
     date_hierarchy = "added_at"
 
 
-# -----------------------------
 # Accessory Custody (Inline)
-# -----------------------------
 class AccessoryCustodyInline(admin.TabularInline):
     model = AccessoryCustody
     extra = 1
 
 
-# -----------------------------
 # Device Custody (Inline + Admin)
-# -----------------------------
 class DeviceCustodyInline(admin.TabularInline):
     model = DeviceCustody
     extra = 1
@@ -59,9 +49,7 @@ class DeviceCustodyAdmin(admin.ModelAdmin):
     inlines = [AccessoryCustodyInline]
 
 
-# -----------------------------
 # Custody
-# -----------------------------
 @admin.register(Custody)
 class CustodyAdmin(admin.ModelAdmin):
     list_display = ("employee", "custody_date", "return_date")
@@ -71,9 +59,7 @@ class CustodyAdmin(admin.ModelAdmin):
     inlines = [DeviceCustodyInline]
 
 
-# -----------------------------
 # Accessory Custody
-# -----------------------------
 @admin.register(AccessoryCustody)
 class AccessoryCustodyAdmin(admin.ModelAdmin):
     list_display = ("accessory", "device_custody")

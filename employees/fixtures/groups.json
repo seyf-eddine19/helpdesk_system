@@ -2,28 +2,36 @@
 {
   "model": "auth.group",
   "fields": {
-    "name": "Manager",
+    "name": "Employee",
     "permissions": [
       [
-        "add_accessorycustody",
+        "view_custody",
         "devices",
-        "accessorycustody"
+        "custody"
       ],
       [
-        "change_accessorycustody",
-        "devices",
-        "accessorycustody"
+        "add_ticket",
+        "tickets",
+        "ticket"
       ],
       [
-        "delete_accessorycustody",
-        "devices",
-        "accessorycustody"
+        "delete_ticket",
+        "tickets",
+        "ticket"
       ],
       [
-        "view_accessorycustody",
-        "devices",
-        "accessorycustody"
-      ],
+        "view_ticket",
+        "tickets",
+        "ticket"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "fields": {
+    "name": "Manager",
+    "permissions": [
       [
         "add_custody",
         "devices",
@@ -63,46 +71,6 @@
         "view_device",
         "devices",
         "device"
-      ],
-      [
-        "add_deviceaccessory",
-        "devices",
-        "deviceaccessory"
-      ],
-      [
-        "change_deviceaccessory",
-        "devices",
-        "deviceaccessory"
-      ],
-      [
-        "delete_deviceaccessory",
-        "devices",
-        "deviceaccessory"
-      ],
-      [
-        "view_deviceaccessory",
-        "devices",
-        "deviceaccessory"
-      ],
-      [
-        "add_devicecustody",
-        "devices",
-        "devicecustody"
-      ],
-      [
-        "change_devicecustody",
-        "devices",
-        "devicecustody"
-      ],
-      [
-        "delete_devicecustody",
-        "devices",
-        "devicecustody"
-      ],
-      [
-        "view_devicecustody",
-        "devices",
-        "devicecustody"
       ],
       [
         "add_devicetype",
@@ -265,6 +233,11 @@
         "requesttype"
       ],
       [
+        "add_ticket",
+        "tickets",
+        "ticket"
+      ],
+      [
         "change_ticket",
         "tickets",
         "ticket"
@@ -285,46 +258,8 @@
 {
   "model": "auth.group",
   "fields": {
-    "name": "Technician",
-    "permissions": [
-      [
-        "change_ticket",
-        "tickets",
-        "ticket"
-      ],
-      [
-        "view_ticket",
-        "tickets",
-        "ticket"
-      ]
-    ]
-  }
-},
-{
-  "model": "auth.group",
-  "fields": {
     "name": "IT Employee",
     "permissions": [
-      [
-        "add_accessorycustody",
-        "devices",
-        "accessorycustody"
-      ],
-      [
-        "change_accessorycustody",
-        "devices",
-        "accessorycustody"
-      ],
-      [
-        "delete_accessorycustody",
-        "devices",
-        "accessorycustody"
-      ],
-      [
-        "view_accessorycustody",
-        "devices",
-        "accessorycustody"
-      ],
       [
         "add_custody",
         "devices",
@@ -364,46 +299,6 @@
         "view_device",
         "devices",
         "device"
-      ],
-      [
-        "add_deviceaccessory",
-        "devices",
-        "deviceaccessory"
-      ],
-      [
-        "change_deviceaccessory",
-        "devices",
-        "deviceaccessory"
-      ],
-      [
-        "delete_deviceaccessory",
-        "devices",
-        "deviceaccessory"
-      ],
-      [
-        "view_deviceaccessory",
-        "devices",
-        "deviceaccessory"
-      ],
-      [
-        "add_devicecustody",
-        "devices",
-        "devicecustody"
-      ],
-      [
-        "change_devicecustody",
-        "devices",
-        "devicecustody"
-      ],
-      [
-        "delete_devicecustody",
-        "devices",
-        "devicecustody"
-      ],
-      [
-        "view_devicecustody",
-        "devices",
-        "devicecustody"
       ],
       [
         "add_devicetype",
@@ -526,6 +421,11 @@
         "requesttype"
       ],
       [
+        "add_ticket",
+        "tickets",
+        "ticket"
+      ],
+      [
         "change_ticket",
         "tickets",
         "ticket"
@@ -546,10 +446,30 @@
 {
   "model": "auth.group",
   "fields": {
-    "name": "Employee",
+    "name": "Technician",
     "permissions": [
       [
-        "add_ticket",
+        "add_requesttype",
+        "tickets",
+        "requesttype"
+      ],
+      [
+        "change_requesttype",
+        "tickets",
+        "requesttype"
+      ],
+      [
+        "delete_requesttype",
+        "tickets",
+        "requesttype"
+      ],
+      [
+        "view_requesttype",
+        "tickets",
+        "requesttype"
+      ],
+      [
+        "change_ticket",
         "tickets",
         "ticket"
       ],

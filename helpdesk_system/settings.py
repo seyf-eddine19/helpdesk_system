@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(n)!f-n#m03tv=e^ac+4ul_sgn$0q1tlae8ull*-k-52c^mx46
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -151,3 +151,14 @@ AUTH_USER_MODEL = 'employees.user'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'sifou.edd@gmail.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'mucf aoep ktoc bxpc'  # Replace with your email password
+# https://myaccount.google.com/signinoptions/twosv
+# https://myaccount.google.com/apppasswords
+# mot de passe d'application: python_afind

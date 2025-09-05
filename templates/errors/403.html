@@ -1,7 +1,18 @@
-{% extends "base.html" %}
+{% extends "auth_base.html" %}
+{% load static i18n %}
+
 {% block content %}
-<div class="alert alert-danger">
-  🚫 Access Denied (403) – You don’t have permission to view this page.
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card p-5 text-center shadow" style="max-width: 500px; width: 100%;">
+    
+    <img src="{% static 'img/logo.png' %}" alt="Logo" class="img-fluid mx-auto mb-3" style="max-height: 100px;">
+    
+    <h1 class="display-4 fw-bold text-secondary">403</h1>
+    <p class="lead mb-4">{% trans "You don’t have permission to access this page." %}</p>
+    
+    <a href="{% url 'dashboard' %}" class="btn btn-custom-primary">
+      <i class="bi bi-box-arrow-in-right"></i> {% trans "Go to Login" %}
+    </a>
+  </div>
 </div>
-<a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
 {% endblock %}

@@ -46,9 +46,14 @@
         {% if request.user.is_authenticated %}
           <li class="dropdown-header text-center">
             <strong>@{{ request.user.employee_profile.username|default:request.user.username }}</strong><br>
-            <small class="text-muted">
+            <div class="d-flex justify-content-between gap-3">
+              <p class="text-muted mb-0">
               {{ request.user.employee_profile.department|default:_("No department") }}
-            </small>
+              </p>
+              <p class="text-muted mb-0">
+              {{ request.user.employee_profile.job_title|default:''}}
+              </p>
+            </div>
           </li>
           <li><hr class="dropdown-divider"></li>
 

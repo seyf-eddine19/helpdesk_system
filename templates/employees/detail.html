@@ -37,6 +37,53 @@
           <p class="mb-0 fw-semibold">{{ employee.employee_profile.full_name_en }}</p>
         </div>
 
+        <!-- Birth Date -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-calendar3 me-2"></i> {% trans "Birth Date" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {% if employee.employee_profile.birth_date %}
+              {{birth_date|date:"Y-m-d" }}
+            {% else %}
+              —
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- ID Number -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-credit-card-2-front me-2"></i> {% trans "ID / Iqama Number" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ employee.employee_profile.id_number|default:"—" }}</p>
+        </div>
+
+        <!-- Address -->
+        <div class="col-md-8">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-credit-card-2-front me-2"></i> {% trans "Address" %}
+          </h6>
+          <p class="mb-0 fw-semibold text-center">{{ employee.employee_profile.address|default:"—" }}</p>
+        </div>
+
+        
+        <!-- Job title -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-building me-2"></i> {% trans "Job Title" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ employee.employee_profile.job_title|default:"—" }}</p>
+        </div>
+
+        <!-- Job Number -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-card-checklist me-2"></i> {% trans "Job Number" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ employee.employee_profile.job_number|default:"—" }}</p>
+        </div> 
+        
         <!-- Department -->
         <div class="col-md-4">
           <h6 class="text-dark mb-1">
@@ -46,7 +93,7 @@
         </div>
 
         <!-- Phone -->
-        <div class="col-md-6">
+        <div class="col-md-4">
           <h6 class="text-dark mb-1">
             <i class="bi bi-telephone me-2"></i> {% trans "Phone Number" %}
           </h6>
@@ -54,7 +101,7 @@
         </div>
 
         <!-- Email -->
-        <div class="col-md-6">
+        <div class="col-md-4">
           <h6 class="text-dark mb-1">
             <i class="bi bi-envelope me-2"></i> {% trans "Email" %}
           </h6>

@@ -18,4 +18,5 @@ urlpatterns = [
     path("custody/<int:pk>/", views.CustodyDetailView.as_view(), name="custody_detail"),
     path("custody/<int:pk>/edit/", views.CustodyUpdateView.as_view(), name="custody_edit"),
     path("custody/<int:pk>/delete/", views.CustodyDeleteView.as_view(), name="custody_delete"),
+    path("custody/<int:pk>/export/<str:action>/", views.CustodyExportView.as_view(), name="custody_export"),
 ]

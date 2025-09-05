@@ -29,7 +29,7 @@
 
     <!-- Tickets -->
     {% if perms.tickets.view_ticket %}
-      <a href="{% url 'ticket_list' %}" class="{% if 'tickets' in request.resolver_match.url_name %}active{% endif %}">
+      <a href="{% url 'ticket_list' %}" class="{% if 'ticket' in request.resolver_match.url_name %}active{% endif %}">
         <i class="bi bi-ticket-detailed"></i> <span>{% trans "Tickets" %}</span>
       </a>
     {% endif %}

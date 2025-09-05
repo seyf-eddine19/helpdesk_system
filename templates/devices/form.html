@@ -22,7 +22,7 @@
         <!-- Device fields -->
         <div class="row g-3">
           {% for field in form %}
-            <div class="col-md-4">
+            <div class="{% if forloop.last %}col-md-12{% else %}col-md-4{% endif %}">
               <label class="form-label">{{ field.label }}</label>
               {{ field }}
               {% if field.errors %}

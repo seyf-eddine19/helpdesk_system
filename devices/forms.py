@@ -7,7 +7,7 @@ from .models import Device, DeviceAccessory, Custody, DeviceCustody, AccessoryCu
 class DeviceForm(forms.ModelForm):
     class Meta:
         model = Device
-        fields = ["name_en", "name_ar", "serial_number", "device_type", "status"]
+        fields = ["name_en", "name_ar", "brand", "serial_number", "device_type", "condition", "status", "notes"]
 
 
 class DeviceAccessoryForm(forms.ModelForm):

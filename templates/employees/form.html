@@ -30,121 +30,65 @@
                 {% endif %}
 
                 <div class="row g-3">
-                    <!-- Username -->
-                    <div class="col-md-4">
-                        {{ form.username.label_tag }}
-                        {{ form.username }}
-                        {% for error in form.username.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
+                    <!-- Standard fields (username, names, email, etc.) -->
+                    <div class="col-md-4">{{ form.username.label_tag }}{{ form.username }}{% for e in form.username.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    <div class="col-md-4">{{ form.full_name_ar.label_tag }}{{ form.full_name_ar }}{% for e in form.full_name_ar.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    <div class="col-md-4">{{ form.full_name_en.label_tag }}{{ form.full_name_en }}{% for e in form.full_name_en.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
 
-                    <!-- Full Name -->
-                    <div class="col-md-4">
-                        {{ form.full_name_ar.label_tag }}
-                        {{ form.full_name_ar }}
-                        {% for error in form.full_name_ar.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form.full_name_en.label_tag }}
-                        {{ form.full_name_en }}
-                        {% for error in form.full_name_en.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
-                    
                     {% if form.password1 %}
-                    <!-- Password1 -->
-                    <div class="col-md-6">
-                        {{ form.password1.label_tag }}
-                        {{ form.password1 }}
-                        {% for error in form.password1.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
+                    <div class="col-md-6">{{ form.password1.label_tag }}{{ form.password1 }}{% for e in form.password1.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    <div class="col-md-6">{{ form.password2.label_tag }}{{ form.password2 }}{% for e in form.password2.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    {% endif %}
 
-                    <!-- Password2 -->
-                    <div class="col-md-6">
-                        {{ form.password2.label_tag }}
-                        {{ form.password2 }}
-                        {% for error in form.password2.errors %}
-                            <div class="text-danger small">{{ error }}</div>
+                    <div class="col-md-6">{{ form.birth_date.label_tag }}{{ form.birth_date }}{% for e in form.birth_date.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    <div class="col-md-6">{{ form.id_number.label_tag }}{{ form.id_number }}{% for e in form.id_number.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    <div class="col-md-12">{{ form.address.label_tag }}{{ form.address }}{% for e in form.address.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    <div class="col-md-4">{{ form.job_title.label_tag }}{{ form.job_title }}{% for e in form.job_title.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    <div class="col-md-4">{{ form.job_number.label_tag }}{{ form.job_number }}{% for e in form.job_number.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    <div class="col-md-4">{{ form.department.label_tag }}{{ form.department }}{% for e in form.department.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    <div class="col-md-6">{{ form.phone_number.label_tag }}{{ form.phone_number }}{% for e in form.phone_number.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    <div class="col-md-6">{{ form.email.label_tag }}{{ form.email }}{% for e in form.email.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+
+                    {% if form.groups %}
+                    <div class="col-md-6">{{ form.groups.label_tag }}{{ form.groups }}{% for e in form.groups.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    {% endif %}
+
+                    {% if form.is_active %}
+                    <div class="col-md-3">{{ form.is_active.label_tag }}{{ form.is_active }}{% for e in form.is_active.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    {% endif %}
+
+                    {% if form.is_superuser %}
+                    <div class="col-md-3">{{ form.is_superuser.label_tag }}{{ form.is_superuser }}{% for e in form.is_superuser.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+                    {% endif %}
+
+                    {% if form.user_permissions %}
+                    <!-- Permissions as responsive grid -->
+                    <div class="col-12">
+                        <label>{{ form.user_permissions.label }}</label>
+                        <div class="row row-cols-1 row-cols-md-4 g-2">
+                            {% for perm in form.user_permissions %}
+                            <div class="col">
+                                <div class="d-flex align-items-center justify-content-start form-check">
+                                    {{ perm.tag }}
+                                    <label class="form-check-label m-0 w-100">{{ perm.choice_label }}</label>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% for e in form.user_permissions.errors %}
+                        <div class="text-danger small">{{ e }}</div>
                         {% endfor %}
                     </div>
                     {% endif %}
-
-                    <!-- Department -->
-                    <div class="col-md-6">
-                        {{ form.department.label_tag }}
-                        {{ form.department }}
-                        {% for error in form.department.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Phone Number -->
-                    <div class="col-md-6">
-                        {{ form.phone_number.label_tag }}
-                        {{ form.phone_number }}
-                        {% for error in form.phone_number.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Email -->
-                    <div class="col-md-9">
-                        {{ form.email.label_tag }}
-                        {{ form.email }}
-                        {% for error in form.email.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- User Type -->
-                    <div class="col-md-6">
-                        {{ form.groups.label_tag }}
-                        {{ form.groups }}
-                        {% for error in form.groups.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Is Active -->
-                    <div class="col-md-3">
-                        {{ form.is_active.label_tag }}
-                        {{ form.is_active }}
-                        {% for error in form.is_active.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Is Superuser -->
-                    <div class="col-md-3">
-                        {{ form.is_superuser.label_tag }}
-                        {{ form.is_superuser }}
-                        {% for error in form.is_superuser.errors %}
-                            <div class="text-danger small">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-
                 </div>
             </div>
 
             <!-- Footer -->
             <div class="card-footer d-flex justify-content-end">
                 <button type="submit" class="btn {% if object %}btn-custom-warning{% else %}btn-custom-primary{% endif %} mx-2">
-                    {% if object %}
-                        <i class="bi bi-save"></i> {% trans "Update" %}
-                    {% else %}
-                        <i class="bi bi-plus-circle"></i> {% trans "Create" %}
-                    {% endif %}
+                    {% if object %}<i class="bi bi-save"></i> {% trans "Update" %}{% else %}<i class="bi bi-plus-circle"></i> {% trans "Create" %}{% endif %}
                 </button>
-                <a href="{% url 'employee_list' %}" class="btn btn-secondary">
-                    <i class="bi bi-x-circle"></i> {% trans "Cancel" %}
-                </a>
+                <a href="{% url 'employee_list' %}" class="btn btn-secondary"><i class="bi bi-x-circle"></i> {% trans "Cancel" %}</a>
             </div>
         </form>
     </div>

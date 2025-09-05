@@ -5,6 +5,43 @@
 
 {% block content %}
 <div class="container-fluid py-3">
+  <!-- Filters Section -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-header fs-5 fw-semibold d-flex align-items-center">
+      <i class="bi bi-funnel mx-2"></i> {% trans "Filters" %}
+    </div>
+    <div class="card-body">
+      <form method="get" class="row gx-3 gy-2 align-items-center">
+        <!-- Search -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold text-muted"><i class="bi bi-search mx-2"></i>{% trans "Search" %}:</label>
+          <div class="input-group input-group-sm">
+            <input type="text" name="q" class="form-control my-0" placeholder="{% trans 'Search Office Supplies...' %}" value="{{ search_query }}">
+            <button class="btn btn-primary my-0" type="submit"><i class="bi bi-search"></i></button>
+          </div>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold text-muted"><i class="bi bi-list-check mx-2"></i>{% trans "Category" %}:</label>
+          <select name="category" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">{% trans "All" %}</option>
+            {% for cat in categories %}
+              <option value="{{ cat.id }}" {% if selected_category == cat.id|stringformat:"s" %}selected{% endif %}>
+                {{ cat }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-footer d-flex justify-content-end">
+      <a href="{% url 'inkinvent_list' %}" class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-arrow-counterclockwise"></i> {% trans "Reset Filters" %}
+      </a>
+    </div>
+  </div>
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center flex-wrap fs-3 fw-bold">
       <div><i class="bi bi-box-seam mx-2"></i> {% trans "Office Supplies" %}</div>

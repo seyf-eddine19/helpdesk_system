@@ -1,41 +1,151 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{{ ticket.title }}{% endblock %}
+{% block title %}{% trans "Custody Details" %}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <h2>Custody Details</h2>
-
-  <div class="card mb-4">
-    <div class="card-body">
-      <h5 class="card-title">{{ custody.holder_name }}</h5>
-      <p><strong>Status:</strong> {{ custody.status }}</p>
-      <p><strong>Date Received:</strong> {{ custody.date_received }}</p>
-      <p><strong>Date Returned:</strong> {{ custody.date_returned|default:"Not returned yet" }}</p>
+<div class="container my-3">
+  <div class="card shadow">
+    <!-- Header -->
+    <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-box-seam me-2"></i> {% trans "Custody Details" %}
+      </h4>
+      <div>
+        {% if perms.devices.change_custody or user.is_superuser %}
+        <!-- Export Buttons -->
+        <a href="{% url 'custody_export' custody.pk 'pdf' %}" class="btn btn-danger me-2">
+          <i class="bi bi-file-earmark-pdf"></i> {% trans "Export PDF" %}
+        </a>
+        <a href="{% url 'custody_export' custody.pk 'excel' %}" class="btn btn-success me-3">
+          <i class="bi bi-file-earmark-excel"></i> {% trans "Export Excel" %}
+        </a>
+        {% endif %}
+        <span class="badge bg-light text-dark px-3 py-2 fs-6">
+          #{{ custody.id }}
+        </span>
+      </div>
     </div>
-  </div>
 
-  <h4>Devices in Custody</h4>
-  <div class="list-group">
-    {% for dc in device_custodies %}
-      <div class="list-group-item">
-        <h5>{{ dc.device.device_type }} - {{ dc.device.serial_number }}</h5>
-        <p>Status: {{ dc.device.status }}</p>
+    <!-- Body -->
+    <div class="card-body p-4">
+      <div class="row g-4">
+        
+        <!-- Employee -->
+        <div class="col-md-6">
+          <h6 class="text-secondary mb-1">
+            <i class="bi bi-person me-2"></i> {% trans "Employee" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ custody.employee.full_name_ar }} | {{ custody.employee.full_name_en }} 
+            <br>{{ custody.employee.department }} | {{ custody.employee.job_title }}</p>
+        </div>
 
-        {% if dc.device.accessories.all %}
-          <ul>
-            {% for accessory in dc.device.accessories.all %}
-              <li>{{ accessory.name }}</li>
-            {% empty %}
-              <li>No accessories</li>
-            {% endfor %}
-          </ul>
+        <!-- Custody Date -->
+        <div class="col-md-3">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-calendar me-2"></i> {% trans "Custody Date" %}
+          </h6>
+          <p class="mb-0 fw-semibold">{{ custody.custody_date }}</p>
+        </div>
+
+        <!-- Return Date -->
+        <div class="col-md-3">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-calendar-check me-2"></i> {% trans "Return Date" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {{ custody.return_date|default:"—" }}
+          </p>
+        </div>
+
+        <!-- Notes -->
+        <div class="col-12">
+          <div class="p-3 rounded-3 border border-secondary bg-light">
+            <h6 class="text-secondary mb-2">
+              <i class="bi bi-card-text me-2"></i> {% trans "Notes" %}
+            </h6>
+            {% if custody.notes %}
+              <p class="mb-0">{{ custody.notes|linebreaks }}</p>
+            {% else %}
+              <p class="text-muted fst-italic">{% trans "No notes provided." %}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Devices -->
+        <div class="col-12">
+          <h5 class="mt-4">
+            <i class="bi bi-laptop me-2"></i> {% trans "Devices" %}
+            <span class="badge bg-secondary">{{ custody.devices.count }}</span>
+          </h5>
+
+          {% if custody.devices.all %}
+            <div class="list-group mt-3">
+              {% for device_custody in custody.devices.all %}
+                <div class="list-group-item py-3">
+                  <h6 class="fw-bold mb-1">
+                    {{ device_custody.device.name_en }} / {{ device_custody.device.name_ar }}
+                    <small class="text-muted">({{ device_custody.device.serial_number }})</small>
+                  </h6>
+                  <p class="mb-1">
+                    <i class="bi bi-tools me-2"></i>
+                    {% trans "Brand" %}: {{ device_custody.device.brand }}
+                    <span class="ms-3">
+                      <i class="bi bi-clipboard-check me-1"></i>
+                      {% trans "Status" %}: {{ device_custody.device.get_status_display }}
+                    </span>
+                  </p>
+                  {% if device_custody.notes %}
+                    <p class="text-muted mb-1">
+                      <i class="bi bi-sticky me-2"></i> {{ device_custody.notes }}
+                    </p>
+                  {% endif %}
+
+                  <!-- Accessories -->
+                  {% if device_custody.accessories.all %}
+                    <div class="mt-2">
+                      <h6 class="text-secondary mb-1">
+                        <i class="bi bi-plug me-2"></i> {% trans "Accessories" %}
+                      </h6>
+                      <ul class="mb-0">
+                        {% for acc in device_custody.accessories.all %}
+                          <li>
+                            {{ acc.name_en }} / {{ acc.name_ar }}
+                            ({{ acc.get_status_display }} - {{ acc.get_condition_display }})
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-muted fst-italic mt-2">{% trans "No devices linked to this custody." %}</p>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer d-flex justify-content-between">
+      <a href="{% url 'custody_list' %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle"></i> {% trans "Back" %}
+      </a>
+      <div>
+        {% if perms.devices.change_custody or user.is_superuser %}
+          <a href="{% url 'custody_edit' custody.pk %}" class="btn btn-custom-warning">
+            <i class="bi bi-pencil"></i> {% trans "Edit" %}
+          </a>
+        {% endif %}
+        {% if perms.devices.delete_custody or user.is_superuser %}
+          <a href="{% url 'custody_delete' custody.pk %}" class="btn btn-danger mx-2">
+            <i class="bi bi-trash"></i> {% trans "Delete" %}
+          </a>
         {% endif %}
       </div>
-    {% empty %}
-      <p>No devices in this custody.</p>
-    {% endfor %}
+    </div>
   </div>
 </div>
 {% endblock %}

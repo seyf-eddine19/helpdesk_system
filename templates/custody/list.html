@@ -5,6 +5,83 @@
 
 {% block content %}
 <div class="container-fluid py-3">
+  <!-- Filters Section -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-header fs-5 fw-semibold d-flex align-items-center">
+      <i class="bi bi-funnel mx-2"></i> {% trans "Filters" %}
+    </div>
+    <div class="card-body">
+      <form method="get" class="row gx-3 gy-2 align-items-center">
+        <!-- Search -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold text-muted">
+            <i class="bi bi-search mx-2"></i>{% trans "Search" %}:
+          </label>
+          <div class="input-group input-group-sm">
+            <input type="text" name="q" class="form-control my-0"
+                  placeholder="{% trans 'Search devices...' %}"
+                  value="{{ search_query }}">
+            <button class="btn btn-primary my-0" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Device Type Filter -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold text-muted">
+            <i class="bi bi-list-check mx-2"></i>{% trans "Device Type" %}:
+          </label>
+          <select name="device_type" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">{% trans "All" %}</option>
+            {% for rt in device_types %}
+              <option value="{{ rt.id }}" {% if selected_type == rt.id|stringformat:"s" %}selected{% endif %}>
+                {{ rt }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <!-- Preserve current filters -->
+        {% if selected_returned %}
+          <input type="hidden" name="is_returned" value="{{ selected_returned }}">
+        {% endif %}
+      </form>
+
+      <!-- Status Filter -->
+      <div class="row">
+        <div class="col-md-12">
+          <label class="form-label fw-semibold text-muted">
+            <i class="bi bi-box-arrow-in-down-right mx-2"></i>{% trans "Returned" %}:
+          </label>
+          <div class="d-flex flex-wrap gap-2">
+            <!-- All -->
+            <a href="?{% if selected_type %}device_type={{ selected_type }}&{% endif %}{% if search_query %}q={{ search_query }}{% endif %}"
+              class="btn btn-sm {% if not selected_returned %}btn-dark{% else %}btn-outline-dark{% endif %}">
+              {% trans "All" %}
+            </a>
+
+            <!-- Returned -->
+            <a href="?is_returned=yes{% if selected_type %}&device_type={{ selected_type }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}"
+              class="btn btn-sm {% if selected_returned == 'yes' %}btn-success{% else %}btn-outline-success{% endif %}">
+              {% trans "Returned" %}
+            </a>
+
+            <!-- Not Returned -->
+            <a href="?is_returned=no{% if selected_type %}&device_type={{ selected_type }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}"
+              class="btn btn-sm {% if selected_returned == 'no' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+              {% trans "Not Returned" %}
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-end">
+      <a href="{% url 'device_list' %}" class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-arrow-counterclockwise"></i> {% trans "Reset Filters" %}
+      </a>
+    </div>
+  </div>
+
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center flex-wrap fs-3 fw-bold">
       <div><i class="bi bi-box-seam mx-2"></i> {% trans "Custodies" %}</div>

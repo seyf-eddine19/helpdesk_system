@@ -1,7 +1,18 @@
-{% extends "base.html" %}
+{% extends "auth_base.html" %}
+{% load static i18n %}
+
 {% block content %}
-<div class="alert alert-danger">
-  ⚠️ Server Error (500). Please try again later.
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card p-5 text-center shadow" style="max-width: 500px; width: 100%;">
+    
+    <img src="{% static 'img/logo.png' %}" alt="Logo" class="img-fluid mx-auto mb-3" style="max-height: 100px;">
+    
+    <h1 class="display-4 fw-bold text-warning">500</h1>
+    <p class="lead mb-4">{% trans "Sorry! Something went wrong on our end. Please try again later." %}</p>
+    
+    <a href="{% url 'dashboard' %}" class="btn btn-custom-primary">
+      <i class="bi bi-arrow-repeat"></i> {% trans "Try Again" %}
+    </a>
+  </div>
 </div>
-<a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
 {% endblock %}

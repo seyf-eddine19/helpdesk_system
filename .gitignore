@@ -8,6 +8,7 @@ __pycache__/
 # Virtual environment
 venv/
 env/
+.env
 
 # Django & database
 *.sqlite3
@@ -16,6 +17,9 @@ db.sqlite3
 
 # media files
 /media/
+
+# static files
+/staticfiles/
 
 # Migrations (only if you don’t want to track them at first)
 */migrations/__pycache__/

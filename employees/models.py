@@ -10,6 +10,8 @@ class User(AbstractUser):
         related_query_name="user",
         verbose_name=_("Type")
     )
+    # python manage.py dumpdata auth.group --natural-foreign --natural-primary --indent 2 > employees/fixtures/groups.json
+    # python manage.py loaddata groups.json
 
     class Meta:
         verbose_name = _("User")
@@ -28,6 +30,11 @@ class Employee(models.Model):
     )
     full_name_ar = models.CharField(max_length=150, verbose_name=_("Full Name (Arabic)"))
     full_name_en = models.CharField(max_length=150, verbose_name=_("Full Name (English)"))
+    birth_date = models.DateField(blank=True, null=True, verbose_name=_("Birth Date"))
+    id_number = models.CharField(max_length=50, blank=True, null=True, verbose_name=_("ID / Iqama Number"))
+    address = models.TextField(blank=True, null=True, verbose_name=_("Address"))     
+    job_title = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Job Title"))
+    job_number = models.CharField(max_length=50, blank=True, null=True, verbose_name=_("Job Number"))
     department = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Department"))
     phone_number = models.CharField(max_length=20, blank=True, null=True, verbose_name=_("Phone Number"))
 
@@ -36,5 +43,5 @@ class Employee(models.Model):
         verbose_name_plural = _("Employees")
 
     def __str__(self):
-        return self.full_name or self.user.username
+        return self.full_name_en or self.user.username
 

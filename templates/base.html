@@ -33,7 +33,7 @@
   <main class="main p-2">
     {% if messages %}
       {% for message in messages %}
-        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show m-3" role="alert">
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show m-3 mb-1" role="alert">
           {{ message }}
           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>

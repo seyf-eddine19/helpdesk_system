@@ -1,5 +1,5 @@
 from django.db import models
-from employees.models import User
+from employees.models import Employee
 from django.utils.translation import gettext_lazy as _
 
 
@@ -36,8 +36,11 @@ class Device(models.Model):
     name_ar = models.CharField(max_length=100, verbose_name=_("Device Name (Arabic)"))
     name_en = models.CharField(max_length=100, verbose_name=_("Device Name (English)"))
     serial_number = models.CharField(max_length=100, unique=True, verbose_name=_("Serial Number"))
+    brand = models.CharField(max_length=100, verbose_name=_("Brand"))
     device_type = models.ForeignKey(DeviceType, on_delete=models.SET_NULL, null=True, verbose_name=_("Device Type"))
-    status = models.CharField(max_length=50, choices=Status.choices, default=Status.AVAILABLE, verbose_name=_("Status"))
+    condition = models.CharField(max_length=50, choices=Condition.choices, default=Condition.NEW, verbose_name=_("Condition"))
+    status = models.CharField(max_length=50, choices=Status.choices, default=Status.AVAILABLE, verbose_name=_("Custody Status"))
+    notes = models.TextField(blank=True, null=True, verbose_name=_("Notes"))
     added_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Added At"))
 
     def count_accessories(self):
@@ -56,6 +59,7 @@ class DeviceAccessory(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name="accessories", verbose_name=_("Device"))
     name_ar = models.CharField(max_length=100, verbose_name=_("Accessory Name (Arabic)"))
     name_en = models.CharField(max_length=100, verbose_name=_("Accessory Name (English)"))
+    status = models.CharField(max_length=50, choices=Status.choices, default=Status.AVAILABLE, verbose_name=_("Status"))
     condition = models.CharField(max_length=50, choices=Condition.choices, default=Condition.NEW, verbose_name=_("Condition"))
     notes = models.TextField(blank=True, null=True, verbose_name=_("Notes"))
 
@@ -63,6 +67,7 @@ class DeviceAccessory(models.Model):
         verbose_name = _("Accessory")
         verbose_name_plural = _("Accessories")
         ordering = ["name_en"]
+        default_permissions = []
 
     def __str__(self):
         return f"{self.name_en} / {self.name_ar} ({self.device})"
@@ -70,7 +75,7 @@ class DeviceAccessory(models.Model):
 
 # Custody
 class Custody(models.Model):
-    employee = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("Employee"))
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name=_("Employee"))
     custody_date = models.DateField(verbose_name=_("Custody Date"))
     return_date = models.DateField(null=True, blank=True, verbose_name=_("Return Date"))
     notes = models.TextField(blank=True, null=True, verbose_name=_("Notes"))
@@ -116,6 +121,7 @@ class DeviceCustody(models.Model):
         verbose_name = _("Device Custody")
         verbose_name_plural = _("Device Custodies")
         unique_together = ("custody", "device")
+        default_permissions = []
 
     def __str__(self):
         return f"{self.device} with {self.custody.employee}"
@@ -128,6 +134,7 @@ class AccessoryCustody(models.Model):
     class Meta:
         verbose_name = _("Accessory Custody")
         verbose_name_plural = _("Accessories Custody")
+        default_permissions = []
 
     def __str__(self):
         return f"{self.accessory} for {self.device_custody}"

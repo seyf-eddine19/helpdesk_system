@@ -23,12 +23,12 @@
                 <div class="col-md-4">
                   <input type="text" name="name_en" class="form-control"
                          placeholder="{% trans 'Category (English)' %}"
-                         value="{{ current_edit.name_en|default:'' }}" required>
+                         value="{{ current_edit.name_en|default_if_none:'' }}" required>
                 </div>
                 <div class="col-md-4">
                   <input type="text" name="name_ar" class="form-control"
                          placeholder="{% trans 'Category (Arabic)' %}"
-                         value="{{ current_edit.name_ar|default:'' }}" required>
+                         value="{{ current_edit.name_ar|default_if_none:'' }}" required>
                 </div>
                 <div class="col-md-4 d-flex justify-content-end align-items-center">
                     {% if current_edit %}

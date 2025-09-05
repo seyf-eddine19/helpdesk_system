@@ -37,45 +37,45 @@
             {% for employee in employees %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ employee.username }}</td>
-                <td>{{ employee.employee_profile.full_name_ar }}</td>
-                <td>{{ employee.employee_profile.full_name_en }}</td>
-                <td>{{ employee.employee_profile.department|default:"—" }}</td>
-                <!-- <td>{{ employee.employee_profile.phone_number|default:"—" }}</td>
-                <td>{{ employee.email|default:"—" }}</td> -->
+                <td>{{ employee.user.username }}</td>
+                <td>{{ employee.full_name_ar }}</td>
+                <td>{{ employee.full_name_en }}</td>
+                <td>{{ employee.department|default:"—" }}</td>
+                <!-- <td>{{ employee.phone_number|default:"—" }}</td>
+                <td>{{ employee.user.email|default:"—" }}</td> -->
                 <td>
-                  {% for group in employee.groups.all %}
+                  {% for group in employee.user.groups.all %}
                     <span class="badge bg-secondary">{{ group.name }}</span>
                   {% empty %}
                     <span class="text-muted">No Group</span>
                   {% endfor %}
                 </td>
                 <td>
-                  {% if employee.is_active %}
+                  {% if employee.user.is_active %}
                     <i class="fas fa-check-circle text-success"></i>
                   {% else %}
                     <i class="fas fa-times-circle text-danger"></i>
                   {% endif %}
                 </td>
                 <td>
-                  {% if employee.is_superuser %}
+                  {% if employee.user.is_superuser %}
                     <i class="fas fa-check-circle text-success"></i>
                   {% else %}
                     <i class="fas fa-times-circle text-danger"></i>
                   {% endif %}
                 </td>
-                <td>{{ employee.date_joined|date:"Y-m-d" }}</td>
+                <td>{{ employee.user.date_joined|date:"Y-m-d" }}</td>
                 <td class="text-center d-flex gap-1 justify-content-center">
-                  <a href="{% url 'employee_detail' employee.pk %}" class="btn btn-sm btn-primary">
+                  <a href="{% url 'employee_detail' employee.user.pk %}" class="btn btn-sm btn-primary">
                     <i class="bi bi-eye-fill"></i>
                   </a>
                   {% if perms.employees.change_employee or user.is_superuser %}
-                    <a href="{% url 'employee_edit' employee.pk %}" class="btn btn-sm btn-custom-warning">
+                    <a href="{% url 'employee_edit' employee.user.pk %}" class="btn btn-sm btn-custom-warning">
                       <i class="bi bi-pencil-square"></i>
                     </a>
                   {% endif %}
                   {% if perms.employees.delete_employee or user.is_superuser %}
-                    <a href="{% url 'employee_delete' employee.pk %}" class="btn btn-sm btn-danger">
+                    <a href="{% url 'employee_delete' employee.user.pk %}" class="btn btn-sm btn-danger">
                       <i class="bi bi-trash"></i>
                     </a>
                   {% endif %}

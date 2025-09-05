@@ -1,6 +1,180 @@
 {% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans "Dashboard" %}{% endblock %}
+
 {% block content %}
-<!-- <h1>Welcome, {{ user.full_name }}</h1>
-<p>You are logged in as <strong>{{ user.get_user_type_display }}</strong>.</p> -->
+<div class="container-fluid p-3">
+  <!-- Summary Cards -->
+  <div class="row g-4 mb-4">
+    
+    {% if perms.tickets.view_ticket %}
+    <!-- Tickets -->
+    <div class="col-md-6">
+      <div class="card shadow border rounded-2">
+        <div class="bg-success text-white d-flex align-items-center justify-content-between p-3 rounded-2">
+          <i class="bi bi-ticket-detailed fs-4 mx-2"></i>
+          <h6 class="text-white fw-bold mb-1 w-100">{% trans "Tickets" %}</h6>
+          <span class="badge bg-white text-success px-3 py-2 rounded-pill fw-semibold">
+            {{ tickets_summary.total }}
+          </span>
+        </div>
+        <div class="card-body p-4">
+          <div class="d-flex flex-wrap gap-3 small">
+            <div class="flex-fill fs-3 text-primary"><i class="bi bi-plus-circle mx-2 fs-4"></i> {{ tickets_summary.new }} <div class="text-muted fs-6">{% trans "New" %}</div></div>
+            <div class="flex-fill fs-3 text-info"><i class="bi bi-arrow-repeat mx-2 fs-4"></i> {{ tickets_summary.in_progress }} <div class="text-muted fs-6">{% trans "In Progress" %}</div></div>
+            <div class="flex-fill fs-3 text-success"><i class="bi bi-check-circle mx-2 fs-4"></i> {{ tickets_summary.resolved }} <div class="text-muted fs-6">{% trans "Resolved" %}</div></div>
+            <div class="flex-fill fs-3 text-danger"><i class="bi bi-x-circle mx-2 fs-4"></i> {{ tickets_summary.rejected }} <div class="text-muted fs-6">{% trans "Rejected" %}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if perms.devices.view_device %}
+    <!-- Devices -->
+    <div class="col-md-6">
+      <div class="card shadow border rounded-2">
+        <div class="bg-primary text-white d-flex align-items-center justify-content-between p-3 rounded-2">
+          <i class="bi bi-cpu fs-4 mx-2"></i>
+          <h6 class="text-white fw-bold mb-1 w-100">{% trans "Devices" %}</h6>
+          <span class="badge bg-white text-primary px-3 py-2 rounded-pill fw-semibold">
+            {{ devices_summary.total }}
+          </span>
+        </div>
+        <div class="card-body p-4">
+          <div class="d-flex flex-wrap gap-3 small">
+            <div class="flex-fill fs-3 text-info"><i class="bi bi-box-seam mx-2 fs-4"></i> {{ devices_summary.available }} <div class="text-muted fs-6">{% trans "Available" %}</div></div>
+            <div class="flex-fill fs-3 text-success"><i class="bi bi-hdd-network mx-2 fs-4"></i> {{ devices_summary.in_use }} <div class="text-muted fs-6">{% trans "In Use" %}</div></div>
+            <div class="flex-fill fs-3 text-warning"><i class="bi bi-tools mx-2 fs-4"></i> {{ devices_summary.maintenance }} <div class="text-muted fs-6">{% trans "Maintenance" %}</div></div>
+            <div class="flex-fill fs-3 text-danger"><i class="bi bi-x-octagon mx-2 fs-4"></i> {{ devices_summary.lost }} <div class="text-muted fs-6">{% trans "Lost" %}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if perms.custodies.view_custody %}
+    <!-- Custodies -->
+    <div class="col-md-6">
+      <div class="card shadow border rounded-2">
+        <div class="bg-danger text-white d-flex align-items-center justify-content-between p-3 rounded-2">
+          <i class="bi bi-archive fs-4 mx-2"></i>
+          <h6 class="text-white fw-bold mb-1 w-100">{% trans "Custodies" %}</h6>
+          <span class="badge bg-white text-danger px-3 py-2 rounded-pill fw-semibold">
+            {{ custodies_summary.total|default:custodies_summary.my_custodies }}
+          </span>
+        </div>
+        <div class="card-body p-4">
+          <div class="d-flex flex-wrap gap-3 small">
+            <div class="flex-fill fs-3 text-success"><i class="bi bi-check-circle mx-2 fs-4"></i> {{ custodies_summary.active|default:"-" }} <div class="text-muted fs-6">{% trans "Returned" %}</div></div>
+            <div class="flex-fill fs-3 text-warning"><i class="bi bi-clock-history mx-2 fs-4"></i> {{ custodies_summary.inactive|default:"-" }} <div class="text-muted fs-6">{% trans "In Use" %}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if perms.employees.view_employee %}
+    <!-- Employees -->
+    <div class="col-md-6">
+      <div class="card shadow border rounded-2">
+        <div class="bg-warning text-white d-flex align-items-center justify-content-between p-3 rounded-2">
+          <i class="bi bi-people fs-4 mx-2"></i>
+          <h6 class="text-white fw-bold mb-1 w-100">{% trans "Employees" %}</h6>
+          <span class="badge bg-white text-warning px-3 py-2 rounded-pill fw-semibold">
+            {{ employees_summary.total }}
+          </span>
+        </div>
+        <div class="card-body p-4">
+          <div class="d-flex flex-wrap gap-3 small text-center">
+            <div class="flex-fill fs-3 text-success"><i class="bi bi-person-check mx-2 fs-4"></i>{{ employees_summary.active }}<div class="text-muted fs-6">{% trans "Active" %}</div></div>
+            <div class="flex-fill fs-3 text-secondary"><i class="bi bi-person-x mx-2 fs-4"></i>{{ employees_summary.inactive }}<div class="text-muted fs-6">{% trans "Inactive" %}</div></div>
+            <div class="flex-fill fs-3 text-primary"><i class="bi bi-building mx-2 fs-4"></i>{{ employees_summary.departments }}<div class="text-muted fs-6">{% trans "Departments" %}</div></div>
+            <div class="flex-fill fs-3 text-info"><i class="bi bi-briefcase mx-2 fs-4"></i>{{ employees_summary.job_titles }}<div class="text-muted fs-6">{% trans "Job Titles" %}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="row g-4">
+    {% if perms.tickets.view_ticket %}
+    <!-- Tickets Chart + List -->
+    <div class="col-md-6 col-xl-3">
+      <div class="card shadow border-0 rounded-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <h6 class="fw-bold text-success mb-0">{% trans "Tickets" %}</h6>
+              <small class="text-muted">{% trans "By status" %}</small>
+            </div>
+            <span class="badge bg-success fs-6">{{ tickets_summary.total }}</span>
+          </div>
+          <canvas id="ticketsChart" height="150"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-header fw-bold">{% trans "Recent Tickets" %}</div>
+        <ul class="list-group list-group-flush">
+          {% for ticket in recent_tickets %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              {{ ticket }}
+              <span class="badge bg-secondary">{{ ticket.status }}</span>
+            </li>
+          {% empty %}
+            <li class="list-group-item text-muted">{% trans "No tickets yet." %}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if perms.custodies.view_custody %}
+    <div class="col-md-6 col-xl-5">
+      <div class="card shadow-sm border-0">
+        <div class="card-header fw-bold">{% trans "Recent Custodies" %}</div>
+        <ul class="list-group list-group-flush">
+          {% for custody in recent_custodies %}
+            <li class="list-group-item">
+              {{ custody.custody_date }} - {{ custody.employee }}
+              <ul class="small text-muted">
+                {% for device_custody in custody.devices.all %}
+                  <li>{{ device_custody.device.name_en }} ({{ device_custody.device.serial_number }})</li>
+                {% endfor %}
+              </ul>
+            </li>
+          {% empty %}
+            <li class="list-group-item text-muted">{% trans "No custodies yet." %}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if perms.tickets.view_ticket %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ticketsCtx = document.getElementById('ticketsChart');
+new Chart(ticketsCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['New','In Progress','Resolved','Rejected'],
+    datasets: [{
+      data: [{{ tickets_summary.new }}, {{ tickets_summary.in_progress }}, {{ tickets_summary.resolved }}, {{ tickets_summary.rejected }}],
+      backgroundColor: ['#0d6efd','#0dcaf0','#198754','#dc3545']
+    }]
+  }
+});
+</script>
+{% endif %}
 {% endblock %}

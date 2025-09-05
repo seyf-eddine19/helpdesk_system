@@ -5,6 +5,88 @@
 
 {% block content %}
 <div class="container-fluid py-3">
+    <!-- Filters Section -->
+    <div class="card shadow-sm mb-3">
+        <div class="card-header fs-5 fw-semibold d-flex align-items-center">
+            <i class="bi bi-funnel mx-2"></i> {% trans "Filters" %}
+        </div>
+        <div class="card-body">
+            <form method="get" class="row gx-3 gy-2 align-items-center">
+                <!-- Preserve current filters -->
+                {% if selected_status %}
+                    <input type="hidden" name="status" value="{{ selected_status }}">
+                {% endif %}
+                {% if selected_priority %}
+                    <input type="hidden" name="priority" value="{{ selected_priority }}">
+                {% endif %}
+                <!-- Search -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold text-muted"><i class="bi bi-search mx-2"></i>{% trans "Search" %}:</label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" name="q" class="form-control my-0"placeholder="{% trans 'Search tickets...' %}"value="{{ request.GET.q }}">
+                        <button class="btn btn-primary my-0" type="submit"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+
+                <!-- Request Type Filter -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold text-muted"><i class="bi bi-list-check mx-2"></i>{% trans "Request Type" %}:</label>
+                    <select name="request_type" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">{% trans "All" %}</option>
+                        {% for rt in request_types %}
+                            <option value="{{ rt.id }}" {% if selected_request_type == rt.id|stringformat:"s" %}selected{% endif %}>
+                            {{ rt }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+
+            <div class="row">
+            <!-- Priority Filter -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold text-muted">
+                    <i class="bi bi-flag mx-2"></i>{% trans "Priority" %}:
+                    </label>
+                    <div class="d-flex flex-wrap gap-2">
+                    <a href="?{% if selected_status %}status={{ selected_status }}&{% endif %}{% if selected_request_type %}request_type={{ selected_request_type }}&{% endif %}{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}"
+                        class="btn btn-sm {% if not selected_priority %}btn-dark{% else %}btn-outline-dark{% endif %}">{% trans "All" %}</a>
+                    <a href="?priority=NORMAL{% if selected_status %}&status={{ selected_status }}{% endif %}{% if selected_request_type %}&request_type={{ selected_request_type }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                        class="btn btn-sm {% if selected_priority == 'NORMAL' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">{% trans "Normal" %}</a>
+                    <a href="?priority=HIGH{% if selected_status %}&status={{ selected_status }}{% endif %}{% if selected_request_type %}&request_type={{ selected_request_type }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                        class="btn btn-sm {% if selected_priority == 'HIGH' %}btn-warning text-dark{% else %}btn-outline-warning{% endif %}">{% trans "High" %}</a>
+                    <a href="?priority=URGENT{% if selected_status %}&status={{ selected_status }}{% endif %}{% if selected_request_type %}&request_type={{ selected_request_type }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                        class="btn btn-sm {% if selected_priority == 'URGENT' %}btn-danger{% else %}btn-outline-danger{% endif %}">{% trans "Urgent" %}</a>
+                    </div>
+                </div>
+
+                <!-- Status Filter -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold text-muted">
+                    <i class="bi bi-info-circle mx-2"></i>{% trans "Status" %}:
+                    </label>
+                    <div class="d-flex flex-wrap gap-2">
+                    <a href="?{% if selected_request_type %}request_type={{ selected_request_type }}&{% endif %}{% if selected_priority %}priority={{ selected_priority }}&{% endif %}{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}"
+                        class="btn btn-sm {% if not selected_status %}btn-dark{% else %}btn-outline-dark{% endif %}">{% trans "All" %}</a>
+                    <a href="?status=NEW{% if selected_request_type %}&request_type={{ selected_request_type }}{% endif %}{% if selected_priority %}&priority={{ selected_priority }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                        class="btn btn-sm {% if selected_status == 'NEW' %}btn-primary{% else %}btn-outline-primary{% endif %}">{% trans "New" %}</a>
+                    <a href="?status=IN_PROGRESS{% if selected_request_type %}&request_type={{ selected_request_type }}{% endif %}{% if selected_priority %}&priority={{ selected_priority }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                        class="btn btn-sm {% if selected_status == 'IN_PROGRESS' %}btn-info text-dark{% else %}btn-outline-info{% endif %}">{% trans "In Progress" %}</a>
+                    <a href="?status=RESOLVED{% if selected_request_type %}&request_type={{ selected_request_type }}{% endif %}{% if selected_priority %}&priority={{ selected_priority }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                        class="btn btn-sm {% if selected_status == 'RESOLVED' %}btn-success{% else %}btn-outline-success{% endif %}">{% trans "Resolved" %}</a>
+                    <a href="?status=REJECTED{% if selected_request_type %}&request_type={{ selected_request_type }}{% endif %}{% if selected_priority %}&priority={{ selected_priority }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                        class="btn btn-sm {% if selected_status == 'REJECTED' %}btn-danger{% else %}btn-outline-danger{% endif %}">{% trans "Rejected" %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+            <a href="{% url 'ticket_list' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-arrow-counterclockwise"></i> {% trans "Reset Filters" %}
+            </a>
+        </div>
+    </div>
+
     <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap fs-3 fw-bold">
           <div><i class="bi bi-ticket-perforated mx-2"></i> {% trans "Tickets" %}</div>
