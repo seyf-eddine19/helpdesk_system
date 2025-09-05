@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-01 22:55+0100\n"
+"POT-Creation-Date: 2025-09-05 11:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,8 +19,9 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: .\devices\models.py:7 .\templates\tickets\list.html:72
-#: .\templates\tickets\list.html:130 .\tickets\models.py:7
+#: .\devices\models.py:7 .\templates\dashboard.html:24
+#: .\templates\tickets\list.html:72 .\templates\tickets\list.html:130
+#: .\tickets\models.py:7
 msgid "New"
 msgstr "جديد"
 
@@ -32,23 +33,24 @@ msgstr "مستعمل"
 msgid "Damaged"
 msgstr "تالف"
 
-#: .\devices\models.py:10 .\devices\models.py:17
+#: .\devices\models.py:10 .\devices\models.py:17 .\templates\dashboard.html:50
 #: .\templates\devices\list.html:83 .\templates\devices\list.html:135
 msgid "Lost"
 msgstr "مفقود"
 
-#: .\devices\models.py:14 .\templates\devices\detail.html:24
+#: .\devices\models.py:14 .\templates\dashboard.html:47
 #: .\templates\devices\list.html:65 .\templates\devices\list.html:129
 msgid "Available"
 msgstr "متاح"
 
-#: .\devices\models.py:15 .\templates\devices\detail.html:26
-#: .\templates\devices\list.html:71 .\templates\devices\list.html:131
+#: .\devices\models.py:15 .\templates\dashboard.html:48
+#: .\templates\dashboard.html:71 .\templates\devices\list.html:71
+#: .\templates\devices\list.html:131
 msgid "In Use"
 msgstr "قيد الاستخدام"
 
-#: .\devices\models.py:16 .\templates\devices\detail.html:28
-#: .\templates\devices\list.html:77 .\templates\devices\list.html:133
+#: .\devices\models.py:16 .\templates\devices\list.html:77
+#: .\templates\devices\list.html:133
 msgid "Under Maintenance"
 msgstr "قيد الصيانة"
 
@@ -63,8 +65,8 @@ msgid "Device Type (English)"
 msgstr "نوع الجهاز (بالإنجليزية)"
 
 #: .\devices\models.py:26 .\devices\models.py:40
-#: .\templates\custody\list.html:32 .\templates\devices\list.html:32
-#: .\templates\devices\list.html:113
+#: .\templates\custody\list.html:32 .\templates\devices\detail.html:52
+#: .\templates\devices\list.html:32 .\templates\devices\list.html:113
 msgid "Device Type"
 msgstr "نوع الجهاز"
 
@@ -82,192 +84,201 @@ msgstr "اسم الجهاز (بالعربية)"
 msgid "Device Name (English)"
 msgstr "اسم الجهاز (بالإنجليزية)"
 
-#: .\devices\models.py:38 .\templates\devices\detail.html:21
+#: .\devices\models.py:38 .\templates\devices\detail.html:36
 #: .\templates\devices\list.html:114
 msgid "Serial Number"
 msgstr "الرقم التسلسلي"
 
-#: .\devices\models.py:39
+#: .\devices\models.py:39 .\templates\custody\detail.html:92
+#: .\templates\devices\detail.html:44
 msgid "Brand"
 msgstr "العلامة التجارية"
 
-#: .\devices\models.py:41 .\devices\models.py:61
-#: .\templates\devices\detail.html:22 .\templates\devices\list.html:53
+#: .\devices\models.py:41 .\devices\models.py:63
+msgid "Condition"
+msgstr "الحالة"
+
+#: .\devices\models.py:42
+#, fuzzy
+#| msgid "Custody Date"
+msgid "Custody Status"
+msgstr "تاريخ الاستلام"
+
+#: .\devices\models.py:43 .\devices\models.py:64 .\devices\models.py:81
+#: .\devices\models.py:109 .\templates\custody\detail.html:65
+#: .\templates\devices\detail.html:89
+msgid "Notes"
+msgstr "ملاحظات"
+
+#: .\devices\models.py:44 .\templates\devices\detail.html:80
+#: .\templates\devices\list.html:116
+msgid "Added At"
+msgstr "تاريخ الإضافة"
+
+#: .\devices\models.py:50 .\devices\models.py:59
+msgid "Device"
+msgstr "جهاز"
+
+#: .\devices\models.py:51 .\templates\custody\detail.html:78
+#: .\templates\custody\form.html:41 .\templates\custody\list.html:104
+#: .\templates\dashboard.html:40 .\templates\devices\list.html:4
+#: .\templates\devices\list.html:99 .\templates\includes\sidebar.html:40
+msgid "Devices"
+msgstr "الأجهزة"
+
+#: .\devices\models.py:60
+msgid "Accessory Name (Arabic)"
+msgstr "اسم الملحق (بالعربية)"
+
+#: .\devices\models.py:61
+msgid "Accessory Name (English)"
+msgstr "اسم الملحق (بالإنجليزية)"
+
+#: .\devices\models.py:62 .\templates\custody\detail.html:95
+#: .\templates\devices\detail.html:62 .\templates\devices\list.html:53
 #: .\templates\devices\list.html:115 .\templates\tickets\detail.html:44
 #: .\templates\tickets\list.html:66 .\templates\tickets\list.html:109
 #: .\tickets\models.py:37
 msgid "Status"
 msgstr "الحالة"
 
-#: .\devices\models.py:42 .\devices\models.py:63 .\devices\models.py:79
-#: .\devices\models.py:107
-msgid "Notes"
-msgstr "ملاحظات"
-
-#: .\devices\models.py:43 .\templates\devices\detail.html:31
-#: .\templates\devices\list.html:116
-msgid "Added At"
-msgstr "تاريخ الإضافة"
-
-#: .\devices\models.py:49 .\devices\models.py:58
-msgid "Device"
-msgstr "جهاز"
-
-#: .\devices\models.py:50 .\templates\custody\form.html:41
-#: .\templates\custody\list.html:104 .\templates\devices\list.html:4
-#: .\templates\devices\list.html:99 .\templates\includes\sidebar.html:40
-msgid "Devices"
-msgstr "الأجهزة"
-
-#: .\devices\models.py:59
-msgid "Accessory Name (Arabic)"
-msgstr "اسم الملحق (بالعربية)"
-
-#: .\devices\models.py:60
-msgid "Accessory Name (English)"
-msgstr "اسم الملحق (بالإنجليزية)"
-
-#: .\devices\models.py:62
-msgid "Condition"
-msgstr "الحالة"
-
-#: .\devices\models.py:66 .\devices\models.py:129
+#: .\devices\models.py:67 .\devices\models.py:132
 msgid "Accessory"
 msgstr "ملحق"
 
-#: .\devices\models.py:67 .\devices\models.py:108
-#: .\templates\devices\detail.html:37 .\templates\devices\detail.html:64
+#: .\devices\models.py:68 .\devices\models.py:110
+#: .\templates\custody\detail.html:108 .\templates\devices\detail.html:102
 #: .\templates\devices\form.html:39 .\templates\devices\list.html:117
 msgid "Accessories"
 msgstr "ملحقات"
 
-#: .\devices\models.py:76 .\employees\models.py:39
-#: .\templates\custody\list.html:101 .\templates\devices\detail.html:61
+#: .\devices\models.py:78 .\employees\models.py:42
+#: .\templates\custody\detail.html:37 .\templates\custody\list.html:101
 #: .\templates\tickets\detail.html:102 .\tickets\models.py:35
 msgid "Employee"
 msgstr "الموظف"
 
-#: .\devices\models.py:77 .\templates\custody\list.html:102
-#: .\templates\devices\detail.html:62
+#: .\devices\models.py:79 .\templates\custody\detail.html:46
+#: .\templates\custody\list.html:102
 msgid "Custody Date"
 msgstr "تاريخ الاستلام"
 
-#: .\devices\models.py:78 .\templates\custody\list.html:103
-#: .\templates\devices\detail.html:63
+#: .\devices\models.py:80 .\templates\custody\detail.html:54
+#: .\templates\custody\list.html:103
 msgid "Return Date"
 msgstr "تاريخ الإرجاع"
 
-#: .\devices\models.py:96 .\templates\includes\sidebar.html:52
+#: .\devices\models.py:98 .\templates\includes\sidebar.html:52
 msgid "Custody"
 msgstr "العهدة"
 
-#: .\devices\models.py:97 .\templates\custody\list.html:4
-#: .\templates\custody\list.html:87
+#: .\devices\models.py:99 .\templates\custody\list.html:4
+#: .\templates\custody\list.html:87 .\templates\dashboard.html:63
 msgid "Custodies"
 msgstr "العُهد"
 
-#: .\devices\models.py:119
+#: .\devices\models.py:121
 msgid "Device Custody"
 msgstr "عهدة جهاز"
 
-#: .\devices\models.py:120
+#: .\devices\models.py:122
 msgid "Device Custodies"
 msgstr "عهد الأجهزة"
 
-#: .\devices\models.py:132
+#: .\devices\models.py:135
 msgid "Accessory Custody"
 msgstr "عهدة ملحق"
 
-#: .\devices\models.py:133
+#: .\devices\models.py:136
 msgid "Accessories Custody"
 msgstr "عهد الملحقات"
 
-#: .\devices\views.py:26
+#: .\devices\views.py:43
 msgid "You do not have permission to delete a device type"
 msgstr "ليس لديك صلاحية لحذف نوع الجهاز"
 
-#: .\devices\views.py:32
+#: .\devices\views.py:49
 msgid "Device type deleted successfully"
 msgstr "تم حذف نوع الجهاز بنجاح"
 
-#: .\devices\views.py:34 .\inventories\views.py:35 .\inventories\views.py:124
+#: .\devices\views.py:51 .\inventories\views.py:35 .\inventories\views.py:124
 #: .\tickets\views.py:33
 msgid "An unexpected error occurred while deleting"
 msgstr "حدث خطأ غير متوقع أثناء الحذف"
 
-#: .\devices\views.py:42 .\inventories\views.py:43 .\inventories\views.py:133
+#: .\devices\views.py:59 .\inventories\views.py:43 .\inventories\views.py:133
 #: .\tickets\views.py:41
 msgid "Both English and Arabic names are required."
 msgstr "مطلوب إدخال الاسم باللغتين العربية والإنجليزية."
 
-#: .\devices\views.py:48
+#: .\devices\views.py:65
 msgid "You do not have permission to edit a device type"
 msgstr "ليس لديك صلاحية لتعديل نوع الجهاز"
 
-#: .\devices\views.py:55 .\devices\views.py:73
+#: .\devices\views.py:72 .\devices\views.py:90
 msgid "A device type with this English name already exists"
 msgstr "نوع الجهاز بهذا الاسم الإنجليزي موجود بالفعل"
 
-#: .\devices\views.py:58 .\devices\views.py:76
+#: .\devices\views.py:75 .\devices\views.py:93
 msgid "A device type with this Arabic name already exists"
 msgstr "نوع الجهاز بهذا الاسم العربي موجود بالفعل"
 
-#: .\devices\views.py:64
+#: .\devices\views.py:81
 msgid "Device type updated successfully"
 msgstr "تم تحديث نوع الجهاز بنجاح"
 
-#: .\devices\views.py:68
+#: .\devices\views.py:85
 msgid "You do not have permission to add a device type"
 msgstr "ليس لديك صلاحية لإضافة نوع جهاز"
 
-#: .\devices\views.py:80
+#: .\devices\views.py:97
 msgid "Device type added successfully"
 msgstr "تمت إضافة نوع الجهاز بنجاح"
 
-#: .\devices\views.py:83 .\inventories\views.py:84 .\inventories\views.py:174
+#: .\devices\views.py:100 .\inventories\views.py:84 .\inventories\views.py:174
 #: .\tickets\views.py:82
 msgid "A database integrity error occurred. Please check your data."
 msgstr "حدث خطأ في سلامة قاعدة البيانات. يرجى التحقق من بياناتك."
 
-#: .\devices\views.py:85 .\inventories\views.py:86 .\inventories\views.py:176
+#: .\devices\views.py:102 .\inventories\views.py:86 .\inventories\views.py:176
 #: .\tickets\views.py:84
 msgid "A database error occurred. Please try again later."
 msgstr "حدث خطأ في قاعدة البيانات. يرجى المحاولة لاحقًا."
 
-#: .\devices\views.py:87 .\inventories\views.py:88 .\inventories\views.py:178
+#: .\devices\views.py:104 .\inventories\views.py:88 .\inventories\views.py:178
 #: .\tickets\views.py:86
 msgid "An unexpected error occurred. Please try again."
 msgstr "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
 
-#: .\devices\views.py:173
+#: .\devices\views.py:190
 msgid "Device created successfully"
 msgstr "تم إنشاء الجهاز بنجاح"
 
-#: .\devices\views.py:204
+#: .\devices\views.py:221
 msgid "Device updated successfully"
 msgstr "تم تحديث الجهاز بنجاح"
 
-#: .\devices\views.py:217
+#: .\devices\views.py:234
 msgid "Device deleted successfully"
 msgstr "تم حذف الجهاز بنجاح"
 
-#: .\devices\views.py:301
+#: .\devices\views.py:318
 msgid "Custody created successfully."
 msgstr "تم إنشاء العهدة بنجاح."
 
-#: .\devices\views.py:303
+#: .\devices\views.py:320
 msgid "There was an error creating the custody."
 msgstr "حدث خطأ أثناء إنشاء العهدة."
 
-#: .\devices\views.py:331
+#: .\devices\views.py:348
 msgid "Custody updated successfully."
 msgstr "تم تحديث العهدة بنجاح."
 
-#: .\devices\views.py:333
+#: .\devices\views.py:350
 msgid "There was an error updating the custody."
 msgstr "حدث خطأ أثناء تحديث العهدة."
 
-#: .\devices\views.py:344
+#: .\devices\views.py:361
 msgid "Custody deleted successfully"
 msgstr "تم حذف العهدة بنجاح"
 
@@ -278,8 +289,10 @@ msgstr "تم حذف العهدة بنجاح"
 msgid "Add"
 msgstr "إضافة"
 
-#: .\employees\forms.py:13 .\templates\devices\devicetype_manage.html:39
-#: .\templates\employees\detail.html:124
+#: .\employees\forms.py:13 .\templates\custody\detail.html:139
+#: .\templates\devices\detail.html:166
+#: .\templates\devices\devicetype_manage.html:39
+#: .\templates\employees\detail.html:171
 #: .\templates\inventory\inkcategory_manage.html:39
 #: .\templates\inventory\supplycategory_manage.html:39
 #: .\templates\tickets\detail.html:135
@@ -288,8 +301,9 @@ msgid "Edit"
 msgstr "تعديل"
 
 #: .\employees\forms.py:14 .\templates\custody\delete.html:16
-#: .\templates\devices\delete.html:16 .\templates\employees\delete.html:16
-#: .\templates\employees\detail.html:129 .\templates\inventory\delete.html:16
+#: .\templates\custody\detail.html:144 .\templates\devices\delete.html:16
+#: .\templates\devices\detail.html:171 .\templates\employees\delete.html:16
+#: .\templates\employees\detail.html:176 .\templates\inventory\delete.html:16
 #: .\templates\tickets\delete.html:16 .\templates\tickets\detail.html:140
 msgid "Delete"
 msgstr "حذف"
@@ -298,81 +312,88 @@ msgstr "حذف"
 msgid "View"
 msgstr "عرض"
 
-#: .\employees\forms.py:41 .\employees\forms.py:139 .\employees\forms.py:177
-#: .\employees\models.py:29 .\templates\employees\detail.html:27
-#: .\templates\employees\list.html:24
+#: .\employees\forms.py:41 .\employees\forms.py:139 .\employees\models.py:31
+#: .\templates\employees\detail.html:27 .\templates\employees\list.html:24
 msgid "Full Name (Arabic)"
 msgstr "الاسم الكامل (بالعربية)"
 
-#: .\employees\forms.py:42 .\employees\forms.py:140 .\employees\forms.py:178
-#: .\employees\models.py:30 .\templates\employees\detail.html:35
-#: .\templates\employees\list.html:25
+#: .\employees\forms.py:42 .\employees\forms.py:140 .\employees\models.py:32
+#: .\templates\employees\detail.html:35 .\templates\employees\list.html:25
 msgid "Full Name (English)"
 msgstr "الاسم الكامل (بالإنجليزية)"
 
-#: .\employees\forms.py:43 .\employees\forms.py:141 .\employees\forms.py:179
-#: .\employees\models.py:31
+#: .\employees\forms.py:43 .\employees\forms.py:141 .\employees\models.py:33
+#: .\templates\employees\detail.html:43
 msgid "Birth Date"
 msgstr "تاريخ الميلاد"
 
-#: .\employees\forms.py:44 .\employees\forms.py:142 .\employees\forms.py:180
-#: .\employees\models.py:32
+#: .\employees\forms.py:44 .\employees\forms.py:142 .\employees\models.py:34
+#: .\templates\employees\detail.html:57
 msgid "ID / Iqama Number"
 msgstr "رقم الهوية / الإقامة"
 
-#: .\employees\forms.py:45 .\employees\forms.py:143 .\employees\forms.py:181
-#: .\employees\models.py:33
+#: .\employees\forms.py:45 .\employees\forms.py:143 .\employees\models.py:35
+#: .\templates\employees\detail.html:65
 msgid "Address"
 msgstr "العنوان"
 
-#: .\employees\forms.py:46 .\employees\forms.py:144 .\employees\forms.py:182
-#: .\employees\models.py:34
+#: .\employees\forms.py:46 .\employees\forms.py:144 .\employees\models.py:36
+#: .\templates\employees\detail.html:74
 msgid "Job Title"
 msgstr "المسمى الوظيفي"
 
-#: .\employees\forms.py:47 .\employees\forms.py:145 .\employees\forms.py:183
-#: .\employees\models.py:35 .\templates\employees\detail.html:43
-#: .\templates\employees\list.html:26
+#: .\employees\forms.py:47 .\employees\forms.py:145 .\employees\models.py:37
+#: .\templates\employees\detail.html:82
+#, fuzzy
+#| msgid "Phone Number"
+msgid "Job Number"
+msgstr "رقم الهاتف"
+
+#: .\employees\forms.py:48 .\employees\forms.py:146 .\employees\models.py:38
+#: .\templates\employees\detail.html:90 .\templates\employees\list.html:26
 msgid "Department"
 msgstr "القسم"
 
-#: .\employees\forms.py:48 .\employees\forms.py:146 .\employees\forms.py:184
-#: .\employees\models.py:36 .\templates\employees\detail.html:51
-#: .\templates\employees\list.html:27
+#: .\employees\forms.py:49 .\employees\forms.py:147 .\employees\models.py:39
+#: .\templates\employees\detail.html:98 .\templates\employees\list.html:27
 msgid "Phone Number"
 msgstr "رقم الهاتف"
 
-#: .\employees\forms.py:50 .\employees\models.py:11
-#: .\templates\devices\detail.html:20 .\tickets\models.py:34
+#: .\employees\forms.py:51 .\employees\models.py:11 .\tickets\models.py:34
 msgid "Type"
 msgstr "النوع"
 
-#: .\employees\forms.py:51
+#: .\employees\forms.py:52
 msgid "User Permissions"
 msgstr "صلاحيات المستخدم"
 
-#: .\employees\forms.py:152 .\employees\forms.py:190
-#: .\templates\accounts\login.html:32 .\templates\employees\list.html:23
+#: .\employees\forms.py:153 .\templates\accounts\login.html:32
+#: .\templates\employees\list.html:23
 msgid "Username"
 msgstr "اسم المستخدم"
 
-#: .\employees\forms.py:153 .\employees\forms.py:191
-#: .\templates\employees\detail.html:59 .\templates\employees\list.html:28
+#: .\employees\forms.py:154 .\templates\employees\detail.html:106
+#: .\templates\employees\list.html:28
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
-#: .\employees\models.py:15
+#: .\employees\models.py:17
 msgid "User"
 msgstr "مستخدم"
 
-#: .\employees\models.py:16
+#: .\employees\models.py:18
 msgid "Users"
 msgstr "المستخدمون"
 
-#: .\employees\models.py:40 .\templates\employees\list.html:4
-#: .\templates\employees\list.html:10 .\templates\includes\sidebar.html:19
+#: .\employees\models.py:43 .\templates\dashboard.html:84
+#: .\templates\employees\list.html:4 .\templates\employees\list.html:10
+#: .\templates\includes\sidebar.html:19
 msgid "Employees"
 msgstr "الموظفون"
+
+#: .\employees\views.py:125
+msgid "This email does not exist in our records."
+msgstr "هذا البريد الإلكتروني غير موجود في سجلاتنا."
 
 #: .\helpdesk_system\settings.py:114
 msgid "English"
@@ -573,7 +594,7 @@ msgid "Forgot Password?"
 msgstr "هل نسيت كلمة المرور؟"
 
 #: .\templates\accounts\login.html:52 .\templates\auth_base.html:9
-#: .\templates\includes\header.html:76
+#: .\templates\includes\header.html:81
 msgid "Login"
 msgstr "تسجيل الدخول"
 
@@ -598,7 +619,7 @@ msgstr "تغيير كلمة المرور"
 #: .\templates\devices\delete.html:19
 #: .\templates\devices\devicetype_manage.html:36
 #: .\templates\devices\form.html:82 .\templates\employees\delete.html:19
-#: .\templates\employees\form.html:90
+#: .\templates\employees\form.html:91
 #: .\templates\employees\profile_update.html:43
 #: .\templates\inventory\delete.html:19 .\templates\inventory\form.html:35
 #: .\templates\inventory\inkcategory_manage.html:36
@@ -657,8 +678,8 @@ msgid "Set Password"
 msgstr "تعيين كلمة المرور"
 
 #: .\templates\accounts\password_reset_confirm.html:46
-#: .\templates\accounts\password_reset_done.html:19
-#: .\templates\accounts\password_reset_form.html:42
+#: .\templates\accounts\password_reset_done.html:18
+#: .\templates\accounts\password_reset_form.html:51
 msgid "Back to Login"
 msgstr "الرجوع إلى تسجيل الدخول"
 
@@ -678,45 +699,42 @@ msgstr ""
 "لقد أرسلنا رابطًا لإعادة تعيين كلمة المرور إلى بريدك الإلكتروني. يرجى اتباع "
 "التعليمات في البريد لإعادة تعيين كلمة المرور."
 
-#: .\templates\accounts\password_reset_email.html:7
+#: .\templates\accounts\password_reset_email.html:6
 msgid "Password Reset Request"
 msgstr "طلب إعادة تعيين كلمة المرور"
 
-#: .\templates\accounts\password_reset_email.html:65
+#: .\templates\accounts\password_reset_email.html:117
 msgid "HelpDesk Support"
 msgstr "دعم مكتب المساعدة"
 
-#: .\templates\accounts\password_reset_email.html:70
+#: .\templates\accounts\password_reset_email.html:122
 msgid "Hello, You requested a password reset for your account."
 msgstr "مرحبًا، لقد طلبت إعادة تعيين كلمة المرور لحسابك."
 
-#: .\templates\accounts\password_reset_email.html:71
+#: .\templates\accounts\password_reset_email.html:123
 msgid "Click the button below to reset your password:"
 msgstr "انقر على الزر أدناه لإعادة تعيين كلمة المرور:"
 
-#: .\templates\accounts\password_reset_email.html:75
+#: .\templates\accounts\password_reset_email.html:127
 #: .\templates\accounts\password_reset_form.html:4
 #: .\templates\accounts\password_reset_form.html:14
 msgid "Reset Password"
 msgstr "إعادة تعيين كلمة المرور"
 
-#: .\templates\accounts\password_reset_email.html:79
+#: .\templates\accounts\password_reset_email.html:131
+msgid ""
+"If the button above does not work, copy and paste this link into your browser:"
+msgstr "إذا لم يعمل الزر أعلاه، انسخ هذا الرابط والصقه في متصفحك:"
+
+#: .\templates\accounts\password_reset_email.html:138
 msgid "If you did not request this change, you can safely ignore this email."
 msgstr "إذا لم تطلب هذا التغيير، يمكنك تجاهل هذا البريد بأمان."
 
-#: .\templates\accounts\password_reset_email.html:80
+#: .\templates\accounts\password_reset_email.html:139
 msgid "This link will expire in 24 hours for your security."
 msgstr "سينتهي صلاحية هذا الرابط خلال 24 ساعة من أجل حمايتك."
 
-#: .\templates\accounts\password_reset_email.html:86
-msgid "The Academic District - Al-Maamoura Al-Kubra, Zip Code 36258"
-msgstr "المنطقة الأكاديمية - المعمورة الكبرى، الرمز البريدي 36258"
-
-#: .\templates\accounts\password_reset_email.html:87
-msgid "Short Address: PAGJ+X8H, Egypt"
-msgstr "العنوان المختصر: PAGJ+X8H، مصر"
-
-#: .\templates\accounts\password_reset_email.html:89
+#: .\templates\accounts\password_reset_email.html:148
 msgid "All rights reserved."
 msgstr "جميع الحقوق محفوظة."
 
@@ -725,7 +743,7 @@ msgid ""
 "Enter your email address and we'll send you a link to reset your password."
 msgstr "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور."
 
-#: .\templates\accounts\password_reset_form.html:37
+#: .\templates\accounts\password_reset_form.html:46
 msgid "Send Reset Link"
 msgstr "إرسال رابط إعادة التعيين"
 
@@ -754,6 +772,31 @@ msgstr "تأكيد الحذف"
 msgid "Are you sure you want to delete this ticket?"
 msgstr "هل أنت متأكد أنك تريد حذف هذه التذكرة؟"
 
+#: .\templates\custody\detail.html:4 .\templates\custody\detail.html:12
+msgid "Custody Details"
+msgstr "تفاصيل العهدة"
+
+#: .\templates\custody\detail.html:18
+msgid "Export PDF"
+msgstr "تصدير PDF"
+
+#: .\templates\custody\detail.html:21
+msgid "Export Excel"
+msgstr "تصدير Excel"
+
+#: .\templates\custody\detail.html:70 .\templates\devices\detail.html:94
+msgid "No notes provided."
+msgstr "لم يتم تقديم أي ملاحظات."
+
+#: .\templates\custody\detail.html:124
+msgid "No devices linked to this custody."
+msgstr "لا توجد أجهزة مرتبطة بهذه العهدة."
+
+#: .\templates\custody\detail.html:134 .\templates\devices\detail.html:161
+#: .\templates\employees\detail.html:166 .\templates\tickets\detail.html:130
+msgid "Back"
+msgstr "رجوع"
+
 #: .\templates\custody\form.html:5 .\templates\custody\form.html:14
 msgid "Edit Custody"
 msgstr "تعديل العهدة"
@@ -768,13 +811,13 @@ msgid "Add Device"
 msgstr "إضافة جهاز"
 
 #: .\templates\custody\form.html:101 .\templates\devices\form.html:76
-#: .\templates\employees\form.html:88 .\templates\inventory\form.html:29
+#: .\templates\employees\form.html:89 .\templates\inventory\form.html:29
 #: .\templates\tickets\form.html:57
 msgid "Update"
 msgstr "تحديث"
 
 #: .\templates\custody\form.html:103 .\templates\devices\form.html:78
-#: .\templates\employees\form.html:88 .\templates\inventory\form.html:31
+#: .\templates\employees\form.html:89 .\templates\inventory\form.html:31
 #: .\templates\tickets\form.html:59
 msgid "Create"
 msgstr "إنشاء"
@@ -804,11 +847,11 @@ msgid "All"
 msgstr "الكل"
 
 #: .\templates\custody\list.html:53 .\templates\custody\list.html:65
+#: .\templates\dashboard.html:70
 msgid "Returned"
 msgstr "تم الإرجاع"
 
 #: .\templates\custody\list.html:71 .\templates\custody\list.html:118
-#: .\templates\devices\detail.html:79
 msgid "Not Returned"
 msgstr "لم يتم الإرجاع"
 
@@ -826,29 +869,125 @@ msgstr "لا توجد أجهزة"
 msgid "No custodies found."
 msgstr "لا توجد عُهد."
 
-#: .\templates\devices\detail.html:18
-msgid "Device Information"
-msgstr "معلومات الجهاز"
+#: .\templates\dashboard.html:4 .\templates\includes\sidebar.html:14
+msgid "Dashboard"
+msgstr "لوحة التحكم"
 
-#: .\templates\devices\detail.html:47
-msgid "No accessories for this device."
+#: .\templates\dashboard.html:17 .\templates\dashboard.html:111
+#: .\templates\includes\sidebar.html:33 .\templates\tickets\list.html:4
+#: .\templates\tickets\list.html:92 .\tickets\models.py:45
+msgid "Tickets"
+msgstr "التذاكر"
+
+#: .\templates\dashboard.html:25 .\templates\tickets\list.html:74
+#: .\templates\tickets\list.html:132 .\tickets\models.py:8
+msgid "In Progress"
+msgstr "قيد التنفيذ"
+
+#: .\templates\dashboard.html:26 .\templates\tickets\list.html:76
+#: .\templates\tickets\list.html:134 .\tickets\models.py:9
+msgid "Resolved"
+msgstr "تم الحل"
+
+#: .\templates\dashboard.html:27 .\templates\tickets\list.html:78
+#: .\templates\tickets\list.html:136 .\tickets\models.py:10
+msgid "Rejected"
+msgstr "مرفوض"
+
+#: .\templates\dashboard.html:49
+#, fuzzy
+#| msgid "Under Maintenance"
+msgid "Maintenance"
+msgstr "قيد الصيانة"
+
+#: .\templates\dashboard.html:91 .\templates\employees\detail.html:128
+#: .\templates\employees\list.html:30
+msgid "Active"
+msgstr "نشط"
+
+#: .\templates\dashboard.html:92
+#, fuzzy
+#| msgid "Active"
+msgid "Inactive"
+msgstr "نشط"
+
+#: .\templates\dashboard.html:93
+#, fuzzy
+#| msgid "Department"
+msgid "Departments"
+msgstr "القسم"
+
+#: .\templates\dashboard.html:94
+#, fuzzy
+#| msgid "Job Title"
+msgid "Job Titles"
+msgstr "المسمى الوظيفي"
+
+#: .\templates\dashboard.html:112
+#, fuzzy
+#| msgid "Status"
+msgid "By status"
+msgstr "الحالة"
+
+#: .\templates\dashboard.html:123
+#, fuzzy
+#| msgid "Delete Ticket"
+msgid "Recent Tickets"
+msgstr "حذف التذكرة"
+
+#: .\templates\dashboard.html:131
+#, fuzzy
+#| msgid "No tickets found."
+msgid "No tickets yet."
+msgstr "لم يتم العثور على تذاكر."
+
+#: .\templates\dashboard.html:141
+#, fuzzy
+#| msgid "Device Custodies"
+msgid "Recent Custodies"
+msgstr "عهد الأجهزة"
+
+#: .\templates\dashboard.html:153
+#, fuzzy
+#| msgid "No custodies found."
+msgid "No custodies yet."
+msgstr "لا توجد عُهد."
+
+#: .\templates\devices\detail.html:4 .\templates\devices\detail.html:12
+#, fuzzy
+#| msgid "Ticket Details"
+msgid "Device Details"
+msgstr "تفاصيل التذكرة"
+
+#: .\templates\devices\detail.html:26
+#, fuzzy
+#| msgid "Device Type"
+msgid "Device Name"
+msgstr "نوع الجهاز"
+
+#: .\templates\devices\detail.html:118
+#, fuzzy
+#| msgid "No accessories for this device."
+msgid "No accessories registered for this device."
 msgstr "لا توجد ملحقات لهذا الجهاز."
 
-#: .\templates\devices\detail.html:54
-msgid "Custody Records"
-msgstr "سجلات العهدة"
+#: .\templates\devices\detail.html:125
+#, fuzzy
+#| msgid "Custody Date"
+msgid "Custody History"
+msgstr "تاريخ الاستلام"
 
-#: .\templates\devices\detail.html:87 .\templates\devices\detail.html:90
-msgid "No accessories"
-msgstr "لا توجد ملحقات"
+#: .\templates\devices\detail.html:141
+#, fuzzy
+#| msgid "Not Returned"
+msgid "Not returned yet"
+msgstr "لم يتم الإرجاع"
 
-#: .\templates\devices\detail.html:98
-msgid "No custody records for this device."
-msgstr "لا توجد سجلات عهدة لهذا الجهاز."
-
-#: .\templates\devices\detail.html:112
-msgid "Back to Devices"
-msgstr "الرجوع إلى الأجهزة"
+#: .\templates\devices\detail.html:151
+#, fuzzy
+#| msgid "There was an error creating the custody."
+msgid "This device has never been assigned to custody."
+msgstr "حدث خطأ أثناء إنشاء العهدة."
 
 #: .\templates\devices\devicetype_manage.html:13
 msgid "Edit Device Type"
@@ -899,25 +1038,17 @@ msgstr "هل أنت متأكد أنك تريد حذف هذا الموظف؟"
 msgid "Employee Details"
 msgstr "تفاصيل الموظف"
 
-#: .\templates\employees\detail.html:67 .\templates\employees\list.html:29
+#: .\templates\employees\detail.html:114 .\templates\employees\list.html:29
 msgid "User Type"
 msgstr "نوع المستخدم"
 
-#: .\templates\employees\detail.html:81 .\templates\employees\list.html:30
-msgid "Active"
-msgstr "نشط"
-
-#: .\templates\employees\detail.html:95
+#: .\templates\employees\detail.html:142
 msgid "Staff"
 msgstr "طاقم"
 
-#: .\templates\employees\detail.html:109 .\templates\employees\list.html:32
+#: .\templates\employees\detail.html:156 .\templates\employees\list.html:32
 msgid "Registered At"
 msgstr "تاريخ التسجيل"
-
-#: .\templates\employees\detail.html:119 .\templates\tickets\detail.html:130
-msgid "Back"
-msgstr "رجوع"
 
 #: .\templates\employees\form.html:5 .\templates\employees\form.html:13
 msgid "Edit Employee"
@@ -948,36 +1079,59 @@ msgstr "قم بتحديث ملفك الشخصي"
 msgid "Save Changes"
 msgstr "حفظ التغييرات"
 
-#: .\templates\includes\header.html:50
+#: .\templates\errors\403.html:11
+#, fuzzy
+#| msgid "You do not have permission to add a device type"
+msgid "You don’t have permission to access this page."
+msgstr "ليس لديك صلاحية لإضافة نوع جهاز"
+
+#: .\templates\errors\403.html:14
+#, fuzzy
+#| msgid "Back to Login"
+msgid "Go to Login"
+msgstr "الرجوع إلى تسجيل الدخول"
+
+#: .\templates\errors\404.html:11
+msgid "Oops! The page you are looking for could not be found."
+msgstr "عذراً! الصفحة التي تبحث عنها غير موجودة."
+
+#: .\templates\errors\404.html:14
+#, fuzzy
+#| msgid "Back to Login"
+msgid "Back to Home"
+msgstr "الرجوع إلى تسجيل الدخول"
+
+#: .\templates\errors\500.html:11
+#, fuzzy
+#| msgid "A database error occurred. Please try again later."
+msgid "Sorry! Something went wrong on our end. Please try again later."
+msgstr "حدث خطأ في قاعدة البيانات. يرجى المحاولة لاحقًا."
+
+#: .\templates\errors\500.html:14
+msgid "Try Again"
+msgstr "حاول مرة أخرى"
+
+#: .\templates\includes\header.html:51
 msgid "No department"
 msgstr "لا يوجد قسم"
 
-#: .\templates\includes\header.html:57
+#: .\templates\includes\header.html:62
 msgid "My Profile"
 msgstr "ملفي الشخصي"
 
-#: .\templates\includes\header.html:62
+#: .\templates\includes\header.html:67
 msgid "Change Password"
 msgstr "تغيير كلمة المرور"
 
-#: .\templates\includes\header.html:69
+#: .\templates\includes\header.html:74
 msgid "Logout"
 msgstr "تسجيل الخروج"
-
-#: .\templates\includes\sidebar.html:14
-msgid "Dashboard"
-msgstr "لوحة التحكم"
 
 #: .\templates\includes\sidebar.html:26
 #: .\templates\tickets\requesttype_manage.html:4
 #: .\templates\tickets\requesttype_manage.html:56 .\tickets\models.py:25
 msgid "Request Types"
 msgstr "أنواع الطلبات"
-
-#: .\templates\includes\sidebar.html:33 .\templates\tickets\list.html:4
-#: .\templates\tickets\list.html:92 .\tickets\models.py:45
-msgid "Tickets"
-msgstr "التذاكر"
 
 #: .\templates\inventory\delete.html:10
 msgid "Are you sure you want to delete the"
@@ -1142,21 +1296,6 @@ msgstr "مهم"
 msgid "Urgent"
 msgstr "عاجل"
 
-#: .\templates\tickets\list.html:74 .\templates\tickets\list.html:132
-#: .\tickets\models.py:8
-msgid "In Progress"
-msgstr "قيد التنفيذ"
-
-#: .\templates\tickets\list.html:76 .\templates\tickets\list.html:134
-#: .\tickets\models.py:9
-msgid "Resolved"
-msgstr "تم الحل"
-
-#: .\templates\tickets\list.html:78 .\templates\tickets\list.html:136
-#: .\tickets\models.py:10
-msgid "Rejected"
-msgstr "مرفوض"
-
 #: .\templates\tickets\list.html:159
 msgid "No tickets found."
 msgstr "لم يتم العثور على تذاكر."
@@ -1235,27 +1374,48 @@ msgstr "ليست لديك صلاحية لإضافة نوع الطلب"
 msgid "Request type added successfully"
 msgstr "تمت إضافة نوع الطلب بنجاح"
 
-#: .\tickets\views.py:170
+#: .\tickets\views.py:172
 msgid "Ticket created successfully"
 msgstr "تم إنشاء التذكرة بنجاح"
 
-#: .\tickets\views.py:174
+#: .\tickets\views.py:176
 msgid "Failed to create ticket"
 msgstr "فشل في إنشاء التذكرة"
 
-#: .\tickets\views.py:202
+#: .\tickets\views.py:204
 msgid "Ticket updated successfully"
 msgstr "تم تحديث التذكرة بنجاح"
 
-#: .\tickets\views.py:206
+#: .\tickets\views.py:208
 msgid "Failed to update ticket"
 msgstr "فشل في تحديث التذكرة"
 
-#: .\tickets\views.py:218 .\tickets\views.py:232
+#: .\tickets\views.py:220 .\tickets\views.py:234
 msgid "Ticket deleted successfully"
 msgstr "تم حذف التذكرة بنجاح"
 
-#: .\tickets\views.py:221
+#: .\tickets\views.py:223
 #, python-format
 msgid "Failed to delete ticket: %s"
 msgstr "فشل في حذف التذكرة: %s"
+
+#~ msgid "The Academic District - Al-Maamoura Al-Kubra, Zip Code 36258"
+#~ msgstr "المنطقة الأكاديمية - المعمورة الكبرى، الرمز البريدي 36258"
+
+#~ msgid "Short Address: PAGJ+X8H, Egypt"
+#~ msgstr "العنوان المختصر: PAGJ+X8H، مصر"
+
+#~ msgid "Device Information"
+#~ msgstr "معلومات الجهاز"
+
+#~ msgid "Custody Records"
+#~ msgstr "سجلات العهدة"
+
+#~ msgid "No accessories"
+#~ msgstr "لا توجد ملحقات"
+
+#~ msgid "No custody records for this device."
+#~ msgstr "لا توجد سجلات عهدة لهذا الجهاز."
+
+#~ msgid "Back to Devices"
+#~ msgstr "الرجوع إلى الأجهزة"

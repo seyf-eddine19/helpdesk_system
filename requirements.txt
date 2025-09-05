@@ -2,5 +2,6 @@ Django==5.2.5
 python-decouple==3.8
 pillow==11.3.0
 arabic-reshaper==3.0.0
+python-bidi==0.6.6
 reportlab==4.4.3
 openpyxl==3.1.5
