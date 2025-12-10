@@ -223,13 +223,3 @@ class TicketDeleteView(PermissionMixin, DeleteView):
             messages.error(self.request, _("Failed to delete ticket: %s") % str(e))
             return redirect(self.success_url)
 
-
-class TicketDeleteView(PermissionMixin, DeleteView):
-    model = Ticket
-    template_name = "tickets/delete.html"
-    success_url = reverse_lazy("ticket_list")
-    permission_required = "tickets.delete_ticket"
-
-    def delete(self, request, *args, **kwargs):
-        messages.success(self.request, _("Ticket deleted successfully"))
-        return super().delete(request, *args, **kwargs)

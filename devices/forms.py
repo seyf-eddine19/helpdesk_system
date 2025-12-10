@@ -1,15 +1,16 @@
 from django import forms
 from django.forms import inlineformset_factory
-from .models import Device, DeviceAccessory, Custody, DeviceCustody, AccessoryCustody, Status
+from .models import Device, DeviceAccessory, Custody, DeviceCustody, Status
 
 
 # Device Form
 class DeviceForm(forms.ModelForm):
     class Meta:
         model = Device
-        fields = ["name_en", "name_ar", "brand", "serial_number", "device_type", "condition", "status", "notes"]
+        fields = ["name_en", "name_ar", "brand", "serial_number", "it_service_tag", "device_type", "condition", "status", "notes"]
 
 
+# Device Accessory Form
 class DeviceAccessoryForm(forms.ModelForm):
     class Meta:
         model = DeviceAccessory
@@ -26,6 +27,7 @@ DeviceAccessoryFormSet = inlineformset_factory(
     can_delete=True
 )
 
+
 # Custody Form
 class CustodyForm(forms.ModelForm):
     class Meta:
@@ -37,81 +39,12 @@ class CustodyForm(forms.ModelForm):
         }
 
 
-# DeviceCustody Form
-class DeviceCustodyForm1(forms.ModelForm):
-    device = forms.ModelChoiceField(
-        queryset=Device.objects.filter(status=Status.AVAILABLE),
-        label="Device",
-    )
-    accessories = forms.ModelMultipleChoiceField(
-        queryset=DeviceAccessory.objects.all(),
-        required=False,
-        widget=forms.CheckboxSelectMultiple
-    )
-
-    class Meta:
-        model = DeviceCustody
-        fields = ["custody", "device", "accessories"]
-        
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for option in self.fields["accessories"].queryset:
-            self.fields["accessories"].widget.choices.queryset = DeviceAccessory.objects.all()
-        self.fields["accessories"].widget.attrs.update({"class": "accessory-checkbox"})
-
-    def save1(self, commit=True):
-        instance = super().save(commit=False)
-        if commit:
-            instance.save()
-            AccessoryCustody.objects.filter(device_custody=instance).delete()
-            for accessory in self.cleaned_data.get("accessories", []):
-                AccessoryCustody.objects.create(
-                    device_custody=instance,
-                    accessory=accessory,
-                )
-        return instance
-    
+# DeviceCustody Form 
 class DeviceCustodyForm(forms.ModelForm):
     device = forms.ModelChoiceField(
-        queryset=Device.objects.filter(status=Status.AVAILABLE),
+        queryset=Device.objects.none(),  # will set in __init__
         label="Device",
-    )
-    accessories = forms.ModelMultipleChoiceField(
-        queryset=DeviceAccessory.objects.select_related("device"),
-        required=False,
-        widget=forms.CheckboxSelectMultiple
-    )
-
-    class Meta:
-        model = DeviceCustody
-        fields = ["custody", "device", "accessories"]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # Build widget choices manually, injecting `data-device`
-        choices = []
-        for accessory in self.fields["accessories"].queryset:
-            choices.append((
-                accessory.pk,
-                f"{accessory.name_en} ({accessory.device.name_en})"
-            ))
-
-        self.fields["accessories"].widget.choices = choices
-
-        # Attach data-device mapping
-        self.fields["accessories"].widget.attrs.update({"class": "accessory-checkbox"})
-
-        # Per-choice attributes (Django >=3.1 supports `option_attrs`)
-        self.fields["accessories"].widget.option_attrs = {
-            accessory.pk: {"data-device": str(accessory.device_id)}
-            for accessory in self.fields["accessories"].queryset
-        }
-
-class DeviceCustodyForm(forms.ModelForm):
-    device = forms.ModelChoiceField(
-        queryset=Device.objects.filter(status=Status.AVAILABLE),
-        label="Device",
+        disabled=False  # will disable later for existing instance
     )
     accessories = forms.ModelMultipleChoiceField(
         queryset=DeviceAccessory.objects.select_related("device"),
@@ -126,11 +59,41 @@ class DeviceCustodyForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Add per-option attributes (Django >=3.1)
+        if self.instance and self.instance.pk:
+            # Existing device cannot be changed
+            self.fields["device"].queryset = Device.objects.filter(pk=self.instance.device.pk)
+            self.fields["device"].disabled = True
+
+            # Pre-select accessories for this custody
+            self.fields["accessories"].initial = self.instance.accessories.all()
+        else:
+            # New custody: show only available devices
+            self.fields["device"].queryset = Device.objects.filter(status=Status.AVAILABLE)
+
+        # Add data-device attribute to accessories for JS filtering (optional)
         self.fields["accessories"].widget.option_attrs = {
             accessory.pk: {"data-device": str(accessory.device_id)}
             for accessory in self.fields["accessories"].queryset
         }
+    
+    def clean_accessories(self):
+        selected_accessories = self.cleaned_data.get("accessories")
+        device = self.cleaned_data.get("device")
+
+        for accessory in selected_accessories:
+            if accessory.device != device:
+                raise forms.ValidationError(f"Accessory {accessory} does not belong to the selected device {device}.")
+
+        return selected_accessories
+    
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            instance.save()
+            # Update accessories through AccessoryCustody
+            instance.accessories.set(self.cleaned_data["accessories"])
+        return instance
+
 
 # Inline formset: multiple devices per custody
 DeviceCustodyFormSet = inlineformset_factory(

@@ -3,9 +3,9 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils.translation import gettext as _
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .models import InkCategory, InkInventory, OfficeSupplyCategory, OfficeSupply
-from .forms import InkInventoryForm, OfficeSupplyForm
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from .models import InkCategory, InkInventory, InkRequest, OfficeSupplyCategory, OfficeSupply
+from .forms import InkInventoryForm, InkRequestForm, OfficeSupplyForm
 
 from employees.mixins import PermissionMixin
 
@@ -195,7 +195,7 @@ def supplycategory_manage(request):
 class InkCategoryDeleteView(PermissionMixin, DeleteView):
     model = InkCategory
     template_name = "inventory/delete.html"
-    success_url = reverse_lazy("inkcategory_list")
+    success_url = reverse_lazy("inkcategory_manage")
     permission_required = "inventories.delete_inkcategory"
 
 
@@ -251,11 +251,46 @@ class InkInventoryDeleteView(PermissionMixin, DeleteView):
     permission_required = "inventories.delete_inkinventory"
 
 
+class InkInventoryDetailView(PermissionMixin, DetailView):
+    model = InkInventory
+    template_name = "inventory/inkinvent_detail.html"
+    context_object_name = "ink"
+    permission_required = "inventories.view_inkinventory"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["requests"] = self.object.requests.select_related("requested_by").order_by("-created_at")
+        return context
+
+
+class InkInventoryRequestView(PermissionMixin, CreateView):
+    model = InkRequest
+    form_class = InkRequestForm
+    template_name = "inventory/form.html"
+    permission_required = "inventories.add_inkrequest"
+
+    def get_success_url(self):
+        return reverse_lazy("inkinvent_detail", kwargs={"pk": self.kwargs["ink_id"]})
+
+    def form_valid(self, form):
+        ink = get_object_or_404(InkInventory, pk=self.kwargs["ink_id"])
+        form.instance.ink = ink
+        try:
+            response = super().form_valid(form)
+            messages.success(self.request, _("Ink request recorded successfully."))
+            return response
+        
+        except ValueError as e:
+            form.add_error("quantity_used", str(e))
+            return self.form_invalid(form)
+
+
+
 # --- Office Supplies ---
 class OfficeSupplyCategoryDeleteView(PermissionMixin, DeleteView):
     model = OfficeSupplyCategory
     template_name = "inventory/delete.html"
-    success_url = reverse_lazy("supplycategory_list")
+    success_url = reverse_lazy("supplycategory_manage")
     permission_required = "inventories.delete_officesupplycategory"
 
 

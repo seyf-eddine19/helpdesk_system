@@ -82,6 +82,9 @@
                 <td>{{ ink.category|default:"—" }}</td>
                 <td>{{ ink.quantity|default:"0" }}</td>
                 <td class="text-center d-flex gap-1 justify-content-center">
+                  <a href="{% url 'inkinvent_detail' ink.pk %}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-eye-fill"></i>
+                  </a>
                   {% if perms.inventories.change_inkinventory or user.is_superuser %}
                     <a href="{% url 'inkinvent_edit' ink.pk %}" class="btn btn-sm btn-custom-warning">
                       <i class="bi bi-pencil-square"></i>

@@ -51,10 +51,22 @@
               <div class="device-item border p-2 mb-2 rounded">
                 <div class="d-flex justify-content-between align-items-center">
                   <label class="form-label">{{ subform.device.label }}</label>
-                  <button type="button" class="btn btn-sm btn-outline-danger remove-device p-1 mx-2">
-                    <i class="bi bi-trash"></i>
-                  </button>
+
+                  <div class="d-flex">
+                    {% if not subform.instance.pk %}
+                      <button type="button" class="btn btn-sm btn-outline-danger remove-device p-1 mx-2">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    {% else %}
+                      <!-- زر حذف من قاعدة البيانات -->
+                      <a href="{% url 'devicecustody_delete' subform.instance.pk %}?next={{ request.path }}" 
+                        class="btn btn-sm btn-outline-danger p-1 mx-2">
+                        <i class="bi bi-trash-fill"></i> Delete
+                      </a>
+                    {% endif %}
+                  </div>
                 </div>
+
                 {{ subform.device }}
                 {% if subform.device.errors %}
                   <div class="text-danger small">{{ subform.device.errors|striptags }}</div>
@@ -62,7 +74,11 @@
 
                 <label class="form-label">{{ subform.accessories.label }}</label>
                 <div class="checkbox-list">
-                  {{ subform.accessories }}
+                  {% for checkbox in subform.accessories %}
+                  <label class="form-check-label d-block">
+                    {{ checkbox.tag }} {{ checkbox.choice_label }}
+                  </label>
+                  {% endfor %}
                 </div>
                 {% if subform.accessories.errors %}
                   <div class="text-danger small">{{ subform.accessories.errors|striptags }}</div>
@@ -86,7 +102,11 @@
             {{ devicecustody_formset.empty_form.device }}
             <label class="form-label">{{ devicecustody_formset.empty_form.accessories.label }}</label>
             <div class="checkbox-list">
-              {{ devicecustody_formset.empty_form.accessories }}
+              {% for checkbox in devicecustody_formset.empty_form.accessories %}
+              <label class="form-check-label d-block">
+                {{ checkbox.tag }} {{ checkbox.choice_label }}
+              </label>
+              {% endfor %}
             </div>
             {{ devicecustody_formset.empty_form.id }}
           </div>
@@ -110,30 +130,72 @@
     </form>
   </div>
 </div>
+{% endblock %}
 
-<!-- JavaScript for dynamic formset & accessory filtering -->
+{% block extra_js %}
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("devices-container");
   const addBtn = document.getElementById("add-device");
   const totalForms = document.querySelector("[name='{{ devicecustody_formset.prefix }}-TOTAL_FORMS']");
   const emptyFormDiv = document.getElementById("empty-form");
-
   if (!container || !addBtn || !totalForms || !emptyFormDiv) return;
 
-  // Add new device form
+  // Fetch accessories via API
+  async function loadAccessories(deviceId, wrapper, selected = []) {
+    const accessoriesContainer = wrapper.querySelector(".checkbox-list");
+    accessoriesContainer.innerHTML = "";
+    if (!deviceId) return;
+
+    const response = await fetch("{% url 'api_device_accessories' %}?device_id=" + deviceId);
+    if (!response.ok) return;
+
+    const data = await response.json();
+    data.accessories.forEach(acc => {
+      const label = document.createElement("label");
+      label.classList.add("form-check-label", "d-block");
+
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      const prefix = wrapper.querySelector("select").name.split('-device')[0];
+      input.name = prefix + '-accessories';
+      input.value = acc.id;
+      input.classList.add("form-check-input", "me-1");
+      if (selected.includes(acc.id.toString())) input.checked = true;
+
+      label.appendChild(input);
+      label.appendChild(document.createTextNode(acc.name));
+      accessoriesContainer.appendChild(label);
+    });
+  }
+
+  function setupDeviceWrapper(wrapper) {
+    const deviceField = wrapper.querySelector("select[id$='-device']");
+    if (!deviceField) return;
+
+    const selectedInputs = wrapper.querySelectorAll(".checkbox-list input:checked");
+    const selectedValues = Array.from(selectedInputs).map(i => i.value);
+
+    if (deviceField.value) loadAccessories(deviceField.value, wrapper, selectedValues);
+
+    deviceField.addEventListener("change", function () {
+      loadAccessories(this.value, wrapper, []);
+    });
+  }
+
+  container.querySelectorAll(".device-item").forEach(setupDeviceWrapper);
+
   addBtn.addEventListener("click", function () {
     const formIndex = parseInt(totalForms.value, 10);
     const newFormHtml = emptyFormDiv.innerHTML.replace(/__prefix__/g, formIndex);
-    const wrapper = document.createElement("div");
-    wrapper.classList.add("col-md-4", "p-1");
-    wrapper.innerHTML = newFormHtml;
-
-    container.appendChild(wrapper);
+    const wrapperCol = document.createElement("div");
+    wrapperCol.classList.add("col-md-4", "p-1");
+    wrapperCol.innerHTML = newFormHtml;
+    container.appendChild(wrapperCol);
     totalForms.value = formIndex + 1;
+    setupDeviceWrapper(wrapperCol.querySelector(".device-item"));
   });
 
-  // Remove device form
   container.addEventListener("click", function (e) {
     if (e.target.closest(".remove-device")) {
       const item = e.target.closest(".device-item");
@@ -147,51 +209,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
-
-  // Accessory filtering
-  function setupAccessoriesFilter(wrapper) {
-    const deviceField = wrapper.querySelector("select[id$='-device']");
-    const accessoriesContainer = wrapper.querySelector(".checkbox-list");
-
-    if (!deviceField || !accessoriesContainer) return;
-
-    // Initial state
-    accessoriesContainer.querySelectorAll("input").forEach(cb => {
-      if (!deviceField.value || cb.dataset.device !== deviceField.value) {
-        cb.disabled = true;
-        cb.parentElement.style.display = "none";
-      }
-    });
-
-    deviceField.addEventListener("change", function () {
-      const selectedDevice = this.value;
-
-      accessoriesContainer.querySelectorAll("input").forEach(cb => {
-        cb.disabled = true;
-        cb.parentElement.style.display = "none";
-
-        if (cb.dataset.device === selectedDevice) {
-          cb.disabled = false;
-          cb.parentElement.style.display = "block";
-        }
-      });
-    });
-  }
-
-  // Initialize existing
-  container.querySelectorAll(".device-item").forEach(setupAccessoriesFilter);
-
-  // Watch for dynamically added forms
-  const observer = new MutationObserver(mutations => {
-    mutations.forEach(mutation => {
-      mutation.addedNodes.forEach(node => {
-        if (node.classList && node.classList.contains("device-item")) {
-          setupAccessoriesFilter(node);
-        }
-      });
-    });
-  });
-  observer.observe(container, { childList: true });
 });
 </script>
 {% endblock %}

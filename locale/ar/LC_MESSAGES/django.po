@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-05 11:20+0100\n"
+"POT-Creation-Date: 2025-12-10 01:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -64,7 +64,7 @@ msgstr "نوع الجهاز (بالعربية)"
 msgid "Device Type (English)"
 msgstr "نوع الجهاز (بالإنجليزية)"
 
-#: .\devices\models.py:26 .\devices\models.py:40
+#: .\devices\models.py:26 .\devices\models.py:41
 #: .\templates\custody\list.html:32 .\templates\devices\detail.html:52
 #: .\templates\devices\list.html:32 .\templates\devices\list.html:113
 msgid "Device Type"
@@ -94,45 +94,49 @@ msgstr "الرقم التسلسلي"
 msgid "Brand"
 msgstr "العلامة التجارية"
 
-#: .\devices\models.py:41 .\devices\models.py:63
+#: .\devices\models.py:40
+msgid "IT Service Tag"
+msgstr "معرّف خدمة IT"
+
+#: .\devices\models.py:42 .\devices\models.py:64
 msgid "Condition"
 msgstr "الحالة"
 
-#: .\devices\models.py:42
+#: .\devices\models.py:43
 msgid "Custody Status"
 msgstr "حالة الاستلام"
 
-#: .\devices\models.py:43 .\devices\models.py:64 .\devices\models.py:81
-#: .\devices\models.py:109 .\templates\custody\detail.html:65
+#: .\devices\models.py:44 .\devices\models.py:65 .\devices\models.py:82
+#: .\devices\models.py:103 .\templates\custody\detail.html:65
 #: .\templates\devices\detail.html:89
 msgid "Notes"
 msgstr "ملاحظات"
 
-#: .\devices\models.py:44 .\templates\devices\detail.html:80
+#: .\devices\models.py:45 .\templates\devices\detail.html:80
 #: .\templates\devices\list.html:116
 msgid "Added At"
 msgstr "تاريخ الإضافة"
 
-#: .\devices\models.py:50 .\devices\models.py:59
+#: .\devices\models.py:51 .\devices\models.py:60
 msgid "Device"
 msgstr "جهاز"
 
-#: .\devices\models.py:51 .\templates\custody\detail.html:78
+#: .\devices\models.py:52 .\templates\custody\detail.html:78
 #: .\templates\custody\form.html:41 .\templates\custody\list.html:104
 #: .\templates\dashboard.html:40 .\templates\devices\list.html:4
 #: .\templates\devices\list.html:99 .\templates\includes\sidebar.html:40
 msgid "Devices"
 msgstr "الأجهزة"
 
-#: .\devices\models.py:60
+#: .\devices\models.py:61
 msgid "Accessory Name (Arabic)"
 msgstr "اسم الملحق (بالعربية)"
 
-#: .\devices\models.py:61
+#: .\devices\models.py:62
 msgid "Accessory Name (English)"
 msgstr "اسم الملحق (بالإنجليزية)"
 
-#: .\devices\models.py:62 .\templates\custody\detail.html:95
+#: .\devices\models.py:63 .\templates\custody\detail.html:95
 #: .\templates\devices\detail.html:62 .\templates\devices\list.html:53
 #: .\templates\devices\list.html:115 .\templates\tickets\detail.html:44
 #: .\templates\tickets\list.html:66 .\templates\tickets\list.html:109
@@ -140,54 +144,54 @@ msgstr "اسم الملحق (بالإنجليزية)"
 msgid "Status"
 msgstr "الحالة"
 
-#: .\devices\models.py:67 .\devices\models.py:132
+#: .\devices\models.py:68 .\devices\models.py:131
 msgid "Accessory"
 msgstr "ملحق"
 
-#: .\devices\models.py:68 .\devices\models.py:110
+#: .\devices\models.py:69 .\devices\models.py:104
 #: .\templates\custody\detail.html:108 .\templates\devices\detail.html:102
 #: .\templates\devices\form.html:39 .\templates\devices\list.html:117
 msgid "Accessories"
 msgstr "ملحقات"
 
-#: .\devices\models.py:78 .\employees\models.py:42
+#: .\devices\models.py:79 .\employees\models.py:42
 #: .\templates\custody\detail.html:37 .\templates\custody\list.html:101
 #: .\templates\tickets\detail.html:102 .\tickets\models.py:35
 msgid "Employee"
 msgstr "الموظف"
 
-#: .\devices\models.py:79 .\templates\custody\detail.html:46
+#: .\devices\models.py:80 .\templates\custody\detail.html:46
 #: .\templates\custody\list.html:102
 msgid "Custody Date"
 msgstr "تاريخ الاستلام"
 
-#: .\devices\models.py:80 .\templates\custody\detail.html:54
+#: .\devices\models.py:81 .\templates\custody\detail.html:54
 #: .\templates\custody\list.html:103
 msgid "Return Date"
 msgstr "تاريخ الإرجاع"
 
-#: .\devices\models.py:98 .\templates\includes\sidebar.html:52
+#: .\devices\models.py:92 .\templates\includes\sidebar.html:52
 msgid "Custody"
 msgstr "العهدة"
 
-#: .\devices\models.py:99 .\templates\custody\list.html:4
+#: .\devices\models.py:93 .\templates\custody\list.html:4
 #: .\templates\custody\list.html:87 .\templates\dashboard.html:63
 msgid "Custodies"
 msgstr "العُهد"
 
-#: .\devices\models.py:121
+#: .\devices\models.py:120
 msgid "Device Custody"
 msgstr "عهدة جهاز"
 
-#: .\devices\models.py:122
+#: .\devices\models.py:121
 msgid "Device Custodies"
 msgstr "عهد الأجهزة"
 
-#: .\devices\models.py:135
+#: .\devices\models.py:134
 msgid "Accessory Custody"
 msgstr "عهدة ملحق"
 
-#: .\devices\models.py:136
+#: .\devices\models.py:135
 msgid "Accessories Custody"
 msgstr "عهد الملحقات"
 
@@ -260,23 +264,27 @@ msgstr "تم تحديث الجهاز بنجاح"
 msgid "Device deleted successfully"
 msgstr "تم حذف الجهاز بنجاح"
 
-#: .\devices\views.py:318
+#: .\devices\views.py:324
 msgid "Custody created successfully."
 msgstr "تم إنشاء العهدة بنجاح."
 
-#: .\devices\views.py:320
+#: .\devices\views.py:326
 msgid "There was an error creating the custody."
 msgstr "حدث خطأ أثناء إنشاء العهدة."
 
-#: .\devices\views.py:348
+#: .\devices\views.py:366
 msgid "Custody updated successfully."
 msgstr "تم تحديث العهدة بنجاح."
 
-#: .\devices\views.py:350
+#: .\devices\views.py:368
 msgid "There was an error updating the custody."
 msgstr "حدث خطأ أثناء تحديث العهدة."
 
-#: .\devices\views.py:361
+#: .\devices\views.py:401
+msgid "Device custody entry deleted successfully"
+msgstr "تم حذف عهدة الجهاز بنجاح"
+
+#: .\devices\views.py:412
 msgid "Custody deleted successfully"
 msgstr "تم حذف العهدة بنجاح"
 
@@ -292,6 +300,7 @@ msgstr "إضافة"
 #: .\templates\devices\devicetype_manage.html:39
 #: .\templates\employees\detail.html:171
 #: .\templates\inventory\inkcategory_manage.html:39
+#: .\templates\inventory\inkinvent_detail.html:114
 #: .\templates\inventory\supplycategory_manage.html:39
 #: .\templates\tickets\detail.html:135
 #: .\templates\tickets\requesttype_manage.html:39
@@ -302,6 +311,7 @@ msgstr "تعديل"
 #: .\templates\custody\detail.html:144 .\templates\devices\delete.html:16
 #: .\templates\devices\detail.html:171 .\templates\employees\delete.html:16
 #: .\templates\employees\detail.html:176 .\templates\inventory\delete.html:16
+#: .\templates\inventory\inkinvent_detail.html:119
 #: .\templates\tickets\delete.html:16 .\templates\tickets\detail.html:140
 msgid "Delete"
 msgstr "حذف"
@@ -310,47 +320,47 @@ msgstr "حذف"
 msgid "View"
 msgstr "عرض"
 
-#: .\employees\forms.py:41 .\employees\forms.py:139 .\employees\models.py:31
+#: .\employees\forms.py:41 .\employees\forms.py:147 .\employees\models.py:31
 #: .\templates\employees\detail.html:27 .\templates\employees\list.html:24
 msgid "Full Name (Arabic)"
 msgstr "الاسم الكامل (بالعربية)"
 
-#: .\employees\forms.py:42 .\employees\forms.py:140 .\employees\models.py:32
+#: .\employees\forms.py:42 .\employees\forms.py:148 .\employees\models.py:32
 #: .\templates\employees\detail.html:35 .\templates\employees\list.html:25
 msgid "Full Name (English)"
 msgstr "الاسم الكامل (بالإنجليزية)"
 
-#: .\employees\forms.py:43 .\employees\forms.py:141 .\employees\models.py:33
+#: .\employees\forms.py:43 .\employees\forms.py:149 .\employees\models.py:33
 #: .\templates\employees\detail.html:43
 msgid "Birth Date"
 msgstr "تاريخ الميلاد"
 
-#: .\employees\forms.py:44 .\employees\forms.py:142 .\employees\models.py:34
+#: .\employees\forms.py:44 .\employees\forms.py:150 .\employees\models.py:34
 #: .\templates\employees\detail.html:57
 msgid "ID / Iqama Number"
 msgstr "رقم الهوية / الإقامة"
 
-#: .\employees\forms.py:45 .\employees\forms.py:143 .\employees\models.py:35
+#: .\employees\forms.py:45 .\employees\forms.py:151 .\employees\models.py:35
 #: .\templates\employees\detail.html:65
 msgid "Address"
 msgstr "العنوان"
 
-#: .\employees\forms.py:46 .\employees\forms.py:144 .\employees\models.py:36
+#: .\employees\forms.py:46 .\employees\forms.py:152 .\employees\models.py:36
 #: .\templates\employees\detail.html:74
 msgid "Job Title"
 msgstr "المسمى الوظيفي"
 
-#: .\employees\forms.py:47 .\employees\forms.py:145 .\employees\models.py:37
+#: .\employees\forms.py:47 .\employees\forms.py:153 .\employees\models.py:37
 #: .\templates\employees\detail.html:82
 msgid "Job Number"
 msgstr "الرقم الوظيفي"
 
-#: .\employees\forms.py:48 .\employees\forms.py:146 .\employees\models.py:38
+#: .\employees\forms.py:48 .\employees\forms.py:154 .\employees\models.py:38
 #: .\templates\employees\detail.html:90 .\templates\employees\list.html:26
 msgid "Department"
 msgstr "القسم"
 
-#: .\employees\forms.py:49 .\employees\forms.py:147 .\employees\models.py:39
+#: .\employees\forms.py:49 .\employees\forms.py:155 .\employees\models.py:39
 #: .\templates\employees\detail.html:98 .\templates\employees\list.html:27
 msgid "Phone Number"
 msgstr "رقم الهاتف"
@@ -363,17 +373,28 @@ msgstr "النوع"
 msgid "User Permissions"
 msgstr "صلاحيات المستخدم"
 
-#: .\employees\forms.py:153 .\templates\accounts\login.html:32
+#: .\employees\forms.py:89 .\employees\forms.py:126
+#: .\templates\dashboard.html:91 .\templates\employees\detail.html:128
+#: .\templates\employees\list.html:30
+msgid "Active"
+msgstr "نشط"
+
+#: .\employees\forms.py:90 .\employees\forms.py:127
+#: .\templates\employees\list.html:31
+msgid "Superuser"
+msgstr "مدير النظام"
+
+#: .\employees\forms.py:161 .\templates\accounts\login.html:32
 #: .\templates\employees\list.html:23
 msgid "Username"
 msgstr "اسم المستخدم"
 
-#: .\employees\forms.py:154 .\templates\employees\detail.html:106
+#: .\employees\forms.py:162 .\templates\employees\detail.html:106
 #: .\templates\employees\list.html:28
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
-#: .\employees\models.py:17
+#: .\employees\models.py:17 .\templates\inventory\inkinvent_detail.html:79
 msgid "User"
 msgstr "مستخدم"
 
@@ -391,41 +412,42 @@ msgstr "الموظفون"
 msgid "This email does not exist in our records."
 msgstr "هذا البريد الإلكتروني غير موجود في سجلاتنا."
 
-#: .\helpdesk_system\settings.py:114
+#: .\helpdesk_system\settings.py:97
 msgid "English"
 msgstr "الإنجليزية"
 
-#: .\helpdesk_system\settings.py:115
+#: .\helpdesk_system\settings.py:98
 msgid "Arabic"
 msgstr "العربية"
 
-#: .\inventories\models.py:7
+#: .\inventories\models.py:13
 msgid "Ink Category (Arabic)"
 msgstr "فئة الحبر (بالعربية)"
 
-#: .\inventories\models.py:8
+#: .\inventories\models.py:14
 msgid "Ink Category (English)"
 msgstr "فئة الحبر (بالإنجليزية)"
 
-#: .\inventories\models.py:11
+#: .\inventories\models.py:17
 msgid "Ink Category"
 msgstr "فئة الحبر"
 
-#: .\inventories\models.py:12 .\templates\includes\sidebar.html:64
+#: .\inventories\models.py:18 .\templates\includes\sidebar.html:64
 #: .\templates\inventory\inkcategory_manage.html:4
 #: .\templates\inventory\inkcategory_manage.html:56
 msgid "Ink Categories"
 msgstr "فئات الحبر"
 
-#: .\inventories\models.py:21
+#: .\inventories\models.py:26
 msgid "Ink Name (Arabic)"
 msgstr "اسم الحبر (بالعربية)"
 
-#: .\inventories\models.py:22
+#: .\inventories\models.py:27
 msgid "Ink Name (English)"
 msgstr "اسم الحبر (بالإنجليزية)"
 
-#: .\inventories\models.py:23 .\inventories\models.py:53
+#: .\inventories\models.py:32 .\inventories\models.py:89
+#: .\templates\inventory\inkinvent_detail.html:36
 #: .\templates\inventory\inkinvent_list.html:33
 #: .\templates\inventory\inkinvent_list.html:71
 #: .\templates\inventory\supply_list.html:26
@@ -433,60 +455,90 @@ msgstr "اسم الحبر (بالإنجليزية)"
 msgid "Category"
 msgstr "الفئة"
 
-#: .\inventories\models.py:24 .\inventories\models.py:54
+#: .\inventories\models.py:34 .\inventories\models.py:90
+#: .\templates\inventory\inkinvent_detail.html:46
 #: .\templates\inventory\inkinvent_list.html:72
 #: .\templates\inventory\supply_list.html:63
 msgid "Quantity"
 msgstr "الكمية"
 
-#: .\inventories\models.py:25 .\inventories\models.py:55
+#: .\inventories\models.py:35 .\inventories\models.py:91
+#: .\templates\inventory\inkinvent_detail.html:58
 #: .\templates\tickets\detail.html:120 .\tickets\models.py:39
 msgid "Created At"
 msgstr "تاريخ الإنشاء"
 
-#: .\inventories\models.py:26 .\inventories\models.py:56 .\tickets\models.py:40
+#: .\inventories\models.py:36 .\inventories\models.py:92 .\tickets\models.py:40
 msgid "Updated At"
 msgstr "تاريخ التحديث"
 
-#: .\inventories\models.py:29
+#: .\inventories\models.py:39 .\inventories\models.py:49
 msgid "Ink"
 msgstr "حبر"
 
-#: .\inventories\models.py:30 .\templates\includes\sidebar.html:59
+#: .\inventories\models.py:40 .\templates\includes\sidebar.html:59
 msgid "Inks"
 msgstr "أحبار"
 
-#: .\inventories\models.py:38
+#: .\inventories\models.py:50
+msgid "Requested By"
+msgstr "طُلب من قِبل"
+
+#: .\inventories\models.py:51 .\templates\inventory\inkinvent_detail.html:80
+msgid "Quantity Used"
+msgstr "الكمية المستعملة"
+
+#: .\inventories\models.py:52
+msgid "Reason / Purpose"
+msgstr "السبب / الغرض"
+
+#: .\inventories\models.py:53
+msgid "Requested At"
+msgstr "تاريخ الطلب"
+
+#: .\inventories\models.py:56
+msgid "Ink Request"
+msgstr "طلب حبر"
+
+#: .\inventories\models.py:57
+msgid "Ink Requests"
+msgstr "طلبات الحبر"
+
+#: .\inventories\models.py:67
+msgid "Not enough ink in stock"
+msgstr "لا يوجد حبر كافٍ في المخزون"
+
+#: .\inventories\models.py:74
 msgid "Supply Category (Arabic)"
 msgstr "فئة المستلزمات (بالعربية)"
 
-#: .\inventories\models.py:39
+#: .\inventories\models.py:75
 msgid "Supply Category (English)"
 msgstr "فئة المستلزمات (بالإنجليزية)"
 
-#: .\inventories\models.py:42
+#: .\inventories\models.py:78
 msgid "Supply Category"
 msgstr "فئة المستلزمات"
 
-#: .\inventories\models.py:43 .\templates\includes\sidebar.html:76
+#: .\inventories\models.py:79 .\templates\includes\sidebar.html:76
 #: .\templates\inventory\supplycategory_manage.html:4
 #: .\templates\inventory\supplycategory_manage.html:55
 msgid "Supply Categories"
 msgstr "فئات المستلزمات"
 
-#: .\inventories\models.py:51
+#: .\inventories\models.py:87
 msgid "Supply Name (Arabic)"
 msgstr "اسم المستلزم (بالعربية)"
 
-#: .\inventories\models.py:52
+#: .\inventories\models.py:88
 msgid "Supply Name (English)"
 msgstr "اسم المستلزم (بالإنجليزية)"
 
-#: .\inventories\models.py:59
+#: .\inventories\models.py:95
 msgid "Office Supply"
 msgstr "مستلزم مكتبي"
 
-#: .\inventories\models.py:60 .\templates\includes\sidebar.html:71
+#: .\inventories\models.py:96 .\templates\includes\sidebar.html:71
 #: .\templates\inventory\supply_list.html:4
 #: .\templates\inventory\supply_list.html:47
 msgid "Office Supplies"
@@ -556,6 +608,10 @@ msgstr "ليس لديك صلاحية لإضافة فئة المستلزمات"
 msgid "Supply category added successfully"
 msgstr "تمت إضافة فئة المستلزمات بنجاح"
 
+#: .\inventories\views.py:280
+msgid "Ink request recorded successfully."
+msgstr "تم تسجيل طلب الحبر بنجاح"
+
 #: .\templates\accounts\login.html:10
 #: .\templates\accounts\password_reset_form.html:10
 msgid "Logo"
@@ -589,7 +645,7 @@ msgstr "تذكرني"
 msgid "Forgot Password?"
 msgstr "هل نسيت كلمة المرور؟"
 
-#: .\templates\accounts\login.html:52 .\templates\auth_base.html:9
+#: .\templates\accounts\login.html:52 .\templates\auth_base.html:7
 #: .\templates\includes\header.html:81
 msgid "Login"
 msgstr "تسجيل الدخول"
@@ -609,8 +665,9 @@ msgid "Change password"
 msgstr "تغيير كلمة المرور"
 
 #: .\templates\accounts\password_change.html:24
-#: .\templates\custody\delete.html:19 .\templates\custody\form.html:107
-#: .\templates\devices\delete.html:19
+#: .\templates\custody\delete.html:19
+#: .\templates\custody\devicecustody_delete.html:28
+#: .\templates\custody\form.html:127 .\templates\devices\delete.html:19
 #: .\templates\devices\devicetype_manage.html:36
 #: .\templates\devices\form.html:82 .\templates\employees\delete.html:19
 #: .\templates\employees\form.html:91
@@ -717,7 +774,8 @@ msgstr "إعادة تعيين كلمة المرور"
 
 #: .\templates\accounts\password_reset_email.html:131
 msgid ""
-"If the button above does not work, copy and paste this link into your browser:"
+"If the button above does not work, copy and paste this link into your "
+"browser:"
 msgstr "إذا لم يعمل الزر أعلاه، انسخ هذا الرابط والصقه في متصفحك:"
 
 #: .\templates\accounts\password_reset_email.html:138
@@ -750,10 +808,9 @@ msgstr "إعادة تعيين كلمة المرور على %(site_name)s"
 msgid "HelpDesk Dashboard"
 msgstr "لوحة تحكم مكتب المساعدة"
 
-#: .\templates\custody\delete.html:4 .\templates\devices\delete.html:4
-#: .\templates\tickets\delete.html:4
-msgid "Delete Ticket"
-msgstr "حذف التذكرة"
+#: .\templates\custody\delete.html:4
+msgid "Delete Custody"
+msgstr "حذف العهدة"
 
 #: .\templates\custody\delete.html:9 .\templates\devices\delete.html:9
 #: .\templates\employees\delete.html:9 .\templates\inventory\delete.html:9
@@ -761,10 +818,9 @@ msgstr "حذف التذكرة"
 msgid "Confirm Delete"
 msgstr "تأكيد الحذف"
 
-#: .\templates\custody\delete.html:10 .\templates\devices\delete.html:10
-#: .\templates\tickets\delete.html:10
-msgid "Are you sure you want to delete this ticket?"
-msgstr "هل أنت متأكد أنك تريد حذف هذه التذكرة؟"
+#: .\templates\custody\delete.html:10
+msgid "Are you sure you want to delete this custody?"
+msgstr "هل أنت متأكد أنك تريد حذف هذه العهدة؟"
 
 #: .\templates\custody\detail.html:4 .\templates\custody\detail.html:12
 msgid "Custody Details"
@@ -787,9 +843,37 @@ msgid "No devices linked to this custody."
 msgstr "لا توجد أجهزة مرتبطة بهذه العهدة."
 
 #: .\templates\custody\detail.html:134 .\templates\devices\detail.html:161
-#: .\templates\employees\detail.html:166 .\templates\tickets\detail.html:130
+#: .\templates\employees\detail.html:166
+#: .\templates\inventory\inkinvent_detail.html:109
+#: .\templates\tickets\detail.html:130
 msgid "Back"
 msgstr "رجوع"
+
+#: .\templates\custody\devicecustody_delete.html:4
+#: .\templates\custody\devicecustody_delete.html:10
+msgid "Delete Device Custody"
+msgstr "حذف عهدة الجهاز"
+
+
+#: .\templates\custody\devicecustody_delete.html:14
+msgid "Warning:"
+msgstr "تحذير:"
+
+#: .\templates\custody\devicecustody_delete.html:14
+msgid "Once you delete this device custody entry, it cannot be restored!"
+msgstr "بمجرد حذف هذا السجل الخاص بجهاز الحجز، لا يمكن استعادته!"
+
+#: .\templates\custody\devicecustody_delete.html:17
+msgid "Are you sure you want to delete the custody of device:"
+msgstr "هل أنت متأكد أنك تريد حذف حجز الجهاز:"
+
+#: .\templates\custody\devicecustody_delete.html:19
+msgid "for employee"
+msgstr "للموظف"
+
+#: .\templates\custody\devicecustody_delete.html:25
+msgid "Delete Permanently"
+msgstr "حذف نهائي"
 
 #: .\templates\custody\form.html:5 .\templates\custody\form.html:14
 msgid "Edit Custody"
@@ -804,13 +888,13 @@ msgstr "عهدة جديدة"
 msgid "Add Device"
 msgstr "إضافة جهاز"
 
-#: .\templates\custody\form.html:101 .\templates\devices\form.html:76
+#: .\templates\custody\form.html:121 .\templates\devices\form.html:76
 #: .\templates\employees\form.html:89 .\templates\inventory\form.html:29
 #: .\templates\tickets\form.html:57
 msgid "Update"
 msgstr "تحديث"
 
-#: .\templates\custody\form.html:103 .\templates\devices\form.html:78
+#: .\templates\custody\form.html:123 .\templates\devices\form.html:78
 #: .\templates\employees\form.html:89 .\templates\inventory\form.html:31
 #: .\templates\tickets\form.html:59
 msgid "Create"
@@ -892,11 +976,6 @@ msgstr "مرفوض"
 msgid "Maintenance"
 msgstr "قيد الصيانة"
 
-#: .\templates\dashboard.html:91 .\templates\employees\detail.html:128
-#: .\templates\employees\list.html:30
-msgid "Active"
-msgstr "نشط"
-
 #: .\templates\dashboard.html:92
 msgid "Inactive"
 msgstr "غير نشط"
@@ -928,6 +1007,14 @@ msgstr "آخر عهد الأجهزة"
 #: .\templates\dashboard.html:153
 msgid "No custodies yet."
 msgstr "لا توجد عُهد."
+
+#: .\templates\devices\delete.html:4 .\templates\tickets\delete.html:4
+msgid "Delete Ticket"
+msgstr "حذف التذكرة"
+
+#: .\templates\devices\delete.html:10 .\templates\tickets\delete.html:10
+msgid "Are you sure you want to delete this ticket?"
+msgstr "هل أنت متأكد أنك تريد حذف هذه التذكرة؟"
 
 #: .\templates\devices\detail.html:4 .\templates\devices\detail.html:12
 msgid "Device Details"
@@ -1022,10 +1109,6 @@ msgstr "تعديل الموظف"
 #: .\templates\employees\list.html:13
 msgid "New Employee"
 msgstr "موظف جديد"
-
-#: .\templates\employees\list.html:31
-msgid "Superuser"
-msgstr "مدير النظام"
 
 #: .\templates\employees\list.html:87
 msgid "No employees found."
@@ -1133,6 +1216,45 @@ msgstr "اسم الفئة (بالإنجليزية)"
 msgid "No ink categories found."
 msgstr "لم يتم العثور على فئات حبر."
 
+#: .\templates\inventory\inkinvent_detail.html:4
+#: .\templates\inventory\inkinvent_detail.html:12
+msgid "Ink Details"
+msgstr "تفاصيل الحبر"
+
+#: .\templates\inventory\inkinvent_detail.html:26
+msgid "Ink Name"
+msgstr "اسم الحبر"
+
+#: .\templates\inventory\inkinvent_detail.html:61
+#: .\templates\tickets\detail.html:123
+msgid "Last updated"
+msgstr "آخر تحديث"
+
+#: .\templates\inventory\inkinvent_detail.html:61
+#: .\templates\tickets\detail.html:123
+msgid "ago"
+msgstr "منذ"
+
+#: .\templates\inventory\inkinvent_detail.html:68
+msgid "Request History"
+msgstr "سجل الطلبات"
+
+#: .\templates\inventory\inkinvent_detail.html:70
+msgid "New Request"
+msgstr "طلب جديد"
+
+#: .\templates\inventory\inkinvent_detail.html:81
+msgid "Reason"
+msgstr "السبب"
+
+#: .\templates\inventory\inkinvent_detail.html:82
+msgid "Date"
+msgstr "التاريخ"
+
+#: .\templates\inventory\inkinvent_detail.html:100
+msgid "No requests recorded for this ink."
+msgstr "لا توجد طلبات مسجلة لهذا الحبر."
+
 #: .\templates\inventory\inkinvent_list.html:4
 #: .\templates\inventory\inkinvent_list.html:56
 msgid "Ink Inventory"
@@ -1156,7 +1278,7 @@ msgstr "الاسم (بالعربية)"
 msgid "Name (English)"
 msgstr "الاسم (بالإنجليزية)"
 
-#: .\templates\inventory\inkinvent_list.html:100
+#: .\templates\inventory\inkinvent_list.html:103
 #: .\templates\inventory\supply_list.html:91
 msgid "No office supplies found."
 msgstr "لم يتم العثور على مستلزمات مكتبية."
@@ -1215,14 +1337,6 @@ msgstr "لم تتم إضافة ملاحظات بعد."
 #: .\templates\tickets\detail.html:110 .\tickets\models.py:36
 msgid "Technician"
 msgstr "الفني"
-
-#: .\templates\tickets\detail.html:123
-msgid "Last updated"
-msgstr "آخر تحديث"
-
-#: .\templates\tickets\detail.html:123
-msgid "ago"
-msgstr "منذ"
 
 #: .\templates\tickets\form.html:6 .\templates\tickets\form.html:17
 msgid "Edit Ticket"
@@ -1346,7 +1460,7 @@ msgstr "تم تحديث التذكرة بنجاح"
 msgid "Failed to update ticket"
 msgstr "فشل في تحديث التذكرة"
 
-#: .\tickets\views.py:220 .\tickets\views.py:234
+#: .\tickets\views.py:220
 msgid "Ticket deleted successfully"
 msgstr "تم حذف التذكرة بنجاح"
 
@@ -1354,6 +1468,12 @@ msgstr "تم حذف التذكرة بنجاح"
 #, python-format
 msgid "Failed to delete ticket: %s"
 msgstr "فشل في حذف التذكرة: %s"
+
+#~ msgid "Requested quantity exceeds available stock"
+#~ msgstr "الكمية المطلوبة تتجاوز المخزون المتاح"
+
+#~ msgid "Ink request recorded and inventory updated successfully"
+#~ msgstr "تم تسجيل طلب الحبر وتحديث المخزون بنجاح"
 
 #~ msgid "The Academic District - Al-Maamoura Al-Kubra, Zip Code 36258"
 #~ msgstr "المنطقة الأكاديمية - المعمورة الكبرى، الرمز البريدي 36258"
@@ -1369,9 +1489,6 @@ msgstr "فشل في حذف التذكرة: %s"
 
 #~ msgid "No accessories"
 #~ msgstr "لا توجد ملحقات"
-
-#~ msgid "No custody records for this device."
-#~ msgstr "لا توجد سجلات عهدة لهذا الجهاز."
 
 #~ msgid "Back to Devices"
 #~ msgstr "الرجوع إلى الأجهزة"

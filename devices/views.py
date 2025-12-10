@@ -21,13 +21,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.http import FileResponse, HttpResponse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
+from django.http import JsonResponse, FileResponse, HttpResponse
 from django.db import IntegrityError, DatabaseError
 from django.db.models import Q
 
 from employees.mixins import PermissionMixin, ExportMixin
-from .models import Device, DeviceType, Custody, Status
+from .models import Device, DeviceType, Custody, Status, DeviceCustody, DeviceAccessory
 from .forms import DeviceForm, DeviceAccessoryFormSet, CustodyForm, DeviceCustodyFormSet
 
 # Device Types (manage manually)
@@ -226,7 +226,7 @@ class DeviceUpdateView(PermissionMixin, UpdateView):
 
 class DeviceDeleteView(DeleteView):
     model = Device
-    template_name = "devices/confirm_delete.html"
+    template_name = "devices/delete.html"
     success_url = reverse_lazy("device_list")
     permission_required = "devices.delete_device"
 
@@ -244,11 +244,17 @@ class CustodyListView(PermissionMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
+        user = self.request.user
         queryset = super().get_queryset().select_related("employee").prefetch_related("devices__device")
-        
+
         # Restrict access for non-managers
-        if not self.request.user.groups.filter(name__in=["Manager", "It Employee"]).exists() and not self.request.user.is_superuser:
-            queryset = queryset.filter(employee=self.request.user)
+        is_manager_or_it = user.groups.filter(name__in=["Manager", "IT Employee"]).exists()
+        if not is_manager_or_it and not user.is_superuser:
+            employee_profile = getattr(user, "employee_profile", None)
+            if employee_profile:
+                queryset = queryset.filter(employee=employee_profile)
+            else:
+                queryset = queryset.none()
 
         search_query = self.request.GET.get("q", "").strip()
         device_type_id = self.request.GET.get("device_type", "").strip()
@@ -331,11 +337,23 @@ class CustodyUpdateView(PermissionMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.POST:
-            context["devicecustody_formset"] = DeviceCustodyFormSet(
-                self.request.POST, instance=self.object
-            )
+            formset = DeviceCustodyFormSet(self.request.POST, instance=self.object)
         else:
-            context["devicecustody_formset"] = DeviceCustodyFormSet(instance=self.object)
+            formset = DeviceCustodyFormSet(instance=self.object)
+
+        # Prepare a list of selected accessory IDs for each subform
+        selected_accessories = {}
+        for subform in formset:
+            if subform.instance.pk:
+                # Convert QuerySet to a list of IDs
+                selected_accessories[subform.prefix] = list(
+                    subform.instance.accessories.values_list("id", flat=True)
+                )
+            else:
+                selected_accessories[subform.prefix] = []
+
+        context["devicecustody_formset"] = formset
+        context["selected_accessories"] = selected_accessories
         return context
 
     def form_valid(self, form):
@@ -349,6 +367,39 @@ class CustodyUpdateView(PermissionMixin, UpdateView):
             return redirect(self.success_url)
         messages.error(self.request, _("There was an error updating the custody."))
         return self.render_to_response(self.get_context_data(form=form))
+
+
+class DeviceAccessoriesAPIView(PermissionMixin, View):
+    permission_required = "devices.view_deviceaccessory"
+
+    def get(self, request, *args, **kwargs):
+        device_id = request.GET.get("device_id")
+        if not device_id:
+            return JsonResponse({"error": "No device_id provided."}, status=400)
+
+        accessories = DeviceAccessory.objects.filter(device_id=device_id)
+        data = [
+            {"id": acc.id, "name": f"{acc.name_en} / {acc.name_ar}"}
+            for acc in accessories
+        ]
+        return JsonResponse({"accessories": data})
+
+
+class DeviceCustodyDeleteView(PermissionMixin, DeleteView):
+    model = DeviceCustody
+    template_name = "custody/devicecustody_delete.html"
+    permission_required = "devices.delete_devicecustody"
+
+    def get_success_url(self):
+        # احصل على الرابط التالي من GET parameter أو العودة للقائمة بشكل افتراضي
+        next_url = self.request.GET.get("next")
+        if next_url:
+            return next_url
+        return reverse_lazy("custody_list")
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, _("Device custody entry deleted successfully"))
+        return super().delete(request, *args, **kwargs)
 
 
 class CustodyDeleteView(PermissionMixin, DeleteView):

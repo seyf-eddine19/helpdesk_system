@@ -85,6 +85,10 @@ class EmployeeCreationForm(EmployeeBaseForm, UserCreationForm):
             "is_active": forms.CheckboxInput(attrs={"class": "form-check-input"}),
             "is_superuser": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }
+        labels = {
+            "is_active": _("Active"),
+            "is_superuser": _("Superuser"),
+        }
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -117,6 +121,10 @@ class EmployeeUpdateForm(EmployeeBaseForm, UserChangeForm):
         widgets = {
             "is_active": forms.CheckboxInput(attrs={"class": "form-check-input"}),
             "is_superuser": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        }
+        labels = {
+            "is_active": _("Active"),
+            "is_superuser": _("Superuser"),
         }
 
     def save(self, commit=True):

@@ -97,12 +97,12 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 "rejected": Ticket.objects.filter(employee=user, status="REJECTED").count(),
             }
             context["custodies_summary"] = {
-                "my_custodies": Custody.objects.filter(employee=user.employee).count() if hasattr(user, "employee") else 0,
+                "my_custodies": Custody.objects.filter(employee=user.employee_profile.pk).count() if hasattr(user, "employee") else 0,
             }
-            context["recent_tickets"] = Ticket.objects.filter(employee=user.employee).order_by("-created_at")[:5]
+            context["recent_tickets"] = Ticket.objects.filter(employee=user.employee_profile.pk).order_by("-created_at")[:5]
             context["recent_custodies"] = (
                 Custody.objects
-                .filter(employee=user.employee)
+                .filter(employee=user.employee_profile.pk)
                 .select_related("employee")
                 .prefetch_related("devices__device")
                 .order_by("-id")[:5]

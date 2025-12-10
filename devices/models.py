@@ -37,6 +37,7 @@ class Device(models.Model):
     name_en = models.CharField(max_length=100, verbose_name=_("Device Name (English)"))
     serial_number = models.CharField(max_length=100, unique=True, verbose_name=_("Serial Number"))
     brand = models.CharField(max_length=100, verbose_name=_("Brand"))
+    it_service_tag = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("IT Service Tag"))
     device_type = models.ForeignKey(DeviceType, on_delete=models.SET_NULL, null=True, verbose_name=_("Device Type"))
     condition = models.CharField(max_length=50, choices=Condition.choices, default=Condition.NEW, verbose_name=_("Condition"))
     status = models.CharField(max_length=50, choices=Status.choices, default=Status.AVAILABLE, verbose_name=_("Custody Status"))
@@ -82,18 +83,11 @@ class Custody(models.Model):
 
     def count_devices(self):
         return self.devices.count()
-    
-    def save(self, *args, **kwargs):
-        is_new = self.pk is None
-        super().save(*args, **kwargs)
-       
-        for device_custody in self.devices.all():
-            if self.return_date:
-                device_custody.device.status = Status.AVAILABLE
-            elif is_new:
-                device_custody.device.status = Status.IN_USE
-            device_custody.device.save()
 
+    def get_update_url(self):
+        from django.urls import reverse
+        return reverse("custody_edit", kwargs={"pk": self.pk})
+    
     class Meta:
         verbose_name = _("Custody")
         verbose_name_plural = _("Custodies")
@@ -109,13 +103,18 @@ class DeviceCustody(models.Model):
     notes = models.TextField(blank=True, null=True, verbose_name=_("Notes"))
     accessories = models.ManyToManyField("DeviceAccessory", through="AccessoryCustody", related_name="custodies", verbose_name=_("Accessories"))
 
-    def savetest(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.custody.return_date:
             self.device.status = Status.AVAILABLE
         else:
             self.device.status = Status.IN_USE
         self.device.save()
+    
+    def delete(self, using=None, keep_parents=False):
+        self.device.status = Status.AVAILABLE
+        self.device.save()
+        super().delete(using=using, keep_parents=keep_parents)
 
     class Meta:
         verbose_name = _("Device Custody")

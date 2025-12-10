@@ -11,6 +11,8 @@ urlpatterns = [
     path("inks/add/", views.InkInventoryCreateView.as_view(), name="inkinvent_add"),
     path("inks/<int:pk>/edit/", views.InkInventoryUpdateView.as_view(), name="inkinvent_edit"),
     path("inks/<int:pk>/delete/", views.InkInventoryDeleteView.as_view(), name="inkinvent_delete"),
+    path("inks/<int:pk>/detail/", views.InkInventoryDetailView.as_view(), name="inkinvent_detail"),
+    path("inks/<int:ink_id>/request/", views.InkInventoryRequestView.as_view(), name="inkinvent_request"),
 
     # --- Office Supply Categories ---
     path("supply-categories/", views.supplycategory_manage, name="supplycategory_manage"),

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Ink Details" %}{% endblock %}
+
+{% block content %}
+<div class="container my-3">
+  <div class="card shadow">
+    <!-- Header -->
+    <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-droplet mx-2"></i> {% trans "Ink Details" %}
+      </h4>
+      <span class="badge bg-light text-dark px-3 py-2 fs-6">
+        #{{ ink.id }}
+      </span>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-4">
+      <div class="row g-4">
+        
+        <!-- Ink Name -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-type mx-2"></i> {% trans "Ink Name" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {{ ink.name_en }} / {{ ink.name_ar }}
+          </p>
+        </div>
+
+        <!-- Category -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-tags mx-2"></i> {% trans "Category" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            {{ ink.category.name_en }} / {{ ink.category.name_ar }}
+          </p>
+        </div>
+
+        <!-- Quantity -->
+        <div class="col-md-4">
+          <h6 class="text-dark mb-1">
+            <i class="bi bi-123 mx-2"></i> {% trans "Quantity" %}
+          </h6>
+          <p class="mb-0 fw-semibold">
+            <span class="badge {% if ink.quantity > 0 %}bg-success{% else %}bg-danger{% endif %}">
+              {{ ink.quantity }}
+            </span>
+          </p>
+        </div>
+
+        <!-- Created Date & Last updated ago -->
+        <div class="d-flex flex-wrap justify-content-between px-4 pb-2">
+          <p class="mb-0 text-muted">
+            <i class="bi bi-calendar me-2"></i> {% trans "Created At" %}: {{ ink.created_at|date:"Y-m-d H:i" }}
+          </p>
+          <p class="mb-0 text-muted text-end">
+            <i class="bi bi-calendar2-check me-2"></i> {% trans "Last updated" %}: {{ ink.updated_at|timesince }} {% trans "ago" %}
+          </p>
+        </div>
+
+        <!-- Request History -->
+        <hr class="mt-4 mb-2">
+        <div class="d-flex justify-content-between align-items-center my-2">
+          <h6 class="fw-bold fs-2"><i class="bi bi-clock-history mx-2"></i> {% trans "Request History" %}</h6>
+          <a href="{% url 'inkinvent_request' ink.pk %}" class="btn btn-primary my-2">
+            <i class="bi bi-basket"></i> {% trans "New Request" %}
+          </a>
+        </div>
+
+          {% if requests %}
+            <div class="table-responsive mt-2">
+              <table class="table table-striped align-middle">
+                <thead>
+                  <tr>
+                    <th>{% trans "User" %}</th>
+                    <th>{% trans "Quantity Used" %}</th>
+                    <th>{% trans "Reason" %}</th>
+                    <th>{% trans "Date" %}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for req in requests %}
+                  <tr>
+                    <td>{{ req.requested_by }}</td>
+                    <td>
+                      <span class="badge bg-danger">{{ req.quantity_used }}</span>
+                    </td>
+                    <td>{{ req.reason|default:"—" }}</td>
+                    <td>{{ req.created_at|date:"Y-m-d H:i" }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <p class="text-muted fst-italic mt-2">{% trans "No requests recorded for this ink." %}</p>
+          {% endif %}
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer d-flex justify-content-between">
+      <a href="{% url 'inkinvent_list' %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle"></i> {% trans "Back" %}
+      </a>
+      <div>
+        {% if perms.inventories.change_inkinventory or user.is_superuser %}
+          <a href="{% url 'inkinvent_edit' ink.pk %}" class="btn btn-custom-warning">
+            <i class="bi bi-pencil"></i> {% trans "Edit" %}
+          </a>
+        {% endif %}
+        {% if perms.inventories.delete_inkinventory or user.is_superuser %}
+          <a href="{% url 'inkinvent_delete' ink.pk %}" class="btn btn-danger mx-2">
+            <i class="bi bi-trash"></i> {% trans "Delete" %}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
