@@ -135,6 +135,68 @@ class CPasswordResetView(PasswordResetView):
         return context
 
 
+from .utils import send_email
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.views import PasswordResetView
+from django.contrib import messages
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.template.loader import render_to_string
+from django.utils.translation import gettext_lazy as _
+from django.urls import reverse_lazy
+
+User = get_user_model()
+
+class CPasswordResetView(PasswordResetView):
+    template_name = 'accounts/password_reset_form.html'
+    html_email_template_name = 'accounts/password_reset_email.html'
+    subject_template_name = 'accounts/password_reset_subject.txt'
+    success_url = reverse_lazy('password_reset_done')
+
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(self.request, _("This email does not exist in our records."))
+            return self.form_invalid(form)
+
+        # توليد uid و token
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+
+        # رابط إعادة التعيين الكامل
+        reset_link = self.request.build_absolute_uri(
+            reverse("password_reset_confirm", kwargs={"uidb64": uidb64, "token": token})
+        )
+
+        # تجهيز محتوى البريد
+        subject = render_to_string(self.subject_template_name, {"user": user}).strip()
+        html_content = render_to_string(self.html_email_template_name, {
+            **self.get_email_context(user),
+            "reset_link": reset_link
+        })
+
+        try:
+            send_email(to=email, subject=subject, content=html_content)
+        except Exception as e:
+            messages.error(self.request, _("Failed to send email: ") + str(e))
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
+
+    def get_email_context(self, user):
+        return {
+            "user": user,
+            "full_name_en": getattr(user, "full_name_en", ""),
+            "department": getattr(user, "department", ""),
+            "job_title": getattr(user, "job_title", ""),
+        }
+
+
 # Profile update (only self)
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = User
