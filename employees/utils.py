@@ -1,4 +1,7 @@
 import requests
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from django.conf import settings
 
 def get_access_token():
@@ -31,3 +34,21 @@ def send_email(to, subject, content):
     res = requests.post(url, headers=headers, json=data)
     res.raise_for_status()
     return res.json()
+
+def send_email_via_api(to, subject, content):
+    access_token = get_access_token()  # هنا يتم التجديد التلقائي
+    url = f"{settings.ZOHO_API_DOMAIN}/api/accounts/{settings.ZOHO_ACCOUNT_ID}/messages"
+    headers = {
+        "Authorization": f"Zoho-oauthtoken {access_token}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "fromAddress": settings.ZOHO_FROM_EMAIL,
+        "toAddress": to,
+        "subject": subject,
+        "content": content,
+        "contentType": "html"
+    }
+    response = requests.post(url, json=data, headers=headers, timeout=10)
+    response.raise_for_status()
+    return response.json()

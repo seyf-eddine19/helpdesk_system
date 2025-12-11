@@ -141,13 +141,17 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=EMAIL_HOST_USER)
 
 # --------------------------------------------------------------------
 # Zoho Mail API Settings
+# --------------------------------------------------------------------
+ZOHO_API_DOMAIN = config("ZOHO_API_DOMAIN", default="https://mail.zoho.com")
 ZOHO_CLIENT_ID = config("ZOHO_CLIENT_ID")
 ZOHO_CLIENT_SECRET = config("ZOHO_CLIENT_SECRET")
 ZOHO_REFRESH_TOKEN = config("ZOHO_REFRESH_TOKEN")
 ZOHO_ACCOUNT_ID = config("ZOHO_ACCOUNT_ID")
 ZOHO_FROM_EMAIL = config("ZOHO_FROM_EMAIL")
+ZOHO_SMTP_PASSWORD = config("ZOHO_SMTP_PASSWORD")
 # --------------------------------------------------------------------
 

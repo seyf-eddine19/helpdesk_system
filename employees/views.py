@@ -1,15 +1,20 @@
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse_lazy
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.template.loader import render_to_string
+from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordResetView
-from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.db import models
 
 from .forms import EmployeeCreationForm, EmployeeUpdateForm, ProfileUpdateForm
 from .mixins import PermissionMixin
+from .utils import send_email_via_api  
+from django.core.mail import send_mail
 from .models import Employee, User
 from tickets.models import Ticket
 from devices.models import Device, Custody
@@ -24,6 +29,7 @@ def error_404(request, exception=None):
 
 def error_500(request):
     return render(request, "errors/500.html", status=500)
+
 
 # Dashboard
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -110,46 +116,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
         return context
 
-User = get_user_model()    
-class CPasswordResetView(PasswordResetView):
-    template_name = 'accounts/password_reset_form.html'
-    html_email_template_name = 'accounts/password_reset_email.html'
-    subject_template_name = 'accounts/password_reset_subject.txt'
-    success_url = reverse_lazy('password_reset_done')
 
-    def form_valid(self, form):
-        email = form.cleaned_data['email']
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            messages.error(self.request, _("This email does not exist in our records."))
-            return self.form_invalid(form)
-        return super().form_valid(form)
-
-    def get_email_context(self, user):
-        """إضافة بيانات إضافية للقالب"""
-        context = super().get_email_context(user)
-        context["full_name_en"] = getattr(user, "full_name_en", "")
-        context["department"] = getattr(user, "department", "")
-        context["job_title"] = getattr(user, "job_title", "")
-        return context
-
-
-from .utils import send_email
-
-from django.contrib.auth import get_user_model
-from django.contrib.auth.views import PasswordResetView
-from django.contrib import messages
-from django.urls import reverse
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
-from django.template.loader import render_to_string
-from django.utils.translation import gettext_lazy as _
-from django.urls import reverse_lazy
-
-User = get_user_model()
-
+# Customized Password Reset 
 class CPasswordResetView(PasswordResetView):
     template_name = 'accounts/password_reset_form.html'
     html_email_template_name = 'accounts/password_reset_email.html'
@@ -170,31 +138,42 @@ class CPasswordResetView(PasswordResetView):
 
         # رابط إعادة التعيين الكامل
         reset_link = self.request.build_absolute_uri(
-            reverse("password_reset_confirm", kwargs={"uidb64": uidb64, "token": token})
+            reverse_lazy("password_reset_confirm", kwargs={"uidb64": uidb64, "token": token})
         )
 
         # تجهيز محتوى البريد
         subject = render_to_string(self.subject_template_name, {"user": user}).strip()
         html_content = render_to_string(self.html_email_template_name, {
-            **self.get_email_context(user),
-            "reset_link": reset_link
-        })
-
-        try:
-            send_email(to=email, subject=subject, content=html_content)
-        except Exception as e:
-            messages.error(self.request, _("Failed to send email: ") + str(e))
-            return self.form_invalid(form)
-
-        return super().form_valid(form)
-
-    def get_email_context(self, user):
-        return {
             "user": user,
             "full_name_en": getattr(user, "full_name_en", ""),
             "department": getattr(user, "department", ""),
             "job_title": getattr(user, "job_title", ""),
-        }
+            "reset_link": reset_link
+        })
+
+        # حاول الإرسال عبر SMTP أولاً
+        # إرسال البريد باستخدام Django EmailBackend (Zoho SMTP)
+        try:
+            send_mail(
+                subject=subject,
+                message="",  # نص بديل للمستلمين الذين لا يدعمون HTML
+                from_email=None,  # يستخدم DEFAULT_FROM_EMAIL تلقائيًا
+                recipient_list=[email],
+                fail_silently=False,
+                html_message=html_content
+            )
+        except Exception as smtp_error:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.warning(f"SMTP failed: {smtp_error}, trying Zoho API...")
+            try:
+                send_email_via_api(to=email, subject=subject, html_content=html_content)
+            except Exception as api_error:
+                logger.error(f"Failed to send email via SMTP and API: {api_error}")
+                messages.error(self.request,_("A temporary error occurred while sending the email. Please try again later."))
+                return self.form_invalid(form)
+
+        return super().form_valid(form)
 
 
 # Profile update (only self)
