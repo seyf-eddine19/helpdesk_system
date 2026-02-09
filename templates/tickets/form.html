@@ -29,40 +29,40 @@
                     </div>
                 {% endif %}
 
-                    {% for field in form %}
-                        <div class="col-12">
-                            <div class="mb-3">
-                                {{ field.label_tag }}
-                                {% if field.field.widget.input_type == "checkbox" %}
-                                    <div class="form-check">
-                                        {{ field }}
-                                        {% if field.errors %}
-                                            <div class="text-danger small">{{ field.errors|striptags }}</div>
-                                        {% endif %}
-                                    </div>
-                                {% else %}
+                {% for field in form %}
+                    <div class="col-12">
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {% if field.field.widget.input_type == "checkbox" %}
+                                <div class="form-check">
                                     {{ field }}
                                     {% if field.errors %}
                                         <div class="text-danger small">{{ field.errors|striptags }}</div>
                                     {% endif %}
+                                </div>
+                            {% else %}
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="text-danger small">{{ field.errors|striptags }}</div>
                                 {% endif %}
-                            </div>
+                            {% endif %}
                         </div>
-                    {% endfor %}
+                    </div>
+                {% endfor %}
 
-        </div>
-                <div class="card-footer d-flex justify-content-end">
-                    <button type="submit" class="btn {% if object %}btn-custom-warning{% else %}btn-custom-primary{% endif %} mx-2">
-                        {% if object %}
-                            <i class="bi bi-save"></i> {% trans "Update" %}
-                        {% else %}
-                            <i class="bi bi-plus-circle"></i> {% trans "Create" %}
-                        {% endif %}
-                    </button>
-                    <a href="{% url 'ticket_list' %}" class="btn btn-secondary">
-                        <i class="bi bi-x-circle"></i> {% trans "Cancel" %}
-                    </a>
-                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+                <button type="submit" class="btn {% if object %}btn-custom-warning{% else %}btn-custom-primary{% endif %} mx-2">
+                    {% if object %}
+                        <i class="bi bi-save"></i> {% trans "Update" %}
+                    {% else %}
+                        <i class="bi bi-plus-circle"></i> {% trans "Create" %}
+                    {% endif %}
+                </button>
+                <a href="{% url 'ticket_list' %}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> {% trans "Cancel" %}
+                </a>
+            </div>
         </form>
     </div>
 </div>

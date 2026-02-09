@@ -370,7 +370,7 @@ button, input[type="submit"] {
   transition: background 0.3s ease;
 }
 
-button:hover, input[type="submit"]:hover {
+input[type="submit"]:hover {
   background: #0056b3;
 }
 

@@ -20,7 +20,6 @@ This project is designed to manage support requests, assign tasks, and track pro
 - **Backend**: [Django 5.x](https://www.djangoproject.com/)
 - **Database**: SQLite (default) or MySQL/PostgreSQL
 - **Frontend**: Django Templates + Bootstrap
-- **Deployment**: Compatible with PythonAnywhere
 
 ---
 

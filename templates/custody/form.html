@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load static i18n %}
 
 {% block title %}
   {% if object %}{% trans "Edit Custody" %}{% else %}{% trans "New Custody" %}{% endif %}
@@ -45,7 +45,9 @@
         </div>
 
         {{ devicecustody_formset.management_form }}
-        <div class="row p-2" id="devices-container">
+        <div class="row p-2" id="devices-container" 
+          data-prefix="{{ devicecustody_formset.prefix }}" 
+          data-api-url="{% url 'api_device_accessories' %}">
           {% for subform in devicecustody_formset %}
             <div class="col-md-4 p-1">
               <div class="device-item border p-2 mb-2 rounded">
@@ -91,7 +93,7 @@
         </div>
 
         <!-- Hidden empty form template -->
-        <div id="empty-form" style="display:none;">
+        <div id="empty-form" class="d-none">
           <div class="device-item border p-2 mb-2 rounded">
             <div class="d-flex justify-content-between align-items-center">
               <label class="form-label">{{ devicecustody_formset.empty_form.device.label }}</label>
@@ -133,82 +135,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const container = document.getElementById("devices-container");
-  const addBtn = document.getElementById("add-device");
-  const totalForms = document.querySelector("[name='{{ devicecustody_formset.prefix }}-TOTAL_FORMS']");
-  const emptyFormDiv = document.getElementById("empty-form");
-  if (!container || !addBtn || !totalForms || !emptyFormDiv) return;
+<script src="{% static 'js/custody_form.js' %}"></script>
 
-  // Fetch accessories via API
-  async function loadAccessories(deviceId, wrapper, selected = []) {
-    const accessoriesContainer = wrapper.querySelector(".checkbox-list");
-    accessoriesContainer.innerHTML = "";
-    if (!deviceId) return;
-
-    const response = await fetch("{% url 'api_device_accessories' %}?device_id=" + deviceId);
-    if (!response.ok) return;
-
-    const data = await response.json();
-    data.accessories.forEach(acc => {
-      const label = document.createElement("label");
-      label.classList.add("form-check-label", "d-block");
-
-      const input = document.createElement("input");
-      input.type = "checkbox";
-      const prefix = wrapper.querySelector("select").name.split('-device')[0];
-      input.name = prefix + '-accessories';
-      input.value = acc.id;
-      input.classList.add("form-check-input", "me-1");
-      if (selected.includes(acc.id.toString())) input.checked = true;
-
-      label.appendChild(input);
-      label.appendChild(document.createTextNode(acc.name));
-      accessoriesContainer.appendChild(label);
-    });
-  }
-
-  function setupDeviceWrapper(wrapper) {
-    const deviceField = wrapper.querySelector("select[id$='-device']");
-    if (!deviceField) return;
-
-    const selectedInputs = wrapper.querySelectorAll(".checkbox-list input:checked");
-    const selectedValues = Array.from(selectedInputs).map(i => i.value);
-
-    if (deviceField.value) loadAccessories(deviceField.value, wrapper, selectedValues);
-
-    deviceField.addEventListener("change", function () {
-      loadAccessories(this.value, wrapper, []);
-    });
-  }
-
-  container.querySelectorAll(".device-item").forEach(setupDeviceWrapper);
-
-  addBtn.addEventListener("click", function () {
-    const formIndex = parseInt(totalForms.value, 10);
-    const newFormHtml = emptyFormDiv.innerHTML.replace(/__prefix__/g, formIndex);
-    const wrapperCol = document.createElement("div");
-    wrapperCol.classList.add("col-md-4", "p-1");
-    wrapperCol.innerHTML = newFormHtml;
-    container.appendChild(wrapperCol);
-    totalForms.value = formIndex + 1;
-    setupDeviceWrapper(wrapperCol.querySelector(".device-item"));
-  });
-
-  container.addEventListener("click", function (e) {
-    if (e.target.closest(".remove-device")) {
-      const item = e.target.closest(".device-item");
-      const deleteField = item.querySelector("input[type='checkbox'][name$='-DELETE']");
-      if (deleteField) {
-        deleteField.checked = true;
-        item.style.display = "none";
-      } else {
-        item.remove();
-        totalForms.value = parseInt(totalForms.value, 10) - 1;
-      }
-    }
-  });
-});
-</script>
 {% endblock %}

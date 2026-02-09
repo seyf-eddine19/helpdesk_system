@@ -13,12 +13,15 @@ from django.db import models
 
 from .forms import EmployeeCreationForm, EmployeeUpdateForm, ProfileUpdateForm
 from .mixins import PermissionMixin
-from .utils import send_email_via_api  
-from django.core.mail import send_mail
+from .utils import send_email_via_sendgrid
 from .models import Employee, User
 from tickets.models import Ticket
 from devices.models import Device, Custody
 from inventories.models import InkInventory, OfficeSupply
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def error_403(request, exception=None):
@@ -117,62 +120,71 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return context
 
 
-# Customized Password Reset 
+# Customized Password Reset
 class CPasswordResetView(PasswordResetView):
-    template_name = 'accounts/password_reset_form.html'
-    html_email_template_name = 'accounts/password_reset_email.html'
-    subject_template_name = 'accounts/password_reset_subject.txt'
-    success_url = reverse_lazy('password_reset_done')
+    template_name = "accounts/password_reset_form.html"
+    success_url = reverse_lazy("password_reset_done")
 
     def form_valid(self, form):
-        email = form.cleaned_data['email']
+        email = form.cleaned_data["email"]
+
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            messages.error(self.request, _("This email does not exist in our records."))
+            messages.error(
+                self.request,
+                _("This email does not exist in our records.")
+            )
             return self.form_invalid(form)
 
-        # توليد uid و token
+        # uid + token
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
 
-        # رابط إعادة التعيين الكامل
+        # رابط إعادة التعيين
         reset_link = self.request.build_absolute_uri(
-            reverse_lazy("password_reset_confirm", kwargs={"uidb64": uidb64, "token": token})
+            reverse_lazy(
+                "password_reset_confirm",
+                kwargs={"uidb64": uidb64, "token": token}
+            )
         )
 
-        # تجهيز محتوى البريد
-        subject = render_to_string(self.subject_template_name, {"user": user}).strip()
-        html_content = render_to_string(self.html_email_template_name, {
-            "user": user,
-            "full_name_en": getattr(user, "full_name_en", ""),
-            "department": getattr(user, "department", ""),
-            "job_title": getattr(user, "job_title", ""),
-            "reset_link": reset_link
-        })
+        # الموضوع
+        subject = render_to_string(
+            "accounts/password_reset_subject.txt",
+            {"user": user}
+        ).strip()
 
-        # حاول الإرسال عبر SMTP أولاً
-        # إرسال البريد باستخدام Django EmailBackend (Zoho SMTP)
+        # محتوى HTML
+        html_content = render_to_string(
+            "accounts/password_reset_email.html",
+            {
+                "user": user,
+                "reset_link": reset_link,
+            }
+        )
+
+        # إرسال البريد (Zoho → SendGrid تلقائيًا)
         try:
-            send_mail(
-                subject=subject,
-                message="",  # نص بديل للمستلمين الذين لا يدعمون HTML
-                from_email=None,  # يستخدم DEFAULT_FROM_EMAIL تلقائيًا
-                recipient_list=[email],
-                fail_silently=False,
-                html_message=html_content
+        #     send_mail(
+        #         subject=subject,
+        #         message="",  # نص بديل للمستلمين الذين لا يدعمون HTML
+        #         from_email=None,  # يستخدم DEFAULT_FROM_EMAIL تلقائيًا
+        #         recipient_list=[email],
+        #         fail_silently=False,
+        #         html_message=html_content
+        #     )
+        #     send_email_via_api(to=email, subject=subject, html_content=html_content)
+            send_email_via_sendgrid(to=email, subject=subject, content=html_content)
+        except Exception as e:
+            logger.error("Password reset email failed", exc_info=e)
+            messages.error(
+                self.request,
+                _("A temporary error occurred while sending the email. Please try again later.")
             )
-        except Exception as smtp_error:
-            import logging
-            logger = logging.getLogger(__name__)
-            logger.warning(f"SMTP failed: {smtp_error}, trying Zoho API...")
-            try:
-                send_email_via_api(to=email, subject=subject, html_content=html_content)
-            except Exception as api_error:
-                logger.error(f"Failed to send email via SMTP and API: {api_error}")
-                messages.error(self.request,_("A temporary error occurred while sending the email. Please try again later."))
-                return self.form_invalid(form)
+            return self.form_invalid(form)
 
+        # نجاح بدون كشف أي تفاصيل
         return super().form_valid(form)
 
 

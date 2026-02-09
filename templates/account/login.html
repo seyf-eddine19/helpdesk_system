@@ -5,6 +5,7 @@
 {% block content %}
 <div class="container d-flex justify-content-center align-items-center min-vh-100 my-3">
   <div class="card login-card p-4" style="max-width: 420px; width: 100%;">
+
     <!-- Logo -->
     <div class="text-center mb-4">
       <img src="{% static 'img/logo.png' %}" alt="{% trans 'Logo' %}" class="img-fluid mx-auto" style="max-height: 120px;">
@@ -18,7 +19,7 @@
         </div>
       {% endfor %}
     {% endif %}
-    
+
     <!-- Title -->
     <h4 class="text-center fw-bold mb-3">
       <i class="bi bi-shield-lock-fill text-dark"></i> {% trans "Sign In" %}
@@ -32,7 +33,7 @@
 
       {{ form.non_field_errors }}
       <div class="mb-3">
-        <label for="id_login" class="form-label">{% trans "Username" %}</label>
+        <label for="id_login" class="form-label">{% trans "Email" %}</label>
         {{ form.login }}
         {{ form.login.errors }}
       </div>
