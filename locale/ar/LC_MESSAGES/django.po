@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-10 01:42+0100\n"
+"POT-Creation-Date: 2026-01-02 14:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -288,6 +288,17 @@ msgstr "تم حذف عهدة الجهاز بنجاح"
 msgid "Custody deleted successfully"
 msgstr "تم حذف العهدة بنجاح"
 
+#: .\employees\adapters.py:48
+msgid "Microsoft account did not provide an email address."
+msgstr "حساب مايكروسوفت لم يوفّر عنوان بريد إلكتروني."
+
+#: .\employees\adapters.py:61
+#, python-format
+msgid ""
+"No account registered with this email (%(email)s). Please contact "
+"administration."
+msgstr "لا يوجد حساب مسجّل بهذا البريد الإلكتروني (%(email)s). يرجى التواصل مع الإدارة."
+
 #: .\employees\forms.py:12 .\templates\devices\devicetype_manage.html:43
 #: .\templates\inventory\inkcategory_manage.html:43
 #: .\templates\inventory\supplycategory_manage.html:43
@@ -384,13 +395,12 @@ msgstr "نشط"
 msgid "Superuser"
 msgstr "مدير النظام"
 
-#: .\employees\forms.py:161 .\templates\accounts\login.html:32
-#: .\templates\employees\list.html:23
+#: .\employees\forms.py:161 .\templates\employees\list.html:23
 msgid "Username"
 msgstr "اسم المستخدم"
 
-#: .\employees\forms.py:162 .\templates\employees\detail.html:106
-#: .\templates\employees\list.html:28
+#: .\employees\forms.py:162 .\templates\account\login.html:36
+#: .\templates\employees\detail.html:106 .\templates\employees\list.html:28
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
@@ -408,15 +418,19 @@ msgstr "المستخدمون"
 msgid "Employees"
 msgstr "الموظفون"
 
-#: .\employees\views.py:125
+#: .\employees\views.py:137
 msgid "This email does not exist in our records."
 msgstr "هذا البريد الإلكتروني غير موجود في سجلاتنا."
 
-#: .\helpdesk_system\settings.py:97
+#: .\employees\views.py:184
+msgid "A temporary error occurred while sending the email. Please try again later."
+msgstr "حدث خطأ مؤقت أثناء إرسال البريد الإلكتروني. يرجى المحاولة لاحقًا."
+
+#: .\helpdesk_system\settings.py:205
 msgid "English"
 msgstr "الإنجليزية"
 
-#: .\helpdesk_system\settings.py:98
+#: .\helpdesk_system\settings.py:206
 msgid "Arabic"
 msgstr "العربية"
 
@@ -612,59 +626,47 @@ msgstr "تمت إضافة فئة المستلزمات بنجاح"
 msgid "Ink request recorded successfully."
 msgstr "تم تسجيل طلب الحبر بنجاح"
 
-#: .\templates\accounts\login.html:10
-#: .\templates\accounts\password_reset_form.html:10
+#: .\templates\account\login.html:11
+#: .\templates\account\password_reset_form.html:10
+#: .\templates\allauth\layouts\entrance.html:26
 msgid "Logo"
 msgstr "الشعار"
 
-#: .\templates\accounts\login.html:15
+#: .\templates\account\login.html:25
+#: .\templates\allauth\layouts\entrance.html:31
 msgid "Sign In"
 msgstr "تسجيل الدخول"
 
-#: .\templates\accounts\login.html:17
+#: .\templates\account\login.html:27
+#: .\templates\allauth\layouts\entrance.html:34
 msgid "Welcome back! Please login to your account."
 msgstr "مرحبًا بعودتك! الرجاء تسجيل الدخول إلى حسابك."
 
-#: .\templates\accounts\login.html:34
-msgid "Enter your username"
-msgstr "أدخل اسم المستخدم"
-
-#: .\templates\accounts\login.html:38
+#: .\templates\account\login.html:41
 msgid "Password"
 msgstr "كلمة المرور"
 
-#: .\templates\accounts\login.html:40
-msgid "Enter your password"
-msgstr "أدخل كلمة المرور"
-
-#: .\templates\accounts\login.html:46
-msgid "Remember me"
-msgstr "تذكرني"
-
-#: .\templates\accounts\login.html:48
-msgid "Forgot Password?"
-msgstr "هل نسيت كلمة المرور؟"
-
-#: .\templates\accounts\login.html:52 .\templates\auth_base.html:7
+#: .\templates\account\login.html:47
+#: .\templates\allauth\layouts\entrance.html:9 .\templates\auth_base.html:7
 #: .\templates\includes\header.html:81
 msgid "Login"
 msgstr "تسجيل الدخول"
 
-#: .\templates\accounts\login.html:58
-msgid "Don’t have an account?"
-msgstr "ليس لديك حساب؟"
+#: .\templates\account\login.html:52
+msgid "OR"
+msgstr "أو"
 
-#: .\templates\accounts\login.html:59
-msgid "Sign Up"
-msgstr "إنشاء حساب"
+#: .\templates\account\login.html:57
+msgid "Sign in with Microsoft"
+msgstr "تسجيل الدخول بحساب مايكروسوفت"
 
-#: .\templates\accounts\password_change.html:4
-#: .\templates\accounts\password_change.html:10
-#: .\templates\accounts\password_change.html:22
+#: .\templates\account\password_change.html:4
+#: .\templates\account\password_change.html:10
+#: .\templates\account\password_change.html:22
 msgid "Change password"
 msgstr "تغيير كلمة المرور"
 
-#: .\templates\accounts\password_change.html:24
+#: .\templates\account\password_change.html:24
 #: .\templates\custody\delete.html:19
 #: .\templates\custody\devicecustody_delete.html:28
 #: .\templates\custody\form.html:127 .\templates\devices\delete.html:19
@@ -680,34 +682,34 @@ msgstr "تغيير كلمة المرور"
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: .\templates\accounts\password_change_done.html:4
+#: .\templates\account\password_change_done.html:4
 msgid "Password Changed"
 msgstr "تم تغيير كلمة المرور"
 
-#: .\templates\accounts\password_change_done.html:13
+#: .\templates\account\password_change_done.html:13
 msgid "Password Changed Successfully"
 msgstr "تم تغيير كلمة المرور بنجاح"
 
-#: .\templates\accounts\password_change_done.html:15
+#: .\templates\account\password_change_done.html:15
 msgid ""
 "Your password has been updated. You can now continue to your dashboard "
 "securely."
 msgstr ""
 "تم تحديث كلمة المرور الخاصة بك. يمكنك الآن متابعة استخدام لوحة التحكم بأمان."
 
-#: .\templates\accounts\password_change_done.html:18
+#: .\templates\account\password_change_done.html:18
 msgid "Back to Dashboard"
 msgstr "الرجوع إلى لوحة التحكم"
 
-#: .\templates\accounts\password_reset_complete.html:4
+#: .\templates\account\password_reset_complete.html:4
 msgid "Password Reset Complete"
 msgstr "اكتمل إعادة تعيين كلمة المرور"
 
-#: .\templates\accounts\password_reset_complete.html:13
+#: .\templates\account\password_reset_complete.html:13
 msgid "Password Reset Successful"
 msgstr "تمت إعادة تعيين كلمة المرور بنجاح"
 
-#: .\templates\accounts\password_reset_complete.html:15
+#: .\templates\account\password_reset_complete.html:15
 msgid ""
 "Your password has been successfully reset. You can now log in with your new "
 "password."
@@ -715,34 +717,35 @@ msgstr ""
 "تمت إعادة تعيين كلمة المرور الخاصة بك بنجاح. يمكنك الآن تسجيل الدخول "
 "باستخدام كلمة المرور الجديدة."
 
-#: .\templates\accounts\password_reset_complete.html:19
+#: .\templates\account\password_reset_complete.html:19
 msgid "Login Now"
 msgstr "تسجيل الدخول الآن"
 
-#: .\templates\accounts\password_reset_confirm.html:4
-#: .\templates\accounts\password_reset_confirm.html:14
+#: .\templates\account\password_reset_confirm.html:4
+#: .\templates\account\password_reset_confirm.html:14
 msgid "Set New Password"
 msgstr "تعيين كلمة مرور جديدة"
 
-#: .\templates\accounts\password_reset_confirm.html:41
+#: .\templates\account\password_reset_confirm.html:41
 msgid "Set Password"
 msgstr "تعيين كلمة المرور"
 
-#: .\templates\accounts\password_reset_confirm.html:46
-#: .\templates\accounts\password_reset_done.html:18
-#: .\templates\accounts\password_reset_form.html:51
+#: .\templates\account\password_reset_confirm.html:46
+#: .\templates\account\password_reset_done.html:18
+#: .\templates\account\password_reset_form.html:51
+#: .\templates\allauth\layouts\entrance.html:42
 msgid "Back to Login"
 msgstr "الرجوع إلى تسجيل الدخول"
 
-#: .\templates\accounts\password_reset_done.html:4
+#: .\templates\account\password_reset_done.html:4
 msgid "Reset Email Sent"
 msgstr "تم إرسال بريد إعادة التعيين"
 
-#: .\templates\accounts\password_reset_done.html:13
+#: .\templates\account\password_reset_done.html:13
 msgid "Check Your Email"
 msgstr "تحقق من بريدك الإلكتروني"
 
-#: .\templates\accounts\password_reset_done.html:15
+#: .\templates\account\password_reset_done.html:15
 msgid ""
 "We have sent a password reset link to your email address. Please follow the "
 "instructions in the email to reset your password."
@@ -750,56 +753,56 @@ msgstr ""
 "لقد أرسلنا رابطًا لإعادة تعيين كلمة المرور إلى بريدك الإلكتروني. يرجى اتباع "
 "التعليمات في البريد لإعادة تعيين كلمة المرور."
 
-#: .\templates\accounts\password_reset_email.html:6
+#: .\templates\account\password_reset_email.html:6
 msgid "Password Reset Request"
 msgstr "طلب إعادة تعيين كلمة المرور"
 
-#: .\templates\accounts\password_reset_email.html:117
+#: .\templates\account\password_reset_email.html:110
 msgid "HelpDesk Support"
 msgstr "دعم مكتب المساعدة"
 
-#: .\templates\accounts\password_reset_email.html:122
+#: .\templates\account\password_reset_email.html:115
 msgid "Hello, You requested a password reset for your account."
 msgstr "مرحبًا، لقد طلبت إعادة تعيين كلمة المرور لحسابك."
 
-#: .\templates\accounts\password_reset_email.html:123
+#: .\templates\account\password_reset_email.html:116
 msgid "Click the button below to reset your password:"
 msgstr "انقر على الزر أدناه لإعادة تعيين كلمة المرور:"
 
-#: .\templates\accounts\password_reset_email.html:127
-#: .\templates\accounts\password_reset_form.html:4
-#: .\templates\accounts\password_reset_form.html:14
+#: .\templates\account\password_reset_email.html:119
+#: .\templates\account\password_reset_form.html:4
+#: .\templates\account\password_reset_form.html:14
 msgid "Reset Password"
 msgstr "إعادة تعيين كلمة المرور"
 
-#: .\templates\accounts\password_reset_email.html:131
+#: .\templates\account\password_reset_email.html:122
 msgid ""
 "If the button above does not work, copy and paste this link into your "
 "browser:"
 msgstr "إذا لم يعمل الزر أعلاه، انسخ هذا الرابط والصقه في متصفحك:"
 
-#: .\templates\accounts\password_reset_email.html:138
+#: .\templates\account\password_reset_email.html:127
 msgid "If you did not request this change, you can safely ignore this email."
 msgstr "إذا لم تطلب هذا التغيير، يمكنك تجاهل هذا البريد بأمان."
 
-#: .\templates\accounts\password_reset_email.html:139
+#: .\templates\account\password_reset_email.html:128
 msgid "This link will expire in 24 hours for your security."
 msgstr "سينتهي صلاحية هذا الرابط خلال 24 ساعة من أجل حمايتك."
 
-#: .\templates\accounts\password_reset_email.html:148
+#: .\templates\account\password_reset_email.html:137
 msgid "All rights reserved."
 msgstr "جميع الحقوق محفوظة."
 
-#: .\templates\accounts\password_reset_form.html:17
+#: .\templates\account\password_reset_form.html:17
 msgid ""
 "Enter your email address and we'll send you a link to reset your password."
 msgstr "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور."
 
-#: .\templates\accounts\password_reset_form.html:46
+#: .\templates\account\password_reset_form.html:46
 msgid "Send Reset Link"
 msgstr "إرسال رابط إعادة التعيين"
 
-#: .\templates\accounts\password_reset_subject.txt:2
+#: .\templates\account\password_reset_subject.txt:2
 #, python-format
 msgid "Password Reset on %(site_name)s"
 msgstr "إعادة تعيين كلمة المرور على %(site_name)s"
@@ -853,7 +856,6 @@ msgstr "رجوع"
 #: .\templates\custody\devicecustody_delete.html:10
 msgid "Delete Device Custody"
 msgstr "حذف عهدة الجهاز"
-
 
 #: .\templates\custody\devicecustody_delete.html:14
 msgid "Warning:"
@@ -1468,6 +1470,24 @@ msgstr "تم حذف التذكرة بنجاح"
 #, python-format
 msgid "Failed to delete ticket: %s"
 msgstr "فشل في حذف التذكرة: %s"
+
+#~ msgid "Enter your username"
+#~ msgstr "أدخل اسم المستخدم"
+
+#~ msgid "Enter your password"
+#~ msgstr "أدخل كلمة المرور"
+
+#~ msgid "Remember me"
+#~ msgstr "تذكرني"
+
+#~ msgid "Forgot Password?"
+#~ msgstr "هل نسيت كلمة المرور؟"
+
+#~ msgid "Don’t have an account?"
+#~ msgstr "ليس لديك حساب؟"
+
+#~ msgid "Sign Up"
+#~ msgstr "إنشاء حساب"
 
 #~ msgid "Requested quantity exceeds available stock"
 #~ msgstr "الكمية المطلوبة تتجاوز المخزون المتاح"

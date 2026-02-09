@@ -1,17 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group
-from django.utils.translation import gettext_lazy as _  
+from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractUser):
+    email = models.EmailField(
+        _("email address"),
+        unique=True,
+        blank=False,
+        null=False
+    )
     groups = models.ManyToManyField(
         Group,
         related_name="user_set",
         related_query_name="user",
         verbose_name=_("Type")
     )
-    # python manage.py dumpdata auth.group --natural-foreign --natural-primary --indent 2 > employees/fixtures/groups.json
-    # python manage.py loaddata groups.json
 
     class Meta:
         verbose_name = _("User")
@@ -32,7 +36,7 @@ class Employee(models.Model):
     full_name_en = models.CharField(max_length=150, verbose_name=_("Full Name (English)"))
     birth_date = models.DateField(blank=True, null=True, verbose_name=_("Birth Date"))
     id_number = models.CharField(max_length=50, blank=True, null=True, verbose_name=_("ID / Iqama Number"))
-    address = models.TextField(blank=True, null=True, verbose_name=_("Address"))     
+    address = models.TextField(blank=True, null=True, verbose_name=_("Address"))
     job_title = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Job Title"))
     job_number = models.CharField(max_length=50, blank=True, null=True, verbose_name=_("Job Number"))
     department = models.CharField(max_length=100, blank=True, null=True, verbose_name=_("Department"))

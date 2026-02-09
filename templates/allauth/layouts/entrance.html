@@ -1,0 +1,50 @@
+{% load static i18n %}
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|slice:":2" }}" dir="{% if LANGUAGE_CODE|slice:":2" == 'ar' %}rtl{% else %}ltr{% endif %}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}{% trans "Login" %} | HelpDesk{% endblock %}</title>
+  <link rel="shortcut icon" href="{% static 'img/logo-1.png' %}" type="image/png" />
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <div class="container d-flex justify-content-center align-items-center min-vh-100 my-3">
+        <div class="card login-card p-4" style="max-width: 420px; width: 100%;">
+
+            <!-- Logo -->
+            <div class="text-center mb-4">
+            <img src="{% static 'img/logo.png' %}" alt="{% trans 'Logo' %}" class="img-fluid mx-auto" style="max-height: 120px;">
+            </div>
+
+            <!-- Title -->
+            <h4 class="text-center fw-bold mb-3">
+            <i class="bi bi-shield-lock-fill text-dark"></i> {% trans "Sign In" %}
+            </h4>
+            <p class="text-muted text-center mb-4">
+            {% trans "Welcome back! Please login to your account." %}
+            </p>
+            <!-- Main Content -->
+            {% block content %}{% endblock %}
+            
+            <!-- Optional: Back to login -->
+            <div class="text-center mt-3">
+            <a href="{% url 'account_login' %}" class="text-decoration-none">
+                <i class="bi bi-arrow-left-circle"></i> {% trans "Back to login" %}
+            </a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

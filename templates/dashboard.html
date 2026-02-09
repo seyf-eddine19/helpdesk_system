@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load static i18n %}
 
 {% block title %}{% trans "Dashboard" %}{% endblock %}
 
@@ -113,7 +113,12 @@
             </div>
             <span class="badge bg-success fs-6">{{ tickets_summary.total }}</span>
           </div>
-          <canvas id="ticketsChart" height="150"></canvas>
+          <canvas id="ticketsChart" height="150"
+            data-new="{{ tickets_summary.new }}"
+            data-in-progress="{{ tickets_summary.in_progress }}"
+            data-resolved="{{ tickets_summary.resolved }}"
+            data-rejected="{{ tickets_summary.rejected }}">
+          </canvas>
         </div>
       </div>
     </div>
@@ -162,19 +167,7 @@
 
 {% block extra_js %}
 {% if perms.tickets.view_ticket %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-const ticketsCtx = document.getElementById('ticketsChart');
-new Chart(ticketsCtx, {
-  type: 'doughnut',
-  data: {
-    labels: ['New','In Progress','Resolved','Rejected'],
-    datasets: [{
-      data: [{{ tickets_summary.new }}, {{ tickets_summary.in_progress }}, {{ tickets_summary.resolved }}, {{ tickets_summary.rejected }}],
-      backgroundColor: ['#0d6efd','#0dcaf0','#198754','#dc3545']
-    }]
-  }
-});
-</script>
+<script src="{% static 'js/chart.min.js' %}"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
 {% endif %}
 {% endblock %}

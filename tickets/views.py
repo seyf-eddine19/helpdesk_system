@@ -4,13 +4,12 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.db import IntegrityError, DatabaseError
 
 from employees.mixins import PermissionMixin
 from employees.models import User
 from .models import Ticket, RequestType
 
-
-from django.db import IntegrityError, DatabaseError
 
 # Request Types View
 @login_required

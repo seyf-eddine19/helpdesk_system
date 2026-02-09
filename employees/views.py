@@ -1,19 +1,27 @@
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse_lazy
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.template.loader import render_to_string
+from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordResetView
-from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.db import models
 
 from .forms import EmployeeCreationForm, EmployeeUpdateForm, ProfileUpdateForm
 from .mixins import PermissionMixin
+from .utils import send_email_via_sendgrid
 from .models import Employee, User
 from tickets.models import Ticket
 from devices.models import Device, Custody
 from inventories.models import InkInventory, OfficeSupply
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def error_403(request, exception=None):
@@ -24,6 +32,7 @@ def error_404(request, exception=None):
 
 def error_500(request):
     return render(request, "errors/500.html", status=500)
+
 
 # Dashboard
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -110,29 +119,73 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
         return context
 
-User = get_user_model()    
+
+# Customized Password Reset
 class CPasswordResetView(PasswordResetView):
-    template_name = 'accounts/password_reset_form.html'
-    html_email_template_name = 'accounts/password_reset_email.html'
-    subject_template_name = 'accounts/password_reset_subject.txt'
-    success_url = reverse_lazy('password_reset_done')
+    template_name = "accounts/password_reset_form.html"
+    success_url = reverse_lazy("password_reset_done")
 
     def form_valid(self, form):
-        email = form.cleaned_data['email']
+        email = form.cleaned_data["email"]
+
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            messages.error(self.request, _("This email does not exist in our records."))
+            messages.error(
+                self.request,
+                _("This email does not exist in our records.")
+            )
             return self.form_invalid(form)
-        return super().form_valid(form)
 
-    def get_email_context(self, user):
-        """إضافة بيانات إضافية للقالب"""
-        context = super().get_email_context(user)
-        context["full_name_en"] = getattr(user, "full_name_en", "")
-        context["department"] = getattr(user, "department", "")
-        context["job_title"] = getattr(user, "job_title", "")
-        return context
+        # uid + token
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+
+        # رابط إعادة التعيين
+        reset_link = self.request.build_absolute_uri(
+            reverse_lazy(
+                "password_reset_confirm",
+                kwargs={"uidb64": uidb64, "token": token}
+            )
+        )
+
+        # الموضوع
+        subject = render_to_string(
+            "accounts/password_reset_subject.txt",
+            {"user": user}
+        ).strip()
+
+        # محتوى HTML
+        html_content = render_to_string(
+            "accounts/password_reset_email.html",
+            {
+                "user": user,
+                "reset_link": reset_link,
+            }
+        )
+
+        # إرسال البريد (Zoho → SendGrid تلقائيًا)
+        try:
+        #     send_mail(
+        #         subject=subject,
+        #         message="",  # نص بديل للمستلمين الذين لا يدعمون HTML
+        #         from_email=None,  # يستخدم DEFAULT_FROM_EMAIL تلقائيًا
+        #         recipient_list=[email],
+        #         fail_silently=False,
+        #         html_message=html_content
+        #     )
+        #     send_email_via_api(to=email, subject=subject, html_content=html_content)
+            send_email_via_sendgrid(to=email, subject=subject, content=html_content)
+        except Exception as e:
+            logger.error("Password reset email failed", exc_info=e)
+            messages.error(
+                self.request,
+                _("A temporary error occurred while sending the email. Please try again later.")
+            )
+            return self.form_invalid(form)
+
+        # نجاح بدون كشف أي تفاصيل
+        return super().form_valid(form)
 
 
 # Profile update (only self)
