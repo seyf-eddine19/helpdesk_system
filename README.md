@@ -3,8 +3,6 @@
 نظام متطور لإدارة تذاكر الدعم الفني، مبني باستخدام **Django 5.x**، ومحمي بواسطة **Nginx** و **SSL**. تم تصميمه لتنظيم طلبات الدعم، توزيع المهام، ومتابعة سير العمل باحترافية كاملة.
 A Django-based helpdesk and support ticket management system.  
 This project is designed to manage support requests, assign tasks, and track progress in an organized way.
-
----
 ---
 
 ## 🚀 الميزات الرئيسية (Key Features)
@@ -35,7 +33,7 @@ This project is designed to manage support requests, assign tasks, and track pro
 
 يتم وضع الإعداد التالي في `/etc/nginx/sites-available/helpdesk`:
 
-```nginx
+```ini
 # 1. تحويل حركة المرور من HTTP إلى HTTPS
 server {
     listen 80;
