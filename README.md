@@ -40,15 +40,13 @@ server {
     return 301 https://$host$request_uri;
 }
 
-# 2. إعداد سيرفر HTTPS الأساسي
 server {
     listen 443 ssl;
-    server_name 10.10.200.128;
+    server_name 10.10.200.128; # أو الدومين المعتمد
 
     ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
     ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
 
-    # رؤوس الأمان (Security Headers)
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
