@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY", default="unsafe-secret")
 DEBUG = config("DEBUG", default=False, cast=bool)
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*", cast=Csv())
-
+DEBUG = 1
 # --------------------------------------------------------------------
 # Application definition
 # --------------------------------------------------------------------
@@ -173,28 +173,19 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-    # HTTPS enforcement
+    # 2. تفعيل الحماية
     SECURE_SSL_REDIRECT = True
-
-    # Cookies over HTTPS only
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
-    # HSTS
+    # 3. تفعيل الـ HSTS 
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
-    # Security headers
-    X_FRAME_OPTIONS = "DENY"
+    # 4. الحماية العامة
+    X_FRAME_OPTIONS = "SAMEORIGIN" 
     SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_BROWSER_XSS_FILTER = True  # optional legacy
     SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
-    # CSRF trusted domains
-    CSRF_TRUSTED_ORIGINS = config(
-        "CSRF_TRUSTED_ORIGINS",
-        default="https://yourdomain.com",
-        cast=Csv()
-    )
-INSTALLED_APPS += ["django_extensions"]
+    CSRF_TRUSTED_ORIGINS = ["https://10.10.200.128"]
