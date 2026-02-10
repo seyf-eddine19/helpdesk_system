@@ -34,7 +34,6 @@ This project is designed to manage support requests, assign tasks, and track pro
 يتم وضع الإعداد التالي في `/etc/nginx/sites-available/helpdesk`:
 
 ```nginx
-# 1. تحويل حركة المرور من HTTP إلى HTTPS
 server {
     listen 80;
     server_name 10.10.200.128; # أو الدومين المعتمد
