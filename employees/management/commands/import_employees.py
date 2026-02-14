@@ -9,10 +9,6 @@ from django.contrib.auth.models import Group
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from django.urls import reverse
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
 from django.db import transaction
 from datetime import datetime
 
@@ -78,21 +74,6 @@ class Command(BaseCommand):
                 phone_number=row.get("phone_number"),
             )
 
-            # ---------- Reset Link ----------
-            uidb64 = urlsafe_base64_encode(
-                force_bytes(user.pk)
-            )
-
-            token = default_token_generator.make_token(user)
-
-            reset_link = "http://localhost:8000" + reverse(
-                    "password_reset_confirm",
-                    kwargs={
-                        "uidb64": uidb64,
-                        "token": token,
-                    },
-                )
-
             # ---------- Email HTML ----------
             html_content = render_to_string(
                 "account/employee_credentials.html",
@@ -100,7 +81,6 @@ class Command(BaseCommand):
                     "user": employee,
                     "username": username,
                     "password": password,
-                    "reset_link": reset_link,
                     "year": datetime.now().year,
                 },
             )
@@ -110,7 +90,7 @@ class Command(BaseCommand):
             email_msg = EmailMultiAlternatives(
                 subject=subject,
                 body="Account created",
-                from_email=settings.DEFAULT_FROM_EMAIL,
+                from_email=None,
                 to=[email],
             )
 
