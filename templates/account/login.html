@@ -52,10 +52,15 @@
     <div class="text-center my-3 text-muted">— {% trans "OR" %} —</div>
 
     <!-- Microsoft Login -->
-      <a href="{% provider_login_url 'microsoft' %}" 
-         class="btn btn-outline-dark w-100 rounded-3 d-flex align-items-center justify-content-center gap-2">
-        <i class="bi bi-microsoft"></i> {% trans "Sign in with Microsoft" %}
-      </a>
+    <a href="{% provider_login_url 'microsoft' %}" 
+       class="btn btn-outline-dark w-100 rounded-3 d-flex align-items-center justify-content-center gap-2">
+      <i class="bi bi-microsoft"></i> {% trans "Sign in with Microsoft" %}
+    </a>
+
+    <!-- reset password link -->
+    <div class="text-center mt-3">
+      <a href="{% url 'password_reset' %}" class="small text-decoration none">{% trans "Forgot Password?" %}</a>
+    </div>
 
   </div>
 </div>

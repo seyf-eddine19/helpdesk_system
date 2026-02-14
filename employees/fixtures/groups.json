@@ -15,11 +15,6 @@
         "ticket"
       ],
       [
-        "delete_ticket",
-        "tickets",
-        "ticket"
-      ],
-      [
         "view_ticket",
         "tickets",
         "ticket"

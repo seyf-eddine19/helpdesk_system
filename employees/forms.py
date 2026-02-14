@@ -75,8 +75,11 @@ class EmployeeBaseForm(forms.ModelForm):
             # 1. تحميل الصلاحيات والمجموعات الحالية
             self.fields["user_permissions"].initial = self.instance.user_permissions.all()
             user_group = self.instance.groups.first()
+            print("User's current group:", user_group, self.instance.groups, self.instance.user_permissions.all())  # Debug print
+            print("Available groups in field:", list(self.fields['groups'].queryset))
+
             if user_group:
-                self.fields['groups'].initial = user_group.pk
+                    self.initial['groups'] = user_group  # instead of self.fields['groups'].initial
 
             # 2. تحميل بيانات البروفايل إذا وجدت
             if hasattr(self.instance, "employee_profile"):

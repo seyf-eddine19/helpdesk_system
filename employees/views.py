@@ -1,10 +1,12 @@
+from django.conf import settings
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordResetView
@@ -13,7 +15,6 @@ from django.db import models
 
 from .forms import EmployeeCreationForm, EmployeeUpdateForm, ProfileUpdateForm
 from .mixins import PermissionMixin
-from .utils import send_email_via_sendgrid
 from .models import Employee, User
 from tickets.models import Ticket
 from devices.models import Device, Custody
@@ -122,8 +123,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
 # Customized Password Reset
 class CPasswordResetView(PasswordResetView):
-    template_name = "accounts/password_reset_form.html"
+    template_name = "account/password_reset_form.html"
     success_url = reverse_lazy("password_reset_done")
+    email_template_name = "account/password_reset_email.html"
+    subject_template_name = "account/password_reset_subject.txt"
 
     def form_valid(self, form):
         email = form.cleaned_data["email"]
@@ -151,31 +154,29 @@ class CPasswordResetView(PasswordResetView):
 
         # الموضوع
         subject = render_to_string(
-            "accounts/password_reset_subject.txt",
+            "account/password_reset_subject.txt",
             {"user": user}
         ).strip()
 
         # محتوى HTML
         html_content = render_to_string(
-            "accounts/password_reset_email.html",
+            "account/password_reset_email.html",
             {
                 "user": user,
                 "reset_link": reset_link,
             }
         )
 
-        # إرسال البريد (Zoho → SendGrid تلقائيًا)
         try:
-        #     send_mail(
-        #         subject=subject,
-        #         message="",  # نص بديل للمستلمين الذين لا يدعمون HTML
-        #         from_email=None,  # يستخدم DEFAULT_FROM_EMAIL تلقائيًا
-        #         recipient_list=[email],
-        #         fail_silently=False,
-        #         html_message=html_content
-        #     )
-        #     send_email_via_api(to=email, subject=subject, html_content=html_content)
-            send_email_via_sendgrid(to=email, subject=subject, content=html_content)
+            send_mail(
+                subject=subject,
+                message="", 
+                from_email=settings.DEFAULT_FROM_EMAIL, 
+                recipient_list=[email],
+                fail_silently=False,
+                html_message=html_content,
+            )
+
         except Exception as e:
             logger.error("Password reset email failed", exc_info=e)
             messages.error(
@@ -185,8 +186,7 @@ class CPasswordResetView(PasswordResetView):
             return self.form_invalid(form)
 
         # نجاح بدون كشف أي تفاصيل
-        return super().form_valid(form)
-
+        return super(PasswordResetView, self).form_valid(form) 
 
 # Profile update (only self)
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
